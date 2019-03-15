@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: e47403e78c578724a812b50fb0669334
+IHVImageFormatImporter:
+  externalObjects: {}
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
+  isReadable: 0
+  sRGBTexture: 1
+  userData: 
+  assetBundleName: c42d120.dds
+  assetBundleVariant: demo

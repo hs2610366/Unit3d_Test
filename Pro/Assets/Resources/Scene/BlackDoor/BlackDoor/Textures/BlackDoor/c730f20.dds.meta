@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: cae81f2c6d64d6746be5007c06afa70c
+IHVImageFormatImporter:
+  externalObjects: {}
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
+  isReadable: 0
+  sRGBTexture: 1
+  userData: 
+  assetBundleName: c730f20.dds
+  assetBundleVariant: demo
