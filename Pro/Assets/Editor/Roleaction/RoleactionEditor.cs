@@ -130,10 +130,13 @@ namespace Divak.Script.Editor
             if (Player == null) return;
             Selection.activeGameObject = Player.Model;
             SceneView view = SceneView.lastActiveSceneView;
-            view.pivot = Vector3.zero;
-            view.size = 20f;
-            view.orthographic = true;
-            view.MoveToView(Player.Trans);
+            if(view != null)
+            {
+                view.pivot = Vector3.zero;
+                view.size = 20f;
+                view.orthographic = true;
+                view.MoveToView(Player.Trans);
+            }
             GetUnitAnim();
         }
         private void GetUnitAnim()
