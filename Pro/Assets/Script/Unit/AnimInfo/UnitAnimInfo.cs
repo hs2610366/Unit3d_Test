@@ -15,7 +15,7 @@ namespace Divak.Script.Game
 	public class UnitAnimInfo
     {
         public string Title = "";
-        //public AnimType Type = AnimType.Base;
+        public AnimType Type = AnimType.Base;
 
         public bool IsTtermination = true;
         #region 目标动画

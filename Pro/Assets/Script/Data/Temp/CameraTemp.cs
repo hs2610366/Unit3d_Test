@@ -41,13 +41,21 @@ namespace Divak.Script.Game
     [Serializable]
     public class CameraTemp
     {
+        [SerializeField]
         public UInt32 id { get; set; }
+        [SerializeField]
         public float x { get; set; }
+        [SerializeField]
         public float y { get; set; }
+        [SerializeField]
         public float z { get; set; }
+        [SerializeField]
         public float eulerX { get; set; }
+        [SerializeField]
         public float eulerY { get; set; }
+        [SerializeField]
         public float eulerZ { get; set; }
+        [SerializeField]
         public float fov { get; set; }
     }
 }

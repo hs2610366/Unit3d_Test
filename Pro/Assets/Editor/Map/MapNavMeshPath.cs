@@ -121,10 +121,10 @@ namespace Divak.Script.Editor
             GUILayout.BeginArea(new Rect(0,0,220,1000));
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("范围：", GUILayout.Width(40));
-            int h = EditorUI.DrawPrefabsIntField(Map.MapH, "行", 14, GUILayout.Width(50));
-            int v = EditorUI.DrawPrefabsIntField(Map.MapV, "列", 14, GUILayout.Width(50));
+            int h = EditorUI.DrawPrefabsNumberField(Map.MapH, "行", 14, GUILayout.Width(50));
+            int v = EditorUI.DrawPrefabsNumberField(Map.MapV, "列", 14, GUILayout.Width(50));
             EditorGUILayout.EndHorizontal();
-            int s = EditorUI.DrawPrefabsIntField(Map.Size, "尺寸：", 28, GUILayout.Width(50));
+            int s = EditorUI.DrawPrefabsNumberField(Map.Size, "尺寸：", 28, GUILayout.Width(50));
             if (h != Map.MapH || v != Map.MapV || s != Map.Size)
             {
                 Map.Info.MapH = h;

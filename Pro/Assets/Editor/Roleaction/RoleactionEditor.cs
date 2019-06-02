@@ -6,7 +6,6 @@
 * 详    细：    
 */
 
-using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,11 +16,6 @@ namespace Divak.Script.Editor
 {
 	public partial class RoleactionEditor : EditorWinBase<RoleactionEditor>
     {
-
-        private Rect RectBaseInfo = new Rect(0, 18, 400, 90);
-        private string[] AnimPaths;
-        private List<string> AnimNames = new List<string>();
-
 
         #region 保护函数
         protected override void Init()
@@ -52,16 +46,10 @@ namespace Divak.Script.Editor
             menu.AddItem(new GUIContent("创建"), false, CreateUnitView, "Create");
             menu.ShowAsContext();
         }
-
-        protected override void CustomDestroy()
-        {
-            ResetUnitInfo();
-            if (Temps != null) Temps.Clear();
-            Temps = null;
-        }
         #endregion
 
-        #region DRAW GUI
+        #region 绘制UI
+
         /// <summary>
         /// 绘制List
         /// </summary>
@@ -89,34 +77,35 @@ namespace Divak.Script.Editor
             EditorGUILayout.BeginVertical();
             GUILayout.Toggle(true, string.Format("{0}({1})", temp.name, temp.model), "dragtab");
             EditorGUILayout.BeginHorizontal();
-            DrawBaseInfo();
+            DrawAnimList();
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
         }
 
         /// <summary>
-        /// 绘制基础数据
+        /// 绘制动作列表
         /// </summary>
-        private void DrawBaseInfo()
+        private void DrawAnimList()
         {
-            EditorUI.DrawArea(RectBaseInfo, DrawBaseInfoCB);
+            GUILayout.BeginArea(ListRect);
+            ListPos = EditorGUILayout.BeginScrollView(ListPos);
+            if(AnimInfos.Count > 0)
+            {
+                for(int i = 0; i < AnimInfos.Count; i ++)
+                {
+                    DrawSelectBtn(i);
+                }
+            }
+            ChangeSelect();
+            if(GUILayout.Button("+"))
+            {
+                AnimInfoEditor info = new AnimInfoEditor();
+                AnimInfos.Add(info);
+            }
+            EditorGUILayout.EndScrollView();
+            GUILayout.EndArea();
         }
 
-        private void DrawBaseInfoCB()
-        {
-            UnitInfo info = Player.ModInfo;
-            if (info == null) return;
-            string name = info.Name;
-            float height = info.Height;
-            Vector3 center = info.Center;
-            if (string.IsNullOrEmpty(name)) name = Player.MTemp.name;
-            GUILayout.Toggle(true, "基础数据", "dragtab", GUILayout.Width(RectBaseInfo.width));
-            info.Name = EditorUI.DrawPrefabsTextField(name, "名字");
-            info.Type = (UnitType)EditorUI.DrawEnumPopup<UnitType>(info.Type, "类型");
-            GUILayout.Toggle(true, "角色控制器", "dragtab", GUILayout.Width(RectBaseInfo.width));
-            info.Height = EditorUI.DrawPrefabsFloatField(height, "高度");
-            info.Center = EditorUI.DrawPrefabsVector3Field(center, "中枢");
-        }
         #endregion
 
         #region 私有函数
@@ -126,8 +115,18 @@ namespace Divak.Script.Editor
         /// </summary>
         private void CreateUnitView(object obj = null)
         {
+            if (CreateUnit() == false)
+            {
+                UpdateNotification("创建模型失败！！！！");
+                return;
+            }
+            GetUnitAnim();
+        }
+
+        private bool CreateUnit()
+        {
             Player = Divak.Script.Game.UnitMgr.Instance.CreatePlayer(101, string.Empty, Vector3.zero);
-            if (Player == null) return;
+            if (Player == null) return false;
             Selection.activeGameObject = Player.Model;
             SceneView view = SceneView.lastActiveSceneView;
             if(view != null)
@@ -137,32 +136,7 @@ namespace Divak.Script.Editor
                 view.orthographic = true;
                 view.MoveToView(Player.Trans);
             }
-            GetUnitAnim();
-        }
-        private void GetUnitAnim()
-        {
-            string path = string.Format("{0}/{1}/Animator/", UnitMgr.Instance.ModPath, Player.MTemp.model);
-            path = Application.dataPath.Replace("Assets", path);
-            string[] AnimPaths = PathTool.GetFiles(path);
-            if (AnimPaths != null)
-            {
-                int length = AnimPaths.Length;
-                for (int i = 0; i < length; i++)
-                {
-                    if (Path.GetExtension(AnimPaths[i]) == SuffixTool.Meta) continue;
-                    AnimNames.Add(Path.GetFileNameWithoutExtension(AnimPaths[i]));
-                }
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void ResetUnitInfo()
-        {
-            UnitMgr.Instance.TempID = 0;
-            if (Player != null) Player.Dispose();
-            Player = null;
+            return true;
         }
         #endregion
 

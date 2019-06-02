@@ -40,19 +40,12 @@ namespace Divak.Script.Game
         private Projection2 mIdent;
         #endregion
 
-        #region 模型数据
-        private UnitInfo mModInfo;
-        public UnitInfo ModInfo { get { return mModInfo; } }
-        #endregion
-
         public Unit():base()
         {
             mIdent = new Projection2();
-            mModInfo = new UnitInfo();
         }
 
-
-        #region 投影
+        #region MyRegion
         protected virtual void UpdateIdent(int ident)
         {
             if (mIdent == null) return;
@@ -65,7 +58,6 @@ namespace Divak.Script.Game
         public override void UpdateModel(GameObject go)
         {
             base.UpdateModel(go);
-            UpdateModInfo(Controller);
             if (mIdent != null) mIdent.Add(Controller);
         }
 
@@ -74,11 +66,7 @@ namespace Divak.Script.Game
             mTemp = temp;
             UpdateIdent(1);
         }
-        public void UpdateModInfo(CharacterController controller)
-        {
-            mModInfo.UpdateController(controller);
-        }
-
+       
         public override void Dispose()
         {
             mTemp = null;

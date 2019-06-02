@@ -41,6 +41,7 @@ namespace Divak.Script.Game
     public enum UnitType
     {
         Player,
+        Team,
         Enemy
     }
     #endregion
@@ -56,23 +57,11 @@ namespace Divak.Script.Game
     #endregion
 
     #region 动作类型
-    /// <summary>
-    /// 动作类型
-    /// </summary>
     public enum AnimType
     {
-        Start,
-        Await,
-        Skills,
-        Dead
-    }
-    /// <summary>
-    /// 动作播放类型
-    /// </summary>
-    public enum AnimPlayType
-    {
-        Continuity,     //连续
-        Random,         //随机
+        Base,
+        Random,
+        Continuity,
     }
     #endregion
 

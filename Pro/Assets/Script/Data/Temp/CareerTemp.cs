@@ -46,9 +46,13 @@ namespace Divak.Script.Game
     [Serializable]
     public class CareerTemp : Temp
     {
+        [SerializeField]
         public UInt32 id { get; set; }
+        [SerializeField]
         public Byte type { get; set; }
+        [SerializeField]
         public UInt32 modId { get; set; }
+        [SerializeField]
         public string name  { get; set; }
     }
 }

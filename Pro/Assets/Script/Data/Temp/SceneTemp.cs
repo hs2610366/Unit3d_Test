@@ -46,9 +46,13 @@ namespace Divak.Script.Game
     [Serializable]
     public class SceneTemp : Temp
     {
+        [SerializeField]
         public UInt32 id { get; set; }
+        [SerializeField]
         public String modle { get; set; }
+        [SerializeField]
         public String name { get; set; }
+        [SerializeField]
         public UInt32 camera_id { get; set; }
     }
 }

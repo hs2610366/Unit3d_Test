@@ -64,42 +64,14 @@ namespace Divak.Script.Editor
         }
 
         /// <summary>
-        /// EditorPrefs输入整数
+        /// EditorPrefs输入数字
         /// </summary>
-        public static int DrawPrefabsIntField(int value, string lb = "", float labW = 0, params GUILayoutOption[] options)
+        public static int DrawPrefabsNumberField(int value, string lb = "", float labW = 0, params GUILayoutOption[] options)
         {
             EditorGUILayout.BeginHorizontal();
             if (labW == 0) labW = LabelSize;
             GUILayout.Label(lb, GUILayout.Width(labW));
             int v = EditorGUILayout.IntField(string.Empty, value, options);
-            if (v != value) value = v;
-            EditorGUILayout.EndHorizontal();
-            return value;
-        }
-
-        /// <summary>
-        /// EditorPrefs输入浮点数
-        /// </summary>
-        public static float DrawPrefabsFloatField(float value, string lb = "", float labW = 0, params GUILayoutOption[] options)
-        {
-            EditorGUILayout.BeginHorizontal();
-            if (labW == 0) labW = LabelSize;
-            GUILayout.Label(lb, GUILayout.Width(labW));
-            float v = EditorGUILayout.FloatField(string.Empty, value, options);
-            if (v != value) value = v;
-            EditorGUILayout.EndHorizontal();
-            return value;
-        }
-
-        /// <summary>
-        /// EditorPrefs输入三维向量
-        /// </summary>
-        public static Vector3 DrawPrefabsVector3Field(Vector3 value, string lb = "", float labW = 0, params GUILayoutOption[] options)
-        {
-            EditorGUILayout.BeginHorizontal();
-            if (labW == 0) labW = LabelSize;
-            GUILayout.Label(lb, GUILayout.Width(labW));
-            Vector3 v = EditorGUILayout.Vector3Field(string.Empty, value, options);
             if (v != value) value = v;
             EditorGUILayout.EndHorizontal();
             return value;
@@ -227,42 +199,6 @@ namespace Divak.Script.Editor
             }
             infos[0].Value = true;
             return default(T);
-        }
-        #endregion
-
-        #region 弹出选择菜单
-        /// <summary>
-        /// 枚举弹出选择菜单
-        /// </summary>
-        public static Enum DrawEnumPopup<T>(Enum value, string lb = "")
-        {
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.Label(lb, GUILayout.Width(LabelSize));
-            Enum v = EditorGUILayout.EnumPopup(string.Empty, value);
-            EditorGUILayout.EndHorizontal();
-            return v;
-        }
-        #endregion
-
-        #region 绘制区域
-        public static void DrawArea(Rect rect)
-        {
-            DrawArea(rect);
-        }
-
-        public static void DrawArea(Rect rect, Action callback = null)
-        {
-            GUI.backgroundColor = new Color(0.6f, 0.6f, 0.6f);
-            EditorGUI.BeginDisabledGroup(true);
-            GUILayout.TextArea("", GUILayout.Width(rect.width), GUILayout.Height(rect.height + 4));
-            EditorGUI.EndDisabledGroup();
-            GUI.backgroundColor = Color.white;
-            GUILayout.BeginArea(rect);
-            EditorGUILayout.BeginVertical();
-            if (callback != null) callback();
-            EditorGUILayout.EndVertical();
-            GUILayout.EndArea();
-
         }
         #endregion
 

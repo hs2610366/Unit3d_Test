@@ -86,19 +86,5 @@ namespace Divak.Script.Game
             mTrans = null;
             mModel = null;
         }
-
-
-#if UNITY_EDITOR
-        public virtual void DrawEditor()
-        {
-            CharacterController cc = mController;
-            if (mController == null)
-            {
-                mController = mTrans.gameObject.AddComponent<CharacterController>();
-            }
-            float limit = mController.slopeLimit;
-           // mController.slopeLimit = Divak.Script.Editor.EditorUI.DrawPrefabsNumberField(limit, "Slope Limit");
-        }
-#endif
     }
 }

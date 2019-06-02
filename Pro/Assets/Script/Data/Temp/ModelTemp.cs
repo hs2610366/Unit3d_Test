@@ -47,8 +47,11 @@ namespace Divak.Script.Game
     [Serializable]
     public class ModelTemp : Temp
     {
+        [SerializeField]
         public UInt32 id { get; set; }
+        [SerializeField]
         public string name { get; set; }
+        [SerializeField]
         public string model { get; set; }
     }
 

@@ -72,7 +72,7 @@ namespace Divak.Script.Game
             if (mAnimInfo != null && mAnim != null && mPlayAnim != null)
             {
                 AnimatorStateInfo info = mAnim.GetCurrentAnimatorStateInfo(0);
-                /**
+
                 if (info.normalizedTime >= mPlayAnim.Times)
                 {
                     switch (mAnimInfo.Type)
@@ -89,7 +89,6 @@ namespace Divak.Script.Game
                             break;
                     }
                 }
-            */
             }
         }
         #endregion
