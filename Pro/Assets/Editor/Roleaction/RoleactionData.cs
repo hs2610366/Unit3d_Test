@@ -39,10 +39,14 @@ namespace Divak.Script.Editor
         protected AnimInfoEditor SelectAnimInfo = null;
         protected AnimInfoEditor RemoveAnimInfo = null;
 
+        protected TextureData TexData = null;
+
         #region 私有函数
         private void InitData()
         {
             ContextRect = new Rect(100, 100, WinW, WinH);
+            //TexData = new TextureData();
+            //TexData.Load();
             TempMgr.Init();
             Temps = ModelTempMgr.Instance.Temps;
         }

@@ -63,6 +63,7 @@ namespace Divak.Script.Editor
         private void DrawCastDistance()
         {
             GUILayout.BeginHorizontal();
+
             string title = Name;
             if (string.IsNullOrEmpty(title)) title = string.Format("施放距离：", IndexID);
             bool select = GUILayout.Toggle(IsSelect, title, "button", GUILayout.Width(180), GUILayout.Height(18));

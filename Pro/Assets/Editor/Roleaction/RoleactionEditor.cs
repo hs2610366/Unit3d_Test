@@ -87,6 +87,7 @@ namespace Divak.Script.Editor
         /// </summary>
         private void DrawAnimList()
         {
+            
             GUILayout.BeginArea(ListRect);
             ListPos = EditorGUILayout.BeginScrollView(ListPos);
             if(AnimInfos.Count > 0)

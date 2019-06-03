@@ -42,6 +42,9 @@ public class EditorWinBase<T> : EditorWindow
         CustomGUI();
     }
 
+    /// <summary>
+    /// 无效
+    /// </summary>
     private void OnDrawGizmos()
     {
         if (IsInit) return;
