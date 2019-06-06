@@ -19,7 +19,9 @@ namespace Divak.Script.Editor
     {
         #region 
         protected Vector2 ListPos = Vector2.zero;
-        protected Rect ListRect = new Rect(0, 20,228, 510);
+        protected Rect ListRect = new Rect(0, 40,228, 510);
+        protected Rect BaseProRect = new Rect(230, 40, 228, 510);
+        protected GUIStyle ListStyle = new GUIStyle("Tooltip");
         #endregion
 
         #region 
@@ -45,10 +47,14 @@ namespace Divak.Script.Editor
         private void InitData()
         {
             ContextRect = new Rect(100, 100, WinW, WinH);
+
+            ListStyle.fontSize = 20;
+            ListStyle.alignment = TextAnchor.UpperCenter;
             //TexData = new TextureData();
             //TexData.Load();
             TempMgr.Init();
             Temps = ModelTempMgr.Instance.Temps;
+
         }
 
         private void GetUnitAnim()
@@ -71,6 +77,10 @@ namespace Divak.Script.Editor
         {
             AnimInfoEditor info = AnimInfos[index];
             if (info == null) return;
+            if(info.Target == null)
+            {
+                info.Target = Player;
+            }
             info.IndexID = index + 1;
             info.DrawSelectGUI();
 

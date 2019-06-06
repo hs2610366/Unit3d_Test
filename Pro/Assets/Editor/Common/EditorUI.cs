@@ -50,6 +50,25 @@ namespace Divak.Script.Editor
 
 
         #region EditorPrefs
+        public static string DrawTextField(string value, string lb = "",float labSize = 60, float texSize = 150)
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label(lb, GUILayout.Width(labSize));
+            string v = EditorGUILayout.TextField(string.Empty, value, GUILayout.Width(texSize));
+            if (v != value) value = v;
+            EditorGUILayout.EndHorizontal();
+            return value;
+        }
+        public static float DrawFloatField(float value, string lb = "", float labSize = 60, float texSize = 150)
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label(lb, GUILayout.Width(labSize));
+            float v = EditorGUILayout.FloatField(string.Empty, value, GUILayout.Width(texSize));
+            if (v != value) value = v;
+            EditorGUILayout.EndHorizontal();
+            return value;
+        }
+
         /// <summary>
         /// EditorPrefs输入文本
         /// </summary>

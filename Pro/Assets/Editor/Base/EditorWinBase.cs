@@ -56,7 +56,7 @@ public class EditorWinBase<T> : EditorWindow
     /// </summary>
     private void Update()
     {
-
+        CustomUpdate();
     }/// <summary>
      /// 当窗口获得焦点时调用一次
      /// </summary>
@@ -173,6 +173,11 @@ public class EditorWinBase<T> : EditorWindow
     }
 
     protected virtual void CustomDrawGizmos()
+    {
+
+    }
+
+    protected virtual void CustomUpdate()
     {
 
     }

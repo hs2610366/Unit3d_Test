@@ -37,6 +37,12 @@ namespace Divak.Script.Editor
 
         }
 
+        protected override void CustomUpdate()
+        {
+            if (SelectAnimInfo == null) return;
+            SelectAnimInfo.OnUpdate();
+        }
+
         /// <summary>
         /// 右键菜单
         /// </summary>
@@ -78,6 +84,7 @@ namespace Divak.Script.Editor
             GUILayout.Toggle(true, string.Format("{0}({1})", temp.name, temp.model), "dragtab");
             EditorGUILayout.BeginHorizontal();
             DrawAnimList();
+            DrawAnimPro();
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
         }
@@ -87,7 +94,7 @@ namespace Divak.Script.Editor
         /// </summary>
         private void DrawAnimList()
         {
-            
+            GUILayout.Box(new GUIContent("动作组"), ListStyle, new[] { GUILayout.Width(ListRect.width), GUILayout.Height(ListRect.height + 20)});
             GUILayout.BeginArea(ListRect);
             ListPos = EditorGUILayout.BeginScrollView(ListPos);
             if(AnimInfos.Count > 0)
@@ -104,6 +111,15 @@ namespace Divak.Script.Editor
                 AnimInfos.Add(info);
             }
             EditorGUILayout.EndScrollView();
+            GUILayout.EndArea();
+        }
+
+        private void DrawAnimPro()
+        {
+            if (SelectAnimInfo == null) return;
+            GUILayout.Box(new GUIContent("基础属性"), ListStyle, new[] { GUILayout.Width(ListRect.width), GUILayout.Height(ListRect.height + 20) });
+            GUILayout.BeginArea(BaseProRect);
+            SelectAnimInfo.DrawPropertyGUI();
             GUILayout.EndArea();
         }
 

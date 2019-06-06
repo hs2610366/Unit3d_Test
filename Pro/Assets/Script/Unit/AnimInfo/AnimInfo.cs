@@ -18,7 +18,11 @@ namespace Divak.Script.Game
         /// 技能名
         /// </summary>
         public string Name = string.Empty;
-        
+        /// <summary>
+        /// 攻击距离
+        /// </summary>
+        public float Distance = 0.0f;
+
 
         public AnimInfo()
         {

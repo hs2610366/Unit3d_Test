@@ -16,6 +16,7 @@ namespace Divak.Script.Editor
 {
 	public class AnimInfoEditor : AnimInfo
     {
+        public UnitPlayer Target = null;
         /// <summary>
         /// 技能序列
         /// </summary>
@@ -29,18 +30,36 @@ namespace Divak.Script.Editor
         /// </summary>
         public bool DelayRemove = false;
 
+        #region 控件
+        public GameObject CastDisArea = null;
+        public LineRenderer CastDisLR = null;
+        #endregion
+
 
         public void DrawSelectGUI()
         {
+            DrawSelectName();
+        }
+
+        public void DrawPropertyGUI()
+        {
+            GUILayout.BeginVertical();
+            GUILayout.Space(3);
             DrawName();
             DrawCastDistance();
+            GUILayout.EndVertical();
+        }
+
+        public void OnUpdate()
+        {
+            DrawDistanceArea();
         }
 
         #region 私有函数
         /// <summary>
         /// 绘制动画名字
         /// </summary>
-        private void DrawName()
+        private void DrawSelectName()
         {
             GUILayout.BeginHorizontal();
             string title = Name;
@@ -57,33 +76,92 @@ namespace Divak.Script.Editor
             GUILayout.EndHorizontal();
         }
 
+        private void DrawName()
+        {
+            string title = Name;
+            if (string.IsNullOrEmpty(title)) title = string.Format("技能{0}", IndexID);
+            EditorGUILayout.BeginHorizontal();
+            string v = EditorUI.DrawTextField(title, "技能名：");
+            if (v != title) Name = v;
+            EditorGUILayout.EndHorizontal();
+        }
+
         /// <summary>
         /// 施放距离
         /// </summary>
         private void DrawCastDistance()
         {
-            GUILayout.BeginHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            float v = EditorUI.DrawFloatField(Distance, "攻击距离：");
+            if (v != Distance)
+            {
+                Distance = v;
+                UpdateLR();
+            }
+            EditorGUILayout.EndHorizontal();
+        }
 
-            string title = Name;
-            if (string.IsNullOrEmpty(title)) title = string.Format("施放距离：", IndexID);
-            bool select = GUILayout.Toggle(IsSelect, title, "button", GUILayout.Width(180), GUILayout.Height(18));
-            if (GUILayout.Button("-", GUILayout.Width(18), GUILayout.Height(18)))
+        /// <summary>
+        /// 释放距离范围
+        /// </summary>
+        private void DrawDistanceArea()
+        {
+            if (Distance == 0) return;
+            //SceneView.lastActiveSceneView.Repaint();
+            Vector3 center = Vector3.zero;
+            //Vector3 last = Vector3.zero;
+            for(int i = 0; i < 360; i ++)
             {
-                DelayRemove = true;
+                float x = center.x + Distance * Mathf.Cos(i * 3.14f / 180);
+                float z = center.z + Distance * Mathf.Sin(i * 3.14f / 180);
+                if(CastDisLR != null)
+                {
+                    CastDisLR.SetPosition(i,new Vector3(x, 0, z));
+                }
+                //Debug.DrawLine(last, new Vector3(x, 0, z), Color.red, 0.0f);
+                //last.x = x;
+                //last.z = z;
             }
-            if (select == true && select != IsSelect)
-            {
-                IsSelect = select;
-            }
-            GUILayout.EndHorizontal();
         }
         #endregion
 
+        private void UpdateLR()
+        {
+            if (Distance == 0)
+            {
+                if (CastDisArea != null)
+                {
+                    CastDisArea.transform.parent = null;
+                    GameObject.DestroyImmediate(CastDisArea);
+                    CastDisArea = null;
+                    CastDisLR = null;
+                }
+            }
+            else if(Distance > 0)
+            {
+                if(CastDisArea == null)
+                {
+                    CastDisArea = new GameObject("CastDistanceArea");
+                    CastDisLR = CastDisArea.AddComponent<LineRenderer>();
+                    CastDisLR.positionCount = 360;
+                    CastDisLR.startWidth = CastDisLR.endWidth = 0.2f;
+                    CastDisLR.material = new Material(Shader.Find("Standard"));
+                    CastDisLR.material.color = new Color(0, 0.8f, 1, 1);
+                    CastDisArea.transform.parent = Target.Trans;
+                }
+            }
+
+        }
+
         protected override void Reset()
         {
+            Target = null;
             IndexID = 0;
             IsSelect = false;
             DelayRemove = false;
+            if(CastDisArea != null) GameObject.Destroy(CastDisArea);
+            CastDisArea = null;
+            CastDisLR = null;
         }
 
     }
