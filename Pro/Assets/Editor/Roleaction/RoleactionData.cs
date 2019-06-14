@@ -23,7 +23,6 @@ namespace Divak.Script.Editor
         protected Rect BaseProRect = new Rect(230, 40, 228, 510);
         protected Rect AnimGroupRect = new Rect(460, 40, 260, 510);
         protected Rect BreakGroupRect = new Rect(460, 552, 260, 510);
-        protected GUIStyle ListStyle = new GUIStyle("Tooltip");
         #endregion
 
         #region 
@@ -50,9 +49,6 @@ namespace Divak.Script.Editor
         private void InitData()
         {
             ContextRect = new Rect(100, 100, WinW, WinH);
-
-            ListStyle.fontSize = 20;
-            ListStyle.alignment = TextAnchor.UpperCenter;
             //TexData = new TextureData();
             //TexData.Load();
             TempMgr.Init();

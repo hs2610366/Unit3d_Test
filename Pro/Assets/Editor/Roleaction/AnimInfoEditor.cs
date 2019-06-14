@@ -49,13 +49,13 @@ namespace Divak.Script.Editor
         {
             GUILayout.BeginVertical();
             GUILayout.Space(3);
-            GUILayout.Label("基础属性", "ObjectFieldThumb", GUILayout.Width(220));
+            GUILayout.Label("基础属性", UIStyles.CSAMS, GUILayout.Width(220));
             DrawName();
             DrawCastDistance();
             DrawAnimPlayType();
-            GUILayout.Label("动作属性", "ObjectFieldThumb", GUILayout.Width(220));
+            GUILayout.Label("动作属性", UIStyles.CSAMS, GUILayout.Width(220));
             DrawBreak();
-            GUILayout.Label("特效属性", "ObjectFieldThumb", GUILayout.Width(220));
+            GUILayout.Label("特效属性", UIStyles.CSAMS, GUILayout.Width(220));
             GUILayout.EndVertical();
         }
 
@@ -84,8 +84,13 @@ namespace Divak.Script.Editor
             GUILayout.BeginHorizontal();
             string title = Name;
             if (string.IsNullOrEmpty(title)) title = string.Format("技能{0}", IndexID);
-            bool select = GUILayout.Toggle(IsSelect, title, "button", GUILayout.Width(180), GUILayout.Height(18));
-            if (GUILayout.Button("-", GUILayout.Width(18), GUILayout.Height(18)))
+
+            GUIStyle selectStyle = IsSelect ? UIStyles.FN1_18_White_UpperCenter : UIStyles.FN0_18_White_UpperCenter;
+
+            bool select = GUILayout.Toggle(IsSelect, title, selectStyle, GUILayout.Width(180), GUILayout.Height(30));
+            GUILayout.Space(2);
+            //"-"按钮
+            if (GUILayout.Button("", UIStyles.TSBCB, GUILayout.Width(30), GUILayout.Height(30)))
             {
                 DelayRemove = true;
             }
@@ -94,6 +99,7 @@ namespace Divak.Script.Editor
                 IsSelect = select;
             }
             GUILayout.EndHorizontal();
+            GUILayout.Space(4);
         }
 
         /// <summary>

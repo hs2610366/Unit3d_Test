@@ -99,8 +99,10 @@ namespace Divak.Script.Editor
         /// </summary>
         private void DrawAnimList()
         {
-            GUILayout.Box(new GUIContent("动作列表"), ListStyle, new[] { GUILayout.Width(ListRect.width), GUILayout.Height(ListRect.height + 20)});
-            GUILayout.BeginArea(ListRect);
+            // EditorUI.DrawBox("动作列表", ListRect.width, ListRect.height + 20, Tooltip_20_UpperCenter);
+            GUILayout.BeginArea(ListRect, UIStyles.SelectionRect);
+            GUILayout.Label("动作列表", UIStyles.DO_18_White_UpperCenter, GUILayout.Height(20));
+            GUILayout.Space(4);
             ListPos = EditorGUILayout.BeginScrollView(ListPos);
             if(AnimInfos.Count > 0)
             {
@@ -110,7 +112,8 @@ namespace Divak.Script.Editor
                 }
             }
             ChangeSelect();
-            if(GUILayout.Button("+"))
+            GUILayout.Space(4);
+            if(GUILayout.Button("+", "WarningOverlay"))
             {
                 AnimInfoEditor info = new AnimInfoEditor();
                 AnimInfos.Add(info);
@@ -122,8 +125,10 @@ namespace Divak.Script.Editor
         private void DrawAnimPro()
         {
             if (SelectAnimInfo == null) return;
-            GUILayout.Box(new GUIContent("属性参数"), ListStyle, new[] { GUILayout.Width(BaseProRect.width), GUILayout.Height(BaseProRect.height + 20) });
-            GUILayout.BeginArea(BaseProRect);
+            //EditorUI.DrawBox("属性参数", BaseProRect.width, BaseProRect.height + 20, Tooltip_20_UpperCenter);
+            GUILayout.BeginArea(BaseProRect, UIStyles.SelectionRect);
+            GUILayout.Label("属性参数", UIStyles.DO_18_White_UpperCenter, GUILayout.Height(20));
+            GUILayout.Space(4);
             SelectAnimInfo.DrawPropertyGUI();
             GUILayout.EndArea();
         }
@@ -131,8 +136,10 @@ namespace Divak.Script.Editor
         private void DrawAnimGroup()
         {
             if (SelectAnimInfo == null) return;
-            GUILayout.Box(new GUIContent("动作组"), ListStyle, new[] { GUILayout.Width(AnimGroupRect.width), GUILayout.Height(AnimGroupRect.height + 20) });
-            GUILayout.BeginArea(AnimGroupRect);
+            //EditorUI.DrawBox("动作组", AnimGroupRect.width, AnimGroupRect.height + 20, Tooltip_20_UpperCenter);
+            GUILayout.BeginArea(AnimGroupRect, UIStyles.SelectionRect);
+            GUILayout.Label("动作组", UIStyles.DO_18_White_UpperCenter, GUILayout.Height(20));
+            GUILayout.Space(4);
             SelectAnimInfo.DrawAnimGroup(this);
             GUILayout.EndArea();
         }
@@ -140,8 +147,10 @@ namespace Divak.Script.Editor
         private void DrawAnimBreakGroup()
         {
             if (SelectAnimInfo == null) return;
-            GUILayout.Box(new GUIContent("可中断当前动作的动作"), ListStyle, new[] {GUILayout.Width(BreakGroupRect.width), GUILayout.Height(BreakGroupRect.height + 20) });
-            GUILayout.BeginArea(BreakGroupRect);
+            //EditorUI.DrawBox("可中断当前动作的动作", BreakGroupRect.width, BreakGroupRect.height + 20, Tooltip_20_UpperCenter);
+            GUILayout.BeginArea(BreakGroupRect, UIStyles.SelectionRect);
+            GUILayout.Label("可中断当前动作的动作", UIStyles.DO_18_White_UpperCenter, GUILayout.Height(20));
+            GUILayout.Space(4);
             //SelectAnimInfo.DrawAnimGroup(this);
             GUILayout.EndArea();
         }

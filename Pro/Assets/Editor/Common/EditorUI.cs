@@ -221,6 +221,14 @@ namespace Divak.Script.Editor
         }
         #endregion
 
+        #region BOX区域
+        public static void DrawBox(string title, float w, float h, GUIStyle style = null)
+        {
+            if (style == null)
+                style = GUIStyle.none;
+            GUILayout.Box(new GUIContent(title), style, new[] { GUILayout.Width(w), GUILayout.Height(h) });
+        }
+        #endregion
         #region C#
         #endregion
 
