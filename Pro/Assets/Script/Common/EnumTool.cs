@@ -57,11 +57,10 @@ namespace Divak.Script.Game
     #endregion
 
     #region 动作类型
-    public enum AnimType
+    public enum AnimPlayType
     {
-        Base,
-        Random,
         Continuity,
+        Random,
     }
     #endregion
 

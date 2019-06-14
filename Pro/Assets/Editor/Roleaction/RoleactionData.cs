@@ -21,6 +21,8 @@ namespace Divak.Script.Editor
         protected Vector2 ListPos = Vector2.zero;
         protected Rect ListRect = new Rect(0, 40,228, 510);
         protected Rect BaseProRect = new Rect(230, 40, 228, 510);
+        protected Rect AnimGroupRect = new Rect(460, 40, 260, 510);
+        protected Rect BreakGroupRect = new Rect(460, 552, 260, 510);
         protected GUIStyle ListStyle = new GUIStyle("Tooltip");
         #endregion
 
@@ -28,6 +30,7 @@ namespace Divak.Script.Editor
         protected List<ModelTemp> Temps;
         protected UnitPlayer Player;
         protected List<string> AnimNames = new List<string>();
+        public List<string> AnimList { get { return AnimNames; } }
         protected List<AnimInfoEditor> AnimInfos = new List<AnimInfoEditor>();
         #endregion
 

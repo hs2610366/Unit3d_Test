@@ -85,6 +85,11 @@ namespace Divak.Script.Editor
             EditorGUILayout.BeginHorizontal();
             DrawAnimList();
             DrawAnimPro();
+            DrawAnimGroup();
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(458);
+            DrawAnimBreakGroup();
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
         }
@@ -94,7 +99,7 @@ namespace Divak.Script.Editor
         /// </summary>
         private void DrawAnimList()
         {
-            GUILayout.Box(new GUIContent("动作组"), ListStyle, new[] { GUILayout.Width(ListRect.width), GUILayout.Height(ListRect.height + 20)});
+            GUILayout.Box(new GUIContent("动作列表"), ListStyle, new[] { GUILayout.Width(ListRect.width), GUILayout.Height(ListRect.height + 20)});
             GUILayout.BeginArea(ListRect);
             ListPos = EditorGUILayout.BeginScrollView(ListPos);
             if(AnimInfos.Count > 0)
@@ -117,12 +122,29 @@ namespace Divak.Script.Editor
         private void DrawAnimPro()
         {
             if (SelectAnimInfo == null) return;
-            GUILayout.Box(new GUIContent("基础属性"), ListStyle, new[] { GUILayout.Width(ListRect.width), GUILayout.Height(ListRect.height + 20) });
+            GUILayout.Box(new GUIContent("属性参数"), ListStyle, new[] { GUILayout.Width(BaseProRect.width), GUILayout.Height(BaseProRect.height + 20) });
             GUILayout.BeginArea(BaseProRect);
             SelectAnimInfo.DrawPropertyGUI();
             GUILayout.EndArea();
         }
 
+        private void DrawAnimGroup()
+        {
+            if (SelectAnimInfo == null) return;
+            GUILayout.Box(new GUIContent("动作组"), ListStyle, new[] { GUILayout.Width(AnimGroupRect.width), GUILayout.Height(AnimGroupRect.height + 20) });
+            GUILayout.BeginArea(AnimGroupRect);
+            SelectAnimInfo.DrawAnimGroup(this);
+            GUILayout.EndArea();
+        }
+
+        private void DrawAnimBreakGroup()
+        {
+            if (SelectAnimInfo == null) return;
+            GUILayout.Box(new GUIContent("可中断当前动作的动作"), ListStyle, new[] {GUILayout.Width(BreakGroupRect.width), GUILayout.Height(BreakGroupRect.height + 20) });
+            GUILayout.BeginArea(BreakGroupRect);
+            //SelectAnimInfo.DrawAnimGroup(this);
+            GUILayout.EndArea();
+        }
         #endregion
 
         #region 私有函数

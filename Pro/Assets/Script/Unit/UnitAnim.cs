@@ -77,14 +77,14 @@ namespace Divak.Script.Game
                 {
                     switch (mAnimInfo.Type)
                     {
-                        case AnimType.Base:
-                            mPlayIndex++;
+                        //case AnimPlayType.Base:
+                        //    mPlayIndex++;
                             // PlayBase(mAnimInfo.List, mPlayIndex);
-                            break;
-                        case AnimType.Random:
+                        //    break;
+                        case AnimPlayType.Random:
                             //PlayRandom(mAnimInfo.List, UnityEngine.Random.Range(0, mAnimInfo.List.Count - 1));
                             break;
-                        case AnimType.Continuity:
+                        case AnimPlayType.Continuity:
                             //PlayContinuity(mAnimInfo.List, mPlayIndex);
                             break;
                     }
