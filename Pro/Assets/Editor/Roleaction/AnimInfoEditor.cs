@@ -49,13 +49,13 @@ namespace Divak.Script.Editor
         {
             GUILayout.BeginVertical();
             GUILayout.Space(3);
-            GUILayout.Label("基础属性", UIStyles.CSAMS, GUILayout.Width(220));
+            GUILayout.Label("基础属性", UIStyles.CSAMS_12_White, GUILayout.Width(220));
             DrawName();
             DrawCastDistance();
             DrawAnimPlayType();
-            GUILayout.Label("动作属性", UIStyles.CSAMS, GUILayout.Width(220));
+            GUILayout.Label("动作属性", UIStyles.CSAMS_12_White, GUILayout.Width(220));
             DrawBreak();
-            GUILayout.Label("特效属性", UIStyles.CSAMS, GUILayout.Width(220));
+            GUILayout.Label("特效属性", UIStyles.CSAMS_12_White, GUILayout.Width(220));
             GUILayout.EndVertical();
         }
 
@@ -159,7 +159,8 @@ namespace Divak.Script.Editor
         private void DrawAnimPlayType()
         {
             EditorUI.SetLabelWidth(65);
-            AnimPlayType apt = (AnimPlayType)EditorGUILayout.EnumPopup("组播放类型：", APT, GUILayout.Width(215));
+            //AnimPlayType apt = (AnimPlayType)EditorGUILayout.EnumPopup("组播放类型：", APT, UIStyles.DDB_White, GUILayout.Width(215));
+            AnimPlayType apt = (AnimPlayType)EditorUI.DrawEnum(APT, "播放类型：", uiSize: 150);
             if (apt != APT) APT = apt;
             EditorUI.SetLabelWidth(80);
         }
@@ -170,8 +171,8 @@ namespace Divak.Script.Editor
         private void DrawBreak()
         {
             EditorUI.SetLabelWidth(200);
-            bool ibr = EditorGUILayout.Toggle("重复播放是否中断：",IsBreakRepeat);
-            bool ib = EditorGUILayout.Toggle("是否有其他动作中断：", IsBreak);
+            bool ibr = EditorUI.DrawToggle(IsBreakRepeat, "重复播放是否中断：",190);
+            bool ib = EditorUI.DrawToggle(IsBreak, "是否有其他动作中断：", 190);
             if (ibr != IsBreakRepeat) IsBreakRepeat = ibr;
             if (ib != IsBreak) IsBreak = ib;
             EditorUI.SetLabelWidth(80);
@@ -189,13 +190,14 @@ namespace Divak.Script.Editor
             for (int i = 0; i < count; i++)
             {
                 GUILayout.BeginHorizontal();
-                int index = EditorGUILayout.Popup(string.Empty, StrTool.IndexOfToStr(names, AnimGroup[i]), names, GUILayout.Width(220));
+                int index = EditorGUILayout.Popup(string.Empty, StrTool.IndexOfToStr(names, AnimGroup[i]), names, UIStyles.ICS_16_White_UpperLeft, GUILayout.Width(220), GUILayout.Height(30));
                 if (index != -1) AnimGroup[i] = names[index];
-                if (GUILayout.Button("-", GUILayout.Width(24)))
+                if (GUILayout.Button("-", UIStyles.TSBCB, GUILayout.Width(24)))
                 {
                     reduce.Add(i);
                 }
                 GUILayout.EndHorizontal();
+                GUILayout.Space(2);
             }
             if (reduce.Count > 0)
             {
@@ -204,7 +206,8 @@ namespace Divak.Script.Editor
                     AnimGroup.RemoveAt(reduce[i]);
                 }
             }
-            if (GUILayout.Button("+", GUILayout.Width(250)))
+            GUILayout.Space(4);
+            if (GUILayout.Button("+", UIStyles.WO, GUILayout.Width(250)))
             {
                 AnimGroup.Add(list[0]);
             }

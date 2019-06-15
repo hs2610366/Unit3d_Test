@@ -15,6 +15,7 @@ namespace Divak.Script.Game
     public class UnitAnim : UnitBase
     {
         private Animator mAnim;
+        public Animator Anim { get { return mAnim; } }
 
         private UnitAnimInfo mAnimInfo;
 
@@ -35,33 +36,38 @@ namespace Divak.Script.Game
 
         #region 保护函数
 
-        protected void Play(string actionName, int value)
+        public void Play(string actionName)
+        {
+            mAnim.CrossFadeInFixedTime(actionName, 0.2f);
+        }
+        /***
+        public void Play(string actionName, int value)
         {
             if (!mAnim) return;
             mAnim.SetInteger(actionName, value);
         }
 
 
-        protected void Play(string actionName, float value)
+        public void Play(string actionName, float value)
         {
             if (!mAnim) return;
             mAnim.SetFloat(actionName, value);
         }
 
 
-        protected void Play(string actionName, bool value)
+        public void Play(string actionName, bool value)
         {
             if (!mAnim) return;
             mAnim.SetBool(actionName, value);
         }
 
 
-        protected void Play(string actionName)
+        public void Play(string actionName)
         {
             if (!mAnim) return;
             mAnim.SetTrigger(actionName);
         }
-
+        **/
         #endregion
 
         #region 重构函数

@@ -20,7 +20,7 @@ namespace Divak.Script.Game
         public void Init()
         {
             //UIMgr.Open("UIControl");
-             player =  UnitMgr.Instance.CreatePlayer(101,"希尔瓦纳斯", Vector3.zero);
+            player =  UnitMgr.Instance.CreatePlayer(101,"希尔瓦纳斯", Vector3.zero);
             //return;
             //SceneMgr.Instance.EnterScene(10001);
         }
@@ -34,15 +34,15 @@ namespace Divak.Script.Game
         {
             if(GUI.Button(new Rect(0,0, 200,200),"1"))
             {
-                //player.Play("Idea", 1);
+                player.Play("Idea1");
             }
             if (GUI.Button(new Rect(300, 0, 200, 200), "2"))
             {
-               //player.Play("Idea", 2);
+                player.Play("Idea2");
             }
             if (GUI.Button(new Rect(600, 0, 200, 200), "run"))
             {
-                //player.Play("Run", true);
+                player.Play("Run");
             }
         }
     }

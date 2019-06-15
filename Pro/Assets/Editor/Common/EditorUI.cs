@@ -53,8 +53,8 @@ namespace Divak.Script.Editor
         public static string DrawTextField(string value, string lb = "",float labSize = 60, float texSize = 150)
         {
             EditorGUILayout.BeginHorizontal();
-            GUILayout.Label(lb, GUILayout.Width(labSize));
-            string v = EditorGUILayout.TextField(string.Empty, value, GUILayout.Width(texSize));
+            GUILayout.Label(lb, UIStyles.Label_13_White, GUILayout.Width(labSize));
+            string v = EditorGUILayout.TextField(string.Empty, value, UIStyles.LTF_14_White, GUILayout.Width(texSize));
             if (v != value) value = v;
             EditorGUILayout.EndHorizontal();
             return value;
@@ -62,8 +62,8 @@ namespace Divak.Script.Editor
         public static float DrawFloatField(float value, string lb = "", float labSize = 60, float texSize = 150)
         {
             EditorGUILayout.BeginHorizontal();
-            GUILayout.Label(lb, GUILayout.Width(labSize));
-            float v = EditorGUILayout.FloatField(string.Empty, value, GUILayout.Width(texSize));
+            GUILayout.Label(lb, UIStyles.Label_13_White, GUILayout.Width(labSize));
+            float v = EditorGUILayout.FloatField(string.Empty, value, UIStyles.LTF_14_White, GUILayout.Width(texSize));
             if (v != value) value = v;
             EditorGUILayout.EndHorizontal();
             return value;
@@ -135,6 +135,30 @@ namespace Divak.Script.Editor
             {
                 value = AssetDatabase.GetAssetPath(obj);
             }
+            return value;
+        }
+        #endregion
+
+        #region Enum
+        public static Enum DrawEnum(Enum value, string lb = "", float labSize = 60, float uiSize = 150)
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label(lb, UIStyles.Label_13_White, GUILayout.Width(labSize));
+            Enum v = EditorGUILayout.EnumPopup(string.Empty, value, UIStyles.DDB_White, GUILayout.Width(uiSize));
+            if (v != value) value = v;
+            EditorGUILayout.EndHorizontal();
+            return value;
+        }
+        #endregion
+
+        #region Toggle
+        public static bool DrawToggle(bool value, string lb = "", float labSize = 60, float uiSize = 150)
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label(lb, UIStyles.Label_13_White, GUILayout.Width(labSize));
+            bool v = EditorGUILayout.Toggle(string.Empty, value, UIStyles.BoldToggle_White, GUILayout.Width(uiSize));
+            if (v != value) value = v;
+            EditorGUILayout.EndHorizontal();
             return value;
         }
         #endregion

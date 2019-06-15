@@ -81,11 +81,12 @@ namespace Divak.Script.Editor
         {
             ModelTemp temp = Player.MTemp;
             EditorGUILayout.BeginVertical();
-            GUILayout.Toggle(true, string.Format("{0}({1})", temp.name, temp.model), "dragtab");
+            GUILayout.Toggle(true, string.Format("{0}({1})", temp.name, temp.model), UIStyles.TTDD_White);
             EditorGUILayout.BeginHorizontal();
             DrawAnimList();
             DrawAnimPro();
             DrawAnimGroup();
+            DrawPlay();
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(458);
@@ -113,7 +114,7 @@ namespace Divak.Script.Editor
             }
             ChangeSelect();
             GUILayout.Space(4);
-            if(GUILayout.Button("+", "WarningOverlay"))
+            if(GUILayout.Button("+", UIStyles.WO))
             {
                 AnimInfoEditor info = new AnimInfoEditor();
                 AnimInfos.Add(info);
@@ -142,6 +143,17 @@ namespace Divak.Script.Editor
             GUILayout.Space(4);
             SelectAnimInfo.DrawAnimGroup(this);
             GUILayout.EndArea();
+        }
+        private float preTime = 0;
+        private void DrawPlay()
+        {
+            if (SelectAnimInfo == null) return;
+            Player.Anim.Update((float)EditorApplication.timeSinceStartup - preTime);
+            preTime = (float)EditorApplication.timeSinceStartup;
+            if (GUILayout.Button(string.Empty, UIStyles.ProjectBrowserSubAssetExpandBtn, GUILayout.Width(40), GUILayout.Height(40)))
+            {
+                Player.Play("Idea1");
+            }   
         }
 
         private void DrawAnimBreakGroup()

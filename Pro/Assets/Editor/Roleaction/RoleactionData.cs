@@ -19,10 +19,10 @@ namespace Divak.Script.Editor
     {
         #region 
         protected Vector2 ListPos = Vector2.zero;
-        protected Rect ListRect = new Rect(0, 40,228, 510);
-        protected Rect BaseProRect = new Rect(230, 40, 228, 510);
-        protected Rect AnimGroupRect = new Rect(460, 40, 260, 510);
-        protected Rect BreakGroupRect = new Rect(460, 552, 260, 510);
+        protected Rect ListRect = new Rect(0, 60,228, 510);
+        protected Rect BaseProRect = new Rect(230, 60, 228, 510);
+        protected Rect AnimGroupRect = new Rect(460, 60, 260, 510);
+        protected Rect BreakGroupRect = new Rect(460, 582, 260, 510);
         #endregion
 
         #region 

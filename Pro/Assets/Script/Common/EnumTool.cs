@@ -59,8 +59,12 @@ namespace Divak.Script.Game
     #region 动作类型
     public enum AnimPlayType
     {
+        //连续的 顺序 一次触发一个动作
         Continuity,
+        //随机的 随机 一次触发一个动作
         Random,
+        //一组的 顺序 一次触发所有动作
+        Group,
     }
     #endregion
 
