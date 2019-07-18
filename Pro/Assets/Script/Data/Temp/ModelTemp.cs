@@ -52,6 +52,7 @@ namespace Divak.Script.Game
         [SerializeField]
         public string name { get; set; }
         [SerializeField]
+
         public string model { get; set; }
     }
 

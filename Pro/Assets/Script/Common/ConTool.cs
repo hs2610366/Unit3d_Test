@@ -76,5 +76,5 @@ namespace Divak.Script.Game
             }
             return t;
         }
-	}
+    }
 }

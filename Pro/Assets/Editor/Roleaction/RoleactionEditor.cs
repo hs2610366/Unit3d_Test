@@ -34,6 +34,7 @@ namespace Divak.Script.Editor
             EditorUI.SetLabelWidth(80);
             if (Player == null) DrawList();
             else DrawModelInfo();
+            base.CustomGUI();
 
         }
 
@@ -49,12 +50,21 @@ namespace Divak.Script.Editor
         protected override void CustomRightMenu()
         {
             GenericMenu menu = new GenericMenu();
-            menu.AddItem(new GUIContent("创建"), false, CreateUnitView, "Create");
+            menu.AddItem(new GUIContent("保存并导出"), false, SaveInfo, "Create");
             menu.ShowAsContext();
         }
         #endregion
 
         #region 绘制UI
+        /// <summary>
+        /// 点击模型列表item
+        /// </summary>
+        private void ClickItemMenu()
+        {
+            GenericMenu menu = new GenericMenu();
+            menu.AddItem(new GUIContent("展开"), false, CreateUnitView, "Create");
+            menu.ShowAsContext();
+        }
 
         /// <summary>
         /// 绘制List
@@ -68,7 +78,7 @@ namespace Divak.Script.Editor
                     if (GUILayout.Button(Temps[i].model, "button", GUILayout.Height(BtnH)))
                     {
                         UnitMgr.Instance.TempID = Temps[i].id;
-                        CustomRightMenu();
+                        ClickItemMenu();
                     }
                 }
             }
@@ -105,9 +115,9 @@ namespace Divak.Script.Editor
             GUILayout.Label("动作列表", UIStyles.DO_18_White_UpperCenter, GUILayout.Height(20));
             GUILayout.Space(4);
             ListPos = EditorGUILayout.BeginScrollView(ListPos);
-            if(AnimInfos.Count > 0)
+            if(Player.Anims.Count > 0)
             {
-                for(int i = 0; i < AnimInfos.Count; i ++)
+                for(int i = 0; i < Player.Anims.Count; i ++)
                 {
                     DrawSelectBtn(i);
                 }
@@ -117,7 +127,7 @@ namespace Divak.Script.Editor
             if(GUILayout.Button("+", UIStyles.WO))
             {
                 AnimInfoEditor info = new AnimInfoEditor();
-                AnimInfos.Add(info);
+                Player.Anims.Add(info);
             }
             EditorGUILayout.EndScrollView();
             GUILayout.EndArea();
@@ -158,7 +168,7 @@ namespace Divak.Script.Editor
 
         private void DrawAnimBreakGroup()
         {
-            if (SelectAnimInfo == null) return;
+            if (SelectAnimInfo == null || SelectAnimInfo.IsBreak == false) return;
             //EditorUI.DrawBox("可中断当前动作的动作", BreakGroupRect.width, BreakGroupRect.height + 20, Tooltip_20_UpperCenter);
             GUILayout.BeginArea(BreakGroupRect, UIStyles.SelectionRect);
             GUILayout.Label("可中断当前动作的动作", UIStyles.DO_18_White_UpperCenter, GUILayout.Height(20));

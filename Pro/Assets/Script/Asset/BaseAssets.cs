@@ -63,6 +63,8 @@ namespace Divak.Script.Game
             yield return www;
             bytes = www.bytes;
             if (callback != null) callback(path, bytes);
+            www.Dispose();
+            www = null;
             yield return new WaitForFixedUpdate();
         }
 

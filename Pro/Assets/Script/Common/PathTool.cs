@@ -35,6 +35,10 @@ namespace Divak.Script.Game
         /// </summary>
         public const string Nav = "Nav/";
         /// <summary>
+        /// 动作文件路径
+        /// </summary>
+        public const string Anim = "Anim/";
+        /// <summary>
 #if UNITY_EDITOR
         /// <summary>
         /// 编辑器资源名

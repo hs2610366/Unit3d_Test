@@ -41,23 +41,6 @@ namespace Divak.Script.Editor
 
         private void DrawAnims(AType type)
         {
-            if (Player == null) return;
-            Dictionary<string, UnitAnimInfo> anims = Player.SkillAnims;
-            switch (type)
-            {
-                case AType.Start:
-                    DrawAnimInfo(AType.Start, anims);
-                    break;
-                case AType.Await:
-                    DrawAnimInfo(AType.Start, anims);
-                    break;
-                case AType.Skills:
-                    DrawAnimInfo(AType.Skills, anims);
-                    break;
-                case AType.Dead:
-                    DrawAnimInfo(AType.Dead, anims);
-                    break;
-            }
         }
 
         #endregion

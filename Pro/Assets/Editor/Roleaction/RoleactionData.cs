@@ -6,9 +6,11 @@
 * 详    细：    
 */
 
+using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEditor;
 using Divak.Script.Game;
@@ -30,7 +32,6 @@ namespace Divak.Script.Editor
         protected UnitPlayer Player;
         protected List<string> AnimNames = new List<string>();
         public List<string> AnimList { get { return AnimNames; } }
-        protected List<AnimInfoEditor> AnimInfos = new List<AnimInfoEditor>();
         #endregion
 
         #region 参数
@@ -74,7 +75,7 @@ namespace Divak.Script.Editor
 
         private void DrawSelectBtn(int index)
         {
-            AnimInfoEditor info = AnimInfos[index];
+            AnimInfoEditor info = Player.Anims[index] as AnimInfoEditor;
             if (info == null) return;
             if(info.Target == null)
             {
@@ -102,9 +103,9 @@ namespace Divak.Script.Editor
             if(RemoveAnimInfo != null)
             {
                 int index = RemoveAnimInfo.IndexID - 1;
-                if (AnimInfos.Count > index)
+                if (Player.Anims.Count > index)
                 {
-                    AnimInfos.RemoveAt(index);
+                    Player.Anims.RemoveAt(index);
                     RemoveAnimInfo.Dispose();
                 }
                 RemoveAnimInfo = null;
@@ -118,15 +119,76 @@ namespace Divak.Script.Editor
             Player = null;
             AnimNames.Clear();
         }
-        #endregion
 
-        #region 保护函数
+        /// <summary>
+        /// 保存并导出
+        /// </summary>
+        /// <returns></returns>
+        private void SaveInfo(object obj = null)
+        {
+            if (Player == null)
+            {
+                MessageBox.Error("数据为null");
+                return;
+            }
+            if (Player.Anims == null || Player.Anims.Count == 0) return;
+
+#if UNITY_EDITOR
+            string path = Application.dataPath + PathTool.AssetsEditorResource + PathTool.Anim;
+            Config.OutputConfig<AnimInfo>(path, Player.MTemp.model, Player.Anims, SuffixTool.Animation);
+#else
+            string path = PathTool.DataPath + PathTool.Anim;
+            List<AnimInfo> list = Reflection(Player.Anims);
+            Config.OutputConfig<AnimInfo>(path, Player.MTemp.model, list, SuffixTool.Animation);
+#endif
+            AssetDatabase.Refresh();
+        }
+
+
+        /// <summary>
+        /// 子类型转父类型
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="listObj"></param>
+        /// <returns></returns>
+        public List<AnimInfo> Reflection(List<AnimInfo> list)
+        {
+            List<AnimInfo> result = new List<AnimInfo>();
+            for(int i = 0; i < list.Count; i ++)
+            {
+                result.Add(Reflection(list[i]));
+            }
+            return result;
+        }
+        /// <summary>
+        /// 脚本反射
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public AnimInfo Reflection(AnimInfo obj)
+        {
+            Type t = obj.GetType();
+            PropertyInfo[] list = t.GetProperties();
+            AnimInfo info = new AnimInfo();
+            Type ti = info.GetType();
+            for (int i = 0; i < list.Length; i++)
+            {
+                PropertyInfo pt = list[i];
+                if (pt == null) continue;
+                pt.SetValue(info, pt.GetValue(obj, null), null);
+            }
+            return info;
+        }
+#endregion
+
+#region 保护函数
         protected override void CustomDestroy()
         {
             ResetAnimInfo();
             if (Temps != null) Temps.Clear();
             Temps = null;
         }
-        #endregion
+#endregion
     }
 }

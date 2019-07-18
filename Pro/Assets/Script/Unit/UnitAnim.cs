@@ -15,18 +15,10 @@ namespace Divak.Script.Game
     public class UnitAnim : UnitBase
     {
         private Animator mAnim;
-        public Animator Anim { get { return mAnim; } }
-
-        private UnitAnimInfo mAnimInfo;
-
-        private UnitAnimInfo mStartAnim = new UnitAnimInfo("出生动作");
-        private Dictionary<string, UnitAnimInfo> mSkillAnims = new Dictionary<string, UnitAnimInfo>();
-        private UnitAnimInfo mDeadAnim = new UnitAnimInfo("死亡动作");
-
-        private UnitAnimInfo mPlayAnim;
-        private int mPlayIndex;
+        [SerializeField]
+        protected List<AnimInfo> AnimInfos = new List<AnimInfo>();
 #if UNITY_EDITOR
-        public Dictionary<string, UnitAnimInfo> SkillAnims { get { return mSkillAnims; } }
+        public List<AnimInfo> Anims { get { return AnimInfos; } }
 #endif
 
         protected override void CustomUpdateAnim(Animator anim)
@@ -34,68 +26,44 @@ namespace Divak.Script.Game
             mAnim = anim;
         }
 
+        #region 私有函数
+        #endregion
+
         #region 保护函数
 
-        public void Play(string actionName)
-        {
-            mAnim.CrossFadeInFixedTime(actionName, 0.2f);
-        }
-        /***
-        public void Play(string actionName, int value)
+        protected void Play(string actionName, int value)
         {
             if (!mAnim) return;
             mAnim.SetInteger(actionName, value);
         }
 
 
-        public void Play(string actionName, float value)
+        protected void Play(string actionName, float value)
         {
             if (!mAnim) return;
             mAnim.SetFloat(actionName, value);
         }
 
 
-        public void Play(string actionName, bool value)
+        protected void Play(string actionName, bool value)
         {
             if (!mAnim) return;
             mAnim.SetBool(actionName, value);
         }
 
 
-        public void Play(string actionName)
+        protected void Play(string actionName)
         {
             if (!mAnim) return;
             mAnim.SetTrigger(actionName);
         }
-        **/
+
         #endregion
 
         #region 重构函数
         protected override void Update()
         {
             base.Update();
-
-            if (mAnimInfo != null && mAnim != null && mPlayAnim != null)
-            {
-                AnimatorStateInfo info = mAnim.GetCurrentAnimatorStateInfo(0);
-
-                if (info.normalizedTime >= mPlayAnim.Times)
-                {
-                    switch (mAnimInfo.Type)
-                    {
-                        //case AnimPlayType.Base:
-                        //    mPlayIndex++;
-                            // PlayBase(mAnimInfo.List, mPlayIndex);
-                        //    break;
-                        case AnimPlayType.Random:
-                            //PlayRandom(mAnimInfo.List, UnityEngine.Random.Range(0, mAnimInfo.List.Count - 1));
-                            break;
-                        case AnimPlayType.Continuity:
-                            //PlayContinuity(mAnimInfo.List, mPlayIndex);
-                            break;
-                    }
-                }
-            }
         }
         #endregion
 
@@ -159,5 +127,21 @@ namespace Divak.Script.Game
         }
         */
         #endregion
+
+        #region 公开函数
+        public void UpdateAnims(ModelTemp temp)
+        {
+            List<AnimInfo> list = null;
+#if UNITY_EDITOR
+            string path = string.Format("{0}{1}{2}", Application.dataPath, PathTool.AssetsEditorResource, PathTool.Anim);
+            list = Config.InputConfig<List<AnimInfo>>(path, temp.model, SuffixTool.Animation);
+#else
+            string path = string.Format("{0}{1}", PathTool.DataPath, PathTool.Anim);
+            list = Config.InputConfig<List<AnimInfo>>(path, temp.model, SuffixTool.Animation);
+#endif
+            if (list == null) return;
+            AnimInfos.AddRange(list);
+        }
+#endregion
     }
 }
