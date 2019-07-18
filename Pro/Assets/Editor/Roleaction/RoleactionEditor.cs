@@ -158,11 +158,11 @@ namespace Divak.Script.Editor
         private void DrawPlay()
         {
             if (SelectAnimInfo == null) return;
-            Player.Anim.Update((float)EditorApplication.timeSinceStartup - preTime);
+           // Player.Anim.Update((float)EditorApplication.timeSinceStartup - preTime);
             preTime = (float)EditorApplication.timeSinceStartup;
             if (GUILayout.Button(string.Empty, UIStyles.ProjectBrowserSubAssetExpandBtn, GUILayout.Width(40), GUILayout.Height(40)))
             {
-                Player.Play("Idea1");
+                //Player.Play("Idea1");
             }   
         }
 
