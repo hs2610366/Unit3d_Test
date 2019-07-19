@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace Divak.Script.Game 
 {
-	public class Unit : UnitState
+	public class Unit : UnitActive
     {
         #region 模型配置表
         private ModelTemp mTemp;

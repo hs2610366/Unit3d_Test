@@ -50,9 +50,9 @@ namespace Divak.Script.Game
             else if (name == IgnoreRaycast) return 2;
             else if (name == Water) return 4;
             else if (name == UI) return 5;
-            else if (name == Gound) return 8;
-            else if (name == Unit) return 0;
-            else if (name == NPC) return 0;
+            else if (name == Unit) return 8;
+            else if (name == NPC) return 9;
+            else if (name == Gound) return 10;
             return 0;
         }
 

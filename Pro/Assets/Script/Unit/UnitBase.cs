@@ -41,7 +41,7 @@ namespace Divak.Script.Game
         /// <summary>
         /// 角色控制器
         /// </summary>
-        protected CharacterController Controller { get { return mController; } }
+        public CharacterController Controller { get { return mController; } }
         #endregion
 
         public UnitBase()

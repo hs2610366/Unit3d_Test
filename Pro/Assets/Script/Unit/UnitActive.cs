@@ -32,7 +32,8 @@ namespace Divak.Script.Game
         #endregion
 
         #region 重力
-        private float mGravity = - 9.8f;
+        private const float G = 0.098f;
+        private float mGravity = 0.098f;
         public float Gravity
         {
             set { mGravity = value; }
@@ -63,7 +64,7 @@ namespace Divak.Script.Game
         /// <summary>
         /// 坠落
         /// </summary>
-        private bool mIsDrop = false;
+        private bool mIsDrop = true;
         public bool IsDrop
         {
             set { mIsDrop = value; }
@@ -91,17 +92,31 @@ namespace Divak.Script.Game
 
         private void UpdateGravity()
         {
-            Vector3 dir = Trans.position + Vector3.down;
-            Ray ray = new Ray(Trans.position, dir);
-            Debug.DrawLine(Trans.position, dir, Color.red, 2);
+            float dis = Controller.height / 2;
+            Vector3 dir = Vector3.down;
+            Vector3 origin = Trans.position;
+            origin.y = origin.y + dis;
+            Ray ray = new Ray(origin, dir);
+            Debug.DrawLine(origin, dir, Color.red, 2);
             RaycastHit hit;
-            if(Physics.Raycast(ray, out hit))
+            int layer = 1<<LayerMask.NameToLayer(LayerName.Gound);
+            if (Physics.Raycast(ray, out hit, 100, layer))
             {
-                if(hit.collider.gameObject.layer == LayerName.GetIndexOfLayerName(LayerName.Gound))
+                if (hit.distance > dis)
                 {
-                    mIsDrop = true;
+                    mGravity =  -G;
+                }
+                else if(hit.distance < dis)
+                {
+                    mGravity = G;
+                }
+                else
+                {
+                    mIsDrop = false;
                     return;
                 }
+                mIsDrop = true;
+                return;
             }
             mIsDrop = false;
         }
@@ -124,7 +139,24 @@ namespace Divak.Script.Game
         }
         #endregion
 
+        #region 接收命令
+        /// <summary> 接收命令 </summary>
+        /// 
+        public void EulerAngles()
+        {
+        }
 
+        public void Move()
+        {
+            mIsMove = true;
+        }
+
+        public void UndoMode()
+        {
+            mIsMove = false;
+        }
+        /// <summary> 接收命令 </summary>
+        #endregion
         public void UpdateEuler(Vector3 euler)
         {
             if (Trans == null) return;
