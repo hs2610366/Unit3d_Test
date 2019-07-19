@@ -40,6 +40,7 @@ namespace Divak.Script.Game
             mPlayer.UpdatTemp(temp);
             mPlayer.UpdatePos(Pos);
             if (CameraMgr.Main != null) CameraMgr.UpdatePlay(mPlayer.Trans);
+            EventMgr.Instance.Trigger(EventKey.CreateUnit, mPlayer);
             return mPlayer;
         }
 

@@ -14,23 +14,58 @@ namespace Divak.Script.Game
 {
     public class UnitAnim : UnitBase
     {
-        private Animator mAnim;
+        [NonSerialized]
+        private Animator mAnim = null;
+        public Animator Anim { get { return mAnim; } }
+        [NonSerialized]
+        private AnimInfo curInfo = null;
+
         [SerializeField]
-        protected List<AnimInfo> AnimInfos = new List<AnimInfo>();
+        protected List<AnimInfo> mAnimInfos = new List<AnimInfo>();
 #if UNITY_EDITOR
-        public List<AnimInfo> Anims { get { return AnimInfos; } }
+        public List<AnimInfo> Anims { get { return mAnimInfos; } }
 #endif
 
-        protected override void CustomUpdateAnim(Animator anim)
-        {
-            mAnim = anim;
-        }
-
         #region 私有函数
+        private AnimInfo GetAnimForName(string name)
+        {
+            return mAnimInfos.Find(s => { return s.Name.Equals(name); });
+        }
         #endregion
 
         #region 保护函数
 
+        public void Play(int id)
+        {
+            Play(id.ToString());
+        }
+
+
+        public void Play(string actionName)
+        {
+            curInfo = GetAnimForName(actionName);
+            if(curInfo != null)
+            {
+                curInfo.Play();
+            }
+        }
+
+        public void Undo(int id)
+        {
+            Undo(id.ToString());
+        }
+
+
+        public void Undo(string actionName)
+        {
+            curInfo = GetAnimForName(actionName);
+            if (curInfo != null)
+            {
+                curInfo.Undo();
+            }
+        }
+
+        /**
         protected void Play(string actionName, int value)
         {
             if (!mAnim) return;
@@ -52,18 +87,35 @@ namespace Divak.Script.Game
         }
 
 
-        protected void Play(string actionName)
+        protected void Play(string actionName, object value)
         {
             if (!mAnim) return;
             mAnim.SetTrigger(actionName);
         }
-
+        */
         #endregion
 
         #region 重构函数
         protected override void Update()
         {
             base.Update();
+            if(curInfo != null)
+            {
+                curInfo.Update();
+            }
+        }
+
+        protected override void CustomUpdateAnim(Animator anim)
+        {
+            mAnim = anim;
+        }
+
+        public override void Dispose()
+        {
+            mAnim = null;
+            curInfo = null;
+            mAnimInfos.Clear();
+            base.Dispose();
         }
         #endregion
 
@@ -140,7 +192,14 @@ namespace Divak.Script.Game
             list = Config.InputConfig<List<AnimInfo>>(path, temp.model, SuffixTool.Animation);
 #endif
             if (list == null) return;
-            AnimInfos.AddRange(list);
+            mAnimInfos.AddRange(list);
+            if(mAnimInfos.Count > 0)
+            {
+                for (int i = 0; i < mAnimInfos.Count; i++)
+                {
+                    mAnimInfos[i].SetAnim(mAnim);
+                }
+            }
         }
 #endregion
     }

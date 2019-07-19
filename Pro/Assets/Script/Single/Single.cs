@@ -34,15 +34,15 @@ namespace Divak.Script.Game
         {
             if(GUI.Button(new Rect(0,0, 200,200),"1"))
             {
-                //player.Play("Idea1");
+                player.Play("Idea1");
             }
             if (GUI.Button(new Rect(300, 0, 200, 200), "2"))
             {
-                //player.Play("Idea2");
+                player.Play("Idea2");
             }
             if (GUI.Button(new Rect(600, 0, 200, 200), "run"))
             {
-                //player.Play("Run");
+                player.Play("Run");
             }
         }
     }

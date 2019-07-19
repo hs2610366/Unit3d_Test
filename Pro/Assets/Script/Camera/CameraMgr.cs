@@ -57,7 +57,7 @@ namespace Divak.Script.Game
 
         private static int GetLayerMask()
         {
-            return 1 << LayerMask.NameToLayer(LayerName.Unit) | 1 << LayerMask.NameToLayer(LayerName.Gound);
+            return 1 << LayerMask.NameToLayer(LayerName.Unit) | 1 << LayerMask.NameToLayer(LayerName.Gound) | 1 << LayerMask.NameToLayer(LayerName.NPC);
         }
 
         #endregion

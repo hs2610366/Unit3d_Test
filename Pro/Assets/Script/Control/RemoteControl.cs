@@ -24,6 +24,17 @@ namespace Divak.Script.Game
             if(!MoveDic.ContainsKey(id)) MoveDic.Add(id, move);
             if(!AttackDic.ContainsKey(id)) AttackDic.Add(id, attack);
         }
+        #region 私有函数
+        private void Execute(ICommand command)
+        {
+            command.Execute();
+        }
+
+        private void Undo(ICommand command)
+        {
+            command.UndoExecute();
+        }
+        #endregion
 
         public void RemoveCommand(uint id)
         {
@@ -41,6 +52,20 @@ namespace Divak.Script.Game
                 att = null;
                 AttackDic.Remove(id);
             }
+        }
+        public void ExecuteMove(uint id)
+        {
+            if (MoveDic.ContainsKey(id)) Execute(MoveDic[id]);
+        }
+
+        public void UndoMove(uint id)
+        {
+            if (MoveDic.ContainsKey(id)) Undo(MoveDic[id]);
+        }
+
+        public void ExecuteActive(uint id)
+        {
+            if (AttackDic.ContainsKey(id)) Execute(AttackDic[id]);
         }
     }
 }

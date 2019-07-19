@@ -52,7 +52,7 @@ namespace Divak.Script.Game
         /// 基础属性
         /// </summary>
         /// <param name="editor"></param>
-        public void DrawPropertyGUI()
+        public void DrawPropertyGUI(RoleactionEditor editor)
         {
             GUILayout.BeginVertical();
             GUILayout.Space(3);
@@ -61,7 +61,7 @@ namespace Divak.Script.Game
             DrawCastDistance();
             DrawAnimPlayType();
             GUILayout.Label("动作属性", UIStyles.CSAMS, GUILayout.Width(220));
-            DrawBreak();
+            DrawBreak(editor.AnimList);
             GUILayout.Label("特效属性", UIStyles.CSAMS, GUILayout.Width(220));
             GUILayout.EndVertical();
         }
@@ -174,11 +174,20 @@ namespace Divak.Script.Game
         /// <summary>
         /// 绘制中断选项
         /// </summary>
-        private void DrawBreak()
+        private void DrawBreak(List<string> list)
         {
+            int count = AnimGroup.Count;
+            string[] names = list.ToArray();
             EditorUI.SetLabelWidth(200);
             bool ib = EditorGUILayout.Toggle("是否有其他动作中断：", IsBreak);
             if (ib != IsBreak) IsBreak = ib;
+            int index = 0;
+            EditorGUILayout.BeginHorizontal();
+            if (!string.IsNullOrEmpty(EndAnim)) index = StrTool.IndexOfToStr(names, EndAnim);
+            GUILayout.Label("停止动作：");
+            int select = EditorGUILayout.Popup(string.Empty, index, names, GUILayout.Width(220));
+            if (select != -1 && !names[select].Equals(EndAnim)) EndAnim = names[select];
+            EditorGUILayout.EndHorizontal();
             EditorUI.SetLabelWidth(80);
         }
 

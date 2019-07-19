@@ -19,16 +19,16 @@ namespace Divak.Script.Game
         /// <summary>
         /// 移动速度
         /// </summary>
-        private float mSpeed = 1.0f;
+        private float mSpeed = 1.2f;
         public float Speed
         {
             get { return mSpeed; }
             set { mSpeed = value; }
         }
         /// <summary>
-        /// 旋转角度
+        /// 旋转角度速率
         /// </summary>
-        private float mASpeed = 1000.0f;
+        private float mASpeed = 600.0f;
         #endregion
 
         #region 重力
@@ -149,11 +149,13 @@ namespace Divak.Script.Game
         public void Move()
         {
             mIsMove = true;
+            Play(10001);
         }
 
-        public void UndoMode()
+        public void UndoMove()
         {
             mIsMove = false;
+            Undo(10001);
         }
         /// <summary> 接收命令 </summary>
         #endregion

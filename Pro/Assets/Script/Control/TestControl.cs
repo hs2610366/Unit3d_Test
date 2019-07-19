@@ -22,6 +22,8 @@ namespace Divak.Script.Game
         public Transform mCircle;
 
         public Transform mRArea;
+
+        private UnitPlayer mPlayer;
         /// <summary>
         /// 定点
         /// </summary>
@@ -62,17 +64,31 @@ namespace Divak.Script.Game
             Global.Instance.OnUpdate += OnUpate;
             UIEventListener.Get(mLArea).OnClick = OnCcCc;
             //TouchManager.Instance.AddTouchEvent(mLArea, OnCcCc);
+            EventMgr.Instance.Add(EventKey.CreateUnit, OnCreateUnit);
         }
 
         private void CustomRemoveEvent()
         {
             Global.Instance.OnUpdate -= OnUpate;
             //TouchManager.Instance.RemoveTouchEvent(mLArea, OnCcCc);
+            EventMgr.Instance.Remove(EventKey.CreateUnit, OnCreateUnit);
         }
 
         private void OnCcCc(GameObject go)
         {
         }
+
+        private void OnCreateUnit(params object[] objs) 
+        {
+            if (UnitMgr.Instance.Player != null)
+            {
+                mPlayer = UnitMgr.Instance.Player;
+                uint id = mPlayer.CTemp.id;
+
+                RemoteControl.Instance.AddCommand(id, new MoveCommand(mPlayer), new AttackCommand(mPlayer));
+            }
+        }
+
 
 
         private void OnUpate()
@@ -94,11 +110,13 @@ namespace Divak.Script.Game
                 if (!mLArea.gameObject.activeSelf) mLArea.gameObject.SetActive(true);
                 UpdateAreaBgPos(inputPos);
                 UpdateCirclePos(inputPos);
-                UnitMgr.Instance.SetPlayerMove(true);
+                //UnitMgr.Instance.SetPlayerMove(true);
+                RemoteControl.Instance.ExecuteMove(mPlayer.CTemp.id);
             }
             else if(TouchConst.TouchEnd())
             {
-                UnitMgr.Instance.SetPlayerMove(false);
+                RemoteControl.Instance.UndoMove(mPlayer.CTemp.id);
+                //UnitMgr.Instance.SetPlayerMove(false);
                 mIsFixedPos = false;
                 mIsClickArea = false;
                 if (mLArea.gameObject.activeSelf) mLArea.gameObject.SetActive(false);

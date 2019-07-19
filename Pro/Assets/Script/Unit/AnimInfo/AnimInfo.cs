@@ -44,18 +44,85 @@ namespace Divak.Script.Game
         /// </summary>
         public List<string> AnimGroup { get { return mAnimGroup; } set { mAnimGroup = value; } }
         [SerializeField]
-        public List<string> mAnimGroup = new List<string>();
+        private List<string> mAnimGroup = new List<string>();
         /// <summary>
         /// 可中断当前动作的动作组
         /// </summary>
         public List<int> BreakGroup { get { return mBreakGroup; } set { mBreakGroup = value; } }
         [SerializeField]
-        public List<int> mBreakGroup = new List<int>();
+        private List<int> mBreakGroup = new List<int>();
+        /// <summary>
+        /// 结束动作
+        /// </summary>
+        public string EndAnim { get { return mEndAnim; } set { mEndAnim = value; } }
+        [SerializeField]
+        private string mEndAnim = string.Empty;
 
+
+
+        [NonSerialized]
+        private Animator mAnim = null;
+        [NonSerialized]
+        public int mIndex = 0;
+        [NonSerialized]
+        public bool mIsPlay = false;
+        [NonSerialized]
+        private Dictionary<string, AnimationClip> mClipDic = new Dictionary<string, AnimationClip>();
 
         public AnimInfo()
         {
 
+        }
+
+        public void SetAnim(Animator anim)
+        {
+            mAnim = anim;
+            AnimationClip[] clips = anim.runtimeAnimatorController.animationClips;
+            foreach (AnimationClip clip in clips)
+            { 
+                if (mAnimGroup.Find( s=> { return s.Equals(clip.name); }) != null)
+                {
+                    mClipDic.Add(clip.name, clip);
+                }
+            }
+        }
+
+        public void Play()
+        {
+            if (mIsPlay == true) return;
+            mIsPlay = true;
+            string name = mAnimGroup[mIndex];
+            mAnim.CrossFadeInFixedTime(name, 0f);
+        }
+
+        public void Undo()
+        {
+            if (mIsPlay == false) return;
+            mIsPlay = false;
+            string name = mEndAnim;
+            if (string.IsNullOrEmpty(name)) name = "Idea2";
+            mAnim.CrossFadeInFixedTime(name, 0.15f);
+        }
+
+        public void Update()
+        {
+            if (mAnim != null && mAnim != null )
+            {
+                AnimatorStateInfo info = mAnim.GetCurrentAnimatorStateInfo(0);
+                if (info.normalizedTime > 1.0f && info.IsName(mAnimGroup[mIndex]))
+                {
+                    mIsPlay = false;
+                    if (mAnimGroup.Count > mIndex + 1)
+                    {
+                        mIndex++;
+                        Play();
+                    } 
+                    else
+                    {
+                        //Undo();
+                    }
+                }
+            }
         }
 
 

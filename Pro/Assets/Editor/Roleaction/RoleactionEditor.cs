@@ -140,7 +140,7 @@ namespace Divak.Script.Editor
             GUILayout.BeginArea(BaseProRect, UIStyles.SelectionRect);
             GUILayout.Label("属性参数", UIStyles.DO_18_White_UpperCenter, GUILayout.Height(20));
             GUILayout.Space(4);
-            SelectAnimInfo.DrawPropertyGUI();
+            SelectAnimInfo.DrawPropertyGUI(this);
             GUILayout.EndArea();
         }
 
@@ -158,11 +158,11 @@ namespace Divak.Script.Editor
         private void DrawPlay()
         {
             if (SelectAnimInfo == null) return;
-           // Player.Anim.Update((float)EditorApplication.timeSinceStartup - preTime);
+            Player.Anim.Update((float)EditorApplication.timeSinceStartup - preTime);
             preTime = (float)EditorApplication.timeSinceStartup;
             if (GUILayout.Button(string.Empty, UIStyles.ProjectBrowserSubAssetExpandBtn, GUILayout.Width(40), GUILayout.Height(40)))
             {
-                //Player.Play("Idea1");
+                Player.Play(Player.Anim.name);
             }   
         }
 
