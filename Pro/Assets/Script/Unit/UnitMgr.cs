@@ -79,6 +79,7 @@ namespace Divak.Script.Game
             Unit unit = CreateClass(type);
             unit.UpdateModel(go);
             unit.UpdateModelTemp(temp);
+            unit.UpdateState(temp);
             unit.UpdateAnims(temp);
             return unit;
         }

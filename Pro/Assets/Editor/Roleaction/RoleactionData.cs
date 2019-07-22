@@ -20,18 +20,22 @@ namespace Divak.Script.Editor
 	public partial class RoleactionEditor : EditorWinBase<RoleactionEditor>
     {
         #region 
+        protected Vector2 StatePos = Vector2.zero;
         protected Vector2 ListPos = Vector2.zero;
-        protected Rect ListRect = new Rect(0, 60,228, 510);
-        protected Rect BaseProRect = new Rect(230, 60, 228, 510);
-        protected Rect AnimGroupRect = new Rect(460, 60, 260, 510);
+        protected Rect StateRect = new Rect(0, 60, 228, 510);
+        protected Rect ListRect = new Rect(230, 60,228, 510);
+        protected Rect BaseProRect = new Rect(460, 60, 228, 510);
+        protected Rect AnimGroupRect = new Rect(690, 60, 260, 510);
         protected Rect BreakGroupRect = new Rect(460, 582, 260, 510);
         #endregion
 
         #region 
         protected List<ModelTemp> Temps;
         protected UnitPlayer Player;
-        protected List<string> AnimNames = new List<string>();
+        public List<string> StatesList { get { return UnitStates; } }
+        protected List<string> UnitStates = new List<string>();
         public List<string> AnimList { get { return AnimNames; } }
+        protected List<string> AnimNames = new List<string>();
         #endregion
 
         #region 参数
@@ -55,6 +59,18 @@ namespace Divak.Script.Editor
             TempMgr.Init();
             Temps = ModelTempMgr.Instance.Temps;
 
+        }
+
+        private void GetUnitStates()
+        {
+            if(Player.Anims.Count > 0)
+            {
+                UnitStates.Add("nil");
+                for (int i = 0; i < Player.Anims.Count; i ++)
+                {
+                    UnitStates.Add(Player.Anims[i].Name);
+                }
+            }
         }
 
         private void GetUnitAnim()
@@ -133,18 +149,23 @@ namespace Divak.Script.Editor
             }
             if (Player.Anims == null || Player.Anims.Count == 0) return;
 
+            string path = string.Empty;
 #if UNITY_EDITOR
-            string path = Application.dataPath + PathTool.AssetsEditorResource + PathTool.Anim;
+            path = Application.dataPath + PathTool.AssetsEditorResource + PathTool.UnitState;
+            Config.OutputConfig<UnitState, AnimInfo>(path, Player.MTemp.model, Player.UnitStates);
+            path = Application.dataPath + PathTool.AssetsEditorResource + PathTool.Anim;
             Config.OutputConfig<AnimInfo>(path, Player.MTemp.model, Player.Anims, SuffixTool.Animation);
-#else
-            string path = PathTool.DataPath + PathTool.Anim;
+#endif
+            path = PathTool.DataPath + PathTool.UnitState;
+            Config.OutputConfig<UnitState, AnimInfo>(path, Player.MTemp.model, Player.UnitStates);
+            path = PathTool.DataPath + PathTool.Anim;
             List<AnimInfo> list = Reflection(Player.Anims);
             Config.OutputConfig<AnimInfo>(path, Player.MTemp.model, list, SuffixTool.Animation);
-#endif
             AssetDatabase.Refresh();
         }
+        #endregion
 
-
+        #region 公开函数
         /// <summary>
         /// 子类型转父类型
         /// </summary>
@@ -154,7 +175,7 @@ namespace Divak.Script.Editor
         public List<AnimInfo> Reflection(List<AnimInfo> list)
         {
             List<AnimInfo> result = new List<AnimInfo>();
-            for(int i = 0; i < list.Count; i ++)
+            for (int i = 0; i < list.Count; i++)
             {
                 result.Add(Reflection(list[i]));
             }
@@ -180,9 +201,31 @@ namespace Divak.Script.Editor
             }
             return info;
         }
-#endregion
 
-#region 保护函数
+        public int GetUnitStatesIndex(int index)
+        {
+            UnitState state = Player.States[index];
+            AnimInfo info = Player.UnitStates[state];
+            if (info != null)
+            {
+                return UnitStates.FindIndex(s => { return s == info.Name; });
+            }
+            return 0;
+        }
+
+        public void ChangeUnitStates(int i, int tar)
+        {
+            string n = UnitStates[tar];
+            AnimInfo info = Player.Anims.Find(s => { return s.Name == n; });
+            if (info != null)
+            {
+                UnitState state = Player.States[i];
+                Player.UnitStates[state] = info;
+            }
+        }
+        #endregion
+
+        #region 保护函数
         protected override void CustomDestroy()
         {
             ResetAnimInfo();

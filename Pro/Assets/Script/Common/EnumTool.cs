@@ -68,6 +68,19 @@ namespace Divak.Script.Game
     }
     #endregion
 
+    #region 角色状态
+    public enum UnitState
+    {
+        Idea,
+        Walk,
+        Run,
+        Fight,
+        Skill_1,
+        Skill_2,
+        Skill_3,
+    }
+    #endregion
+
     public class EnumTool
     {
 

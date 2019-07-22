@@ -39,6 +39,10 @@ namespace Divak.Script.Game
         /// </summary>
         public const string Anim = "Anim/";
         /// <summary>
+        /// 动作状态路径
+        /// </summary>
+        public const string UnitState = "UnitState/";
+        /// <summary>
 #if UNITY_EDITOR
         /// <summary>
         /// 编辑器资源名

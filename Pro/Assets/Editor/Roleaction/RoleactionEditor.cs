@@ -5,7 +5,7 @@
 * 作    者：   by. T.Y.Divak 
 * 详    细：    
 */
-
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -93,6 +93,7 @@ namespace Divak.Script.Editor
             EditorGUILayout.BeginVertical();
             GUILayout.Toggle(true, string.Format("{0}({1})", temp.name, temp.model), UIStyles.TTDD_White);
             EditorGUILayout.BeginHorizontal();
+            DrawUnitState();
             DrawAnimList();
             DrawAnimPro();
             DrawAnimGroup();
@@ -103,6 +104,33 @@ namespace Divak.Script.Editor
             DrawAnimBreakGroup();
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
+        }
+
+        /// <summary>
+        /// 绘制角色状态
+        /// </summary>
+        private void DrawUnitState()
+        {
+            GUILayout.BeginArea(StateRect, UIStyles.SelectionRect);
+            GUILayout.Label("角色状态", UIStyles.DO_18_White_UpperCenter, GUILayout.Height(20));
+            GUILayout.Space(4);
+            StatePos = EditorGUILayout.BeginScrollView(StatePos);
+            for(int i = 0; i < Player.States.Count; i++)
+            {
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Button(Player.States[i].ToString(), UIStyles.FN1, GUILayout.Width(120));
+                string[] names = StatesList.ToArray();
+                int index = GetUnitStatesIndex(i);
+                int select = EditorGUILayout.Popup(string.Empty, index, names, UIStyles.FN0, GUILayout.Width(100), GUILayout.Height(40));
+                if(select != index)
+                {
+                    ChangeUnitStates(i, select);
+                }
+                EditorGUILayout.EndHorizontal();
+                GUILayout.Space(10);
+            }
+            EditorGUILayout.EndScrollView();
+            GUILayout.EndArea();
         }
 
         /// <summary>
@@ -190,6 +218,7 @@ namespace Divak.Script.Editor
                 UpdateNotification("创建模型失败！！！！");
                 return;
             }
+            GetUnitStates();
             GetUnitAnim();
         }
 

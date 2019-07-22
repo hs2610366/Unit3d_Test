@@ -148,14 +148,25 @@ namespace Divak.Script.Game
 
         public void Move()
         {
-            mIsMove = true;
-            Play(10001);
+            AnimInfo info = mUnitState[UnitState.Run];
+            if (info == null) return;
+            if (Play(info.Name)) mIsMove = true;
         }
 
         public void UndoMove()
         {
-            mIsMove = false;
-            Undo(10001);
+            AnimInfo info = mUnitState[UnitState.Run];
+            if (info == null) return;
+            if (Undo(info.Name)) mIsMove = false;
+        }
+
+        public void Fight()
+        {
+
+        }
+
+        public void UndoFight()
+        {
         }
         /// <summary> 接收命令 </summary>
         #endregion

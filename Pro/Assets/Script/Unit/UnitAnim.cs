@@ -18,12 +18,28 @@ namespace Divak.Script.Game
         private Animator mAnim = null;
         public Animator Anim { get { return mAnim; } }
         [NonSerialized]
-        private AnimInfo curInfo = null;
+        private AnimInfo mCurInfo = null;
 
         [SerializeField]
         protected List<AnimInfo> mAnimInfos = new List<AnimInfo>();
+        [SerializeField]
+        protected Dictionary<UnitState, AnimInfo> mUnitState = new Dictionary<UnitState, AnimInfo>();
 #if UNITY_EDITOR
         public List<AnimInfo> Anims { get { return mAnimInfos; } }
+        public List<UnitState> States = new List<Game.UnitState>();
+        public Dictionary<UnitState, AnimInfo> UnitStates { get { return mUnitState; } }
+        public UnitAnim() : base()
+        {
+            if (mUnitState.Count == 0)
+            {
+                Array ary = Enum.GetValues(typeof(UnitState));  //array是数组的基类, 无法实例化
+                foreach (int i in ary)  //列出枚举项对应的数字
+                {
+                    States.Add((UnitState)i);
+                    mUnitState.Add((UnitState)i, null);
+                }
+            }
+        }
 #endif
 
         #region 私有函数
@@ -31,77 +47,62 @@ namespace Divak.Script.Game
         {
             return mAnimInfos.Find(s => { return s.Name.Equals(name); });
         }
+
+        private bool CheckAnim(string name)
+        {
+            if(mCurInfo != null)
+            {
+                if (mCurInfo.Name.Equals(name))
+                {
+                    if(mCurInfo.mIsPlay == true)
+                        return false;
+                }
+                else
+                {
+                    if(mCurInfo.IsBreak)
+                    {
+                        if(IsCheckBreak(name) == true)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
         #endregion
 
         #region 保护函数
-
-        public void Play(int id)
+        public bool Play(string actionName)
         {
-            Play(id.ToString());
-        }
-
-
-        public void Play(string actionName)
-        {
-            curInfo = GetAnimForName(actionName);
-            if(curInfo != null)
+            if (CheckAnim(actionName) == false) return false;
+            mCurInfo = GetAnimForName(actionName);
+            if(mCurInfo != null)
             {
-                curInfo.Play();
+                mCurInfo.Play();
             }
+            return true;
         }
 
-        public void Undo(int id)
+        public bool Undo(string actionName)
         {
-            Undo(id.ToString());
-        }
-
-
-        public void Undo(string actionName)
-        {
-            curInfo = GetAnimForName(actionName);
-            if (curInfo != null)
+            if (CheckAnim(actionName) == false) return false;
+            mCurInfo = GetAnimForName(actionName);
+            if (mCurInfo != null)
             {
-                curInfo.Undo();
+                mCurInfo.Undo();
             }
+            return true;
         }
-
-        /**
-        protected void Play(string actionName, int value)
-        {
-            if (!mAnim) return;
-            mAnim.SetInteger(actionName, value);
-        }
-
-
-        protected void Play(string actionName, float value)
-        {
-            if (!mAnim) return;
-            mAnim.SetFloat(actionName, value);
-        }
-
-
-        protected void Play(string actionName, bool value)
-        {
-            if (!mAnim) return;
-            mAnim.SetBool(actionName, value);
-        }
-
-
-        protected void Play(string actionName, object value)
-        {
-            if (!mAnim) return;
-            mAnim.SetTrigger(actionName);
-        }
-        */
         #endregion
 
         #region 重构函数
         protected override void Update()
         {
             base.Update();
-            if(curInfo != null)
+            if(mCurInfo != null)
             {
-                curInfo.Update();
+                mCurInfo.Update();
             }
         }
 
@@ -113,74 +114,30 @@ namespace Divak.Script.Game
         public override void Dispose()
         {
             mAnim = null;
-            curInfo = null;
+            mCurInfo = null;
             mAnimInfos.Clear();
             base.Dispose();
         }
         #endregion
 
         #region 私有函数
-        /**
-        private void PlayBase(List<AnimInfo> list, int index)
-        {
-            if (index >= list.Count) return;
-            AnimInfo anim = list[mPlayIndex];
-            Play(anim.Name, true);
-        }
-        private void PlayRandom(List<AnimInfo> list, int index)
-        {
-            if (index >= list.Count) return;
-            AnimInfo anim = list[mPlayIndex];
-            Play(anim.Name, true);
-        }
-
-        private void PlayContinuity(List<AnimInfo> list, int index)
-        {
-            if (index >= list.Count) return;
-            AnimInfo anim = list[mPlayIndex];
-            Play(anim.Name, true);
-        }
-        #endregion
-
-        public void Play(UnitAnimInfo info)
-        {
-            if (info == null) return;
-            if (!mAnim) return;
-            if (info != null && mAnimInfo != null && info.Title != mAnimInfo.Title)
-            {
-                Regain(mPlayInfo);
-            }
-            mAnimInfo = info;
-
-            List<AnimInfo> list = info.List;
-            if (list == null || list.Count == 0) return;
-
-
-            AnimType type = info.Type;
-            switch (type)
-            {
-                case AnimType.Base:
-                    PlayBase(list, mPlayIndex);
-                    break;
-                case AnimType.Random:
-                    PlayRandom(list, UnityEngine.Random.Range(0, list.Count - 1));
-                    break;
-                case AnimType.Continuity:
-                    PlayContinuity(list, mPlayIndex);
-                    break;
-            }
-        }
-        public void Regain(UnitAnimInfo info)
-        {
-            if (info == null) return;
-            if (!mAnim) return;
-            if (string.IsNullOrEmpty(info.Name)) return;
-            mAnim.SetBool(info.Name, false);
-        }
-        */
         #endregion
 
         #region 公开函数
+        public void UpdateState(ModelTemp temp)
+        {
+            Dictionary<UnitState, AnimInfo> dic = null;
+#if UNITY_EDITOR
+            string path = string.Format("{0}{1}{2}", Application.dataPath, PathTool.AssetsEditorResource, PathTool.UnitState);
+            dic = Config.InputConfig<Dictionary<UnitState, AnimInfo>>(path, temp.model, SuffixTool.Config);
+#else
+            string path = string.Format("{0}{1}", PathTool.DataPath, PathTool.UnitState);
+            dic = Config.InputConfig<Dictionary<UnitState, AnimInfo>>(path, temp.model, SuffixTool.Config);
+#endif
+            if (dic == null || dic.Count == 0) return;
+            mUnitState.Clear();
+            mUnitState = dic;
+        }
         public void UpdateAnims(ModelTemp temp)
         {
             List<AnimInfo> list = null;
