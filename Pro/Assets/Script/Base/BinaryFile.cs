@@ -19,6 +19,7 @@ namespace Divak.Script.Game
         public static byte[] ReadBinaryFile(string path, string name, TypeEnum type)
         {
             string readPath = path + name;
+            if (!File.Exists(readPath)) return null;
             FileStream fs = null;
             BinaryReader br = null;
             try

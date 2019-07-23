@@ -69,6 +69,7 @@ namespace Divak.Script.Game
     #endregion
 
     #region 角色状态
+    [SerializeField]
     public enum UnitState
     {
         Idea,

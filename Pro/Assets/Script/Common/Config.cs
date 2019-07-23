@@ -82,7 +82,11 @@ namespace Divak.Script.Game
         {
             name = name.ToLower();
             T t = default(T);
-            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+                return t;
+            }
             string rName = string.Format("{0}{1}", name, suffix);
             byte[] bytes = BinaryFile.ReadBinaryFile(path, rName, TypeEnum.ByteArray);
             if (bytes != null && bytes.Length != 0)

@@ -61,7 +61,7 @@ namespace Divak.Script.Game
                 {
                     if(mCurInfo.IsBreak)
                     {
-                        if(IsCheckBreak(name) == true)
+                        if(mCurInfo.IsCheckBreak(name) == true)
                         {
                             return false;
                         }

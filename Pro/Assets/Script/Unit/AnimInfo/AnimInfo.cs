@@ -42,13 +42,13 @@ namespace Divak.Script.Game
         /// <summary>
         /// 动作组
         /// </summary>
-        public List<string> AnimGroup { get { return mAnimGroup; }}
+        public List<string> AnimGroup { get { return mAnimGroup; } set { mAnimGroup = value; } }
         [SerializeField]
         private List<string> mAnimGroup = new List<string>();
         /// <summary>
         /// 可中断当前动作的动作组
         /// </summary>
-        public List<string> BreakGroup { get { return mBreakGroup; }  }
+        public List<string> BreakGroup { get { return mBreakGroup; } set { mBreakGroup = value; } }
         [SerializeField]
         private List<string> mBreakGroup = new List<string>();
         /// <summary>
@@ -133,6 +133,10 @@ namespace Divak.Script.Game
                 {
                     if (mBreakGroup[i].Equals(name)) return true;
                 }
+            }
+            else
+            {
+                return true;
             }
             return false;
         }
