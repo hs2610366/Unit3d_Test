@@ -23,10 +23,14 @@ namespace Divak.Script.Game
 
         public void Execute()
         {
+            if (mUnit == null) return;
+            mUnit.Fight();
         }
 
         public void UndoExecute()
         {
+            if (mUnit == null) return;
+            mUnit.UndoFight();
         }
         public void Dispose()
         {

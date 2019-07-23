@@ -19,26 +19,16 @@ namespace Divak.Script.Game
         /// <summary>
         /// 移动速度
         /// </summary>
-        private float mSpeed = 1.2f;
-        public float Speed
-        {
-            get { return mSpeed; }
-            set { mSpeed = value; }
-        }
+        private const float mSpeed = 1.2f;
         /// <summary>
         /// 旋转角度速率
         /// </summary>
-        private float mASpeed = 600.0f;
+        private const float mASpeed = 1000.0f;
         #endregion
 
         #region 重力
         private const float G = 0.098f;
         private float mGravity = 0.098f;
-        public float Gravity
-        {
-            set { mGravity = value; }
-            get { return mGravity; }
-        }
         #endregion
 
         #region 角度
@@ -150,7 +140,7 @@ namespace Divak.Script.Game
         {
             AnimInfo info = mUnitState[UnitState.Run];
             if (info == null) return;
-            if (Play(info.Name)) mIsMove = true;
+            if (Execute(info.Name)) mIsMove = true;
         }
 
         public void UndoMove()
@@ -162,11 +152,16 @@ namespace Divak.Script.Game
 
         public void Fight()
         {
-
+            AnimInfo info = mUnitState[UnitState.Fight];
+            if (info == null) return;
+            Execute(info.Name);
         }
 
         public void UndoFight()
         {
+            AnimInfo info = mUnitState[UnitState.Fight];
+            if (info == null) return;
+            Execute(info.Name);
         }
         /// <summary> 接收命令 </summary>
         #endregion

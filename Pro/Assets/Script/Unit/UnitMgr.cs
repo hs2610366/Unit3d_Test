@@ -39,6 +39,7 @@ namespace Divak.Script.Game
             if (mPlayer == null) return null;
             mPlayer.UpdatTemp(temp);
             mPlayer.UpdatePos(Pos);
+            RemoteControl.Instance.AddCommand(temp.id, new MoveCommand(mPlayer), new AttackCommand(mPlayer));
             if (CameraMgr.Main != null) CameraMgr.UpdatePlay(mPlayer.Trans);
             EventMgr.Instance.Trigger(EventKey.CreateUnit, mPlayer);
             return mPlayer;

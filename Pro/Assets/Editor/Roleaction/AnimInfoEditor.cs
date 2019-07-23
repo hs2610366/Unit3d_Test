@@ -41,7 +41,11 @@ namespace Divak.Script.Game
         [NonSerialized]
         public LineRenderer CastDisLR = null;
         #endregion
-
+        public void SetName(int index)
+        {
+            IndexID = index;
+            Name =  string.Format("100{0}", IndexID);
+        }
 
         public void DrawSelectGUI()
         {
@@ -114,11 +118,9 @@ namespace Divak.Script.Game
         /// </summary>
         private void DrawName()
         {
-            string title = Name;
-            if (string.IsNullOrEmpty(title)) title = string.Format("技能{0}", IndexID);
             EditorGUILayout.BeginHorizontal();
-            string v = EditorUI.DrawTextField(title, "技能名：");
-            if (v != title) Name = v;
+            GUILayout.Label("技能名", UIStyles.Label_13_White, GUILayout.Width(60));
+            GUILayout.Label(Name, UIStyles.LTF_14_White, GUILayout.Width(150));
             EditorGUILayout.EndHorizontal();
         }
 

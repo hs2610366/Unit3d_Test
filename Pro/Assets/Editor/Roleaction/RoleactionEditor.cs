@@ -155,7 +155,9 @@ namespace Divak.Script.Editor
             if(GUILayout.Button("+", UIStyles.WO))
             {
                 AnimInfoEditor info = new AnimInfoEditor();
+                info.SetName(Player.Anims.Count + 1);
                 Player.Anims.Add(info);
+                GetUnitStates();
             }
             EditorGUILayout.EndScrollView();
             GUILayout.EndArea();
@@ -190,7 +192,7 @@ namespace Divak.Script.Editor
             preTime = (float)EditorApplication.timeSinceStartup;
             if (GUILayout.Button(string.Empty, UIStyles.ProjectBrowserSubAssetExpandBtn, GUILayout.Width(40), GUILayout.Height(40)))
             {
-                Player.Play(Player.Anim.name);
+                Player.Execute(Player.Anim.name);
             }   
         }
 

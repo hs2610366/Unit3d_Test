@@ -65,6 +65,7 @@ namespace Divak.Script.Editor
         {
             if(Player.Anims.Count > 0)
             {
+                UnitStates.Clear();
                 UnitStates.Add("nil");
                 for (int i = 0; i < Player.Anims.Count; i ++)
                 {
@@ -97,7 +98,7 @@ namespace Divak.Script.Editor
             {
                 info.Target = Player;
             }
-            info.IndexID = index + 1;
+            //info.IndexID = index + 1;
             info.DrawSelectGUI();
 
             if (info.IsSelect == true )

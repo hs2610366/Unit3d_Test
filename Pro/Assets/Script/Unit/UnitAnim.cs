@@ -73,20 +73,20 @@ namespace Divak.Script.Game
         #endregion
 
         #region 保护函数
-        public bool Play(string actionName)
+        public bool Execute(string actionName)
         {
             if (CheckAnim(actionName) == false) return false;
             mCurInfo = GetAnimForName(actionName);
             if(mCurInfo != null)
             {
-                mCurInfo.Play();
+                mCurInfo.Execute();
             }
             return true;
         }
 
         public bool Undo(string actionName)
         {
-            if (CheckAnim(actionName) == false) return false;
+            //if (CheckAnim(actionName) == false) return false;
             mCurInfo = GetAnimForName(actionName);
             if (mCurInfo != null)
             {

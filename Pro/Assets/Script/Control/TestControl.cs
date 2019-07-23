@@ -83,9 +83,8 @@ namespace Divak.Script.Game
             if (UnitMgr.Instance.Player != null)
             {
                 mPlayer = UnitMgr.Instance.Player;
-                uint id = mPlayer.CTemp.id;
-
-                RemoteControl.Instance.AddCommand(id, new MoveCommand(mPlayer), new AttackCommand(mPlayer));
+                //uint id = mPlayer.CTemp.id;
+                //RemoteControl.Instance.AddCommand(id, new MoveCommand(mPlayer), new AttackCommand(mPlayer));
             }
         }
 
@@ -107,19 +106,23 @@ namespace Divak.Script.Game
             if (!mIsClickArea) return;
             if (TouchConst.TouchIng())
             {
+                KeyboardControl.IsRestrict = true;
                 if (!mLArea.gameObject.activeSelf) mLArea.gameObject.SetActive(true);
                 UpdateAreaBgPos(inputPos);
                 UpdateCirclePos(inputPos);
                 //UnitMgr.Instance.SetPlayerMove(true);
-                RemoteControl.Instance.ExecuteMove(mPlayer.CTemp.id);
+                if (mPlayer != null)
+                    RemoteControl.Instance.ExecuteMove(mPlayer.CTemp.id);
             }
             else if(TouchConst.TouchEnd())
             {
-                RemoteControl.Instance.UndoMove(mPlayer.CTemp.id);
+                if(mPlayer != null)
+                    RemoteControl.Instance.UndoMove(mPlayer.CTemp.id);
                 //UnitMgr.Instance.SetPlayerMove(false);
                 mIsFixedPos = false;
                 mIsClickArea = false;
                 if (mLArea.gameObject.activeSelf) mLArea.gameObject.SetActive(false);
+                KeyboardControl.IsRestrict = false;
             }
         }
 

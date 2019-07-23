@@ -22,6 +22,11 @@ namespace Divak.Script.Game
         public CareerTemp CTemp { get { return mCTemp; } }
         #endregion
 
+        public UnitPlayer():base()
+        {
+
+        }
+
         public void UpdatTemp(CareerTemp temp)
         {
             mCTemp = temp;

@@ -63,9 +63,14 @@ namespace Divak.Script.Game
             if (MoveDic.ContainsKey(id)) Undo(MoveDic[id]);
         }
 
-        public void ExecuteActive(uint id)
+        public void ExecuteAttack(uint id)
         {
             if (AttackDic.ContainsKey(id)) Execute(AttackDic[id]);
+        }
+
+        public void UndoAttack(uint id)
+        {
+            if (AttackDic.ContainsKey(id)) Undo(AttackDic[id]);
         }
     }
 }

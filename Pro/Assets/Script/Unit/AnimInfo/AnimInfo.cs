@@ -87,39 +87,42 @@ namespace Divak.Script.Game
             }
         }
 
-        public void Play()
+        public void Execute()
         {
             if (mIsPlay == true) return;
             mIsPlay = true;
             string name = mAnimGroup[mIndex];
-            mAnim.CrossFadeInFixedTime(name, 0f);
+            mAnim.CrossFadeInFixedTime(name, 0.1f);
         }
 
         public void Undo()
         {
-            if (mIsPlay == false) return;
             mIsPlay = false;
+            mIndex = 0;
             string name = mEndAnim;
             if (string.IsNullOrEmpty(name)) name = "Idea2";
-            mAnim.CrossFadeInFixedTime(name, 0.15f);
+            mAnim.CrossFadeInFixedTime(name, 0.1f);
         }
 
         public void Update()
         {
-            if (mAnim != null && mAnim != null )
+            if(mIsPlay)
             {
-                AnimatorStateInfo info = mAnim.GetCurrentAnimatorStateInfo(0);
-                if (info.normalizedTime > 1.0f && info.IsName(mAnimGroup[mIndex]))
+                if (mAnim != null && mAnim != null)
                 {
-                    mIsPlay = false;
-                    if (mAnimGroup.Count > mIndex + 1)
+                    AnimatorStateInfo info = mAnim.GetCurrentAnimatorStateInfo(0);
+                    if (info.normalizedTime > 1.0f && info.IsName(mAnimGroup[mIndex]))
                     {
-                        mIndex++;
-                        Play();
-                    } 
-                    else
-                    {
-                        //Undo();
+                        mIsPlay = false;
+                        if (mAnimGroup.Count > mIndex + 1)
+                        {
+                            mIndex++;
+                            Execute();
+                        }
+                        else
+                        {
+                            Undo();
+                        }
                     }
                 }
             }
