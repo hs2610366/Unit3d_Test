@@ -139,10 +139,34 @@ namespace Divak.Script.Editor
         }
 
         /// <summary>
-        /// 保存并导出
+        /// 报错并导出状态
         /// </summary>
-        /// <returns></returns>
-        private void SaveInfo(object obj = null)
+        /// <param name="obj"></param>
+        private void SaveStateInfo(object obj = null)
+        {
+            if (Player == null)
+            {
+                MessageBox.Error("数据为null");
+                return;
+            }
+            if (Player.UnitStates == null || Player.UnitStates.Count == 0) return;
+
+            string path = string.Empty;
+#if UNITY_EDITOR
+            path = Application.dataPath + PathTool.AssetsEditorResource + PathTool.UnitState;
+            Config.OutputConfig<UnitState, AnimInfo>(path, Player.MTemp.model, Player.UnitStates);
+#endif
+            path = PathTool.DataPath + PathTool.UnitState;
+            Config.OutputConfig<UnitState, AnimInfo>(path, Player.MTemp.model, Player.UnitStates);
+            AssetDatabase.Refresh();
+            MessageBox.Log("角色动作状态配置导出完成。");
+        }
+
+        /// <summary>
+        /// 报错并导出动作
+        /// </summary>
+        /// <param name="obj"></param>
+        private void SaveAnimInfo(object obj = null)
         {
             if (Player == null)
             {
@@ -153,17 +177,24 @@ namespace Divak.Script.Editor
 
             string path = string.Empty;
 #if UNITY_EDITOR
-            path = Application.dataPath + PathTool.AssetsEditorResource + PathTool.UnitState;
-            Config.OutputConfig<UnitState, AnimInfo>(path, Player.MTemp.model, Player.UnitStates);
             path = Application.dataPath + PathTool.AssetsEditorResource + PathTool.Anim;
             Config.OutputConfig<AnimInfo>(path, Player.MTemp.model, Player.Anims, SuffixTool.Animation);
 #endif
-            path = PathTool.DataPath + PathTool.UnitState;
-            Config.OutputConfig<UnitState, AnimInfo>(path, Player.MTemp.model, Player.UnitStates);
             path = PathTool.DataPath + PathTool.Anim;
             List<AnimInfo> list = Reflection(Player.Anims);
             Config.OutputConfig<AnimInfo>(path, Player.MTemp.model, list, SuffixTool.Animation);
             AssetDatabase.Refresh();
+            MessageBox.Log("角色动作配置导出完成。");
+        }
+
+        /// <summary>
+        /// 保存并导出
+        /// </summary>
+        /// <returns></returns>
+        private void SaveInfo(object obj = null)
+        {
+            SaveStateInfo();
+            SaveAnimInfo();
         }
         #endregion
 

@@ -50,7 +50,9 @@ namespace Divak.Script.Editor
         protected override void CustomRightMenu()
         {
             GenericMenu menu = new GenericMenu();
-            menu.AddItem(new GUIContent("保存并导出"), false, SaveInfo, "Create");
+            menu.AddItem(new GUIContent("保存并导出动作状态"), false, SaveStateInfo, "Create");
+            menu.AddItem(new GUIContent("保存并导出动作"), false, SaveAnimInfo, "Create");
+            menu.AddItem(new GUIContent("保存并导出全部"), false, SaveInfo, "Create");
             menu.ShowAsContext();
         }
         #endregion

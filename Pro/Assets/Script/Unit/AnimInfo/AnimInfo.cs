@@ -111,6 +111,7 @@ namespace Divak.Script.Game
         {
             mIsExecute = true;
             if (mIsPlay == true) return;
+            Debug.LogError("---------------------->>> " + Name + " " + mIsPlay.ToString() + " " + mIsExecute.ToString());
             mIsExecute = false;
             mIsPlay = true;
             mIndex = 0;
@@ -154,7 +155,8 @@ namespace Divak.Script.Game
                 if (mAnim != null && mAnim != null)
                 {
                     AnimatorStateInfo info = mAnim.GetCurrentAnimatorStateInfo(0);
-                    if (info.normalizedTime > 1.0f && info.IsName(mAnimGroup[mIndex]))
+                    //if (info.normalizedTime > 1.0f && info.IsName(mAnimGroup[mIndex]))
+                    if (info.normalizedTime > 1.0f)
                     {
                         mOffsetTime = 0;
                         mIsPlay = false;
