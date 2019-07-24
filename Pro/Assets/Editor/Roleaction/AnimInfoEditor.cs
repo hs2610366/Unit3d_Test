@@ -62,22 +62,23 @@ namespace Divak.Script.Game
             GUILayout.Space(3);
             GUILayout.Label("基础属性", UIStyles.CSAMS, GUILayout.Width(220));
             DrawName();
-            DrawCastDistance();
             DrawAnimPlayType();
             GUILayout.Label("动作属性", UIStyles.CSAMS, GUILayout.Width(220));
+            DrawAnimBlendTime();
             DrawBreak(editor.AnimList);
             GUILayout.Label("特效属性", UIStyles.CSAMS, GUILayout.Width(220));
+            DrawCastDistance();
             GUILayout.EndVertical();
         }
 
         /// <summary>
         /// 动作组
         /// </summary>
-        public void DrawAnimGroup(RoleactionEditor editor)
+        public void DrawAnimGroup(RoleactionEditor editor, List<string> list, List<string> group)
         {
             GUILayout.BeginVertical();
             GUILayout.Space(3);
-            DrawAnim(editor.AnimList);
+            DrawAnim(list, group);
             GUILayout.EndVertical();
         }
 
@@ -174,15 +175,29 @@ namespace Divak.Script.Game
         }
 
         /// <summary>
+        /// 动作混合时间
+        /// </summary>
+        private void DrawAnimBlendTime()
+        {
+            int v = EditorUI.DrawIntField(BlendTime, "混合时间：");
+            if (v != BlendTime) BlendTime = v;
+            v = EditorUI.DrawIntField(EndBlendTime, "结束混合：");
+            if (v != EndBlendTime) EndBlendTime = v;
+         }
+
+        /// <summary>
         /// 绘制中断选项
         /// </summary>
         private void DrawBreak(List<string> list)
         {
-            int count = AnimGroup.Count;
             string[] names = list.ToArray();
             EditorUI.SetLabelWidth(200);
             bool ib = EditorGUILayout.Toggle("是否有其他动作中断：", IsBreak);
-            if (ib != IsBreak) IsBreak = ib;
+            if (ib != IsBreak)
+            {
+                IsBreak = ib;
+                BreakGroup.Clear();
+            }
             int index = 0;
             EditorGUILayout.BeginHorizontal();
             if (!string.IsNullOrEmpty(EndAnim)) index = StrTool.IndexOfToStr(names, EndAnim);
@@ -196,17 +211,17 @@ namespace Divak.Script.Game
         /// <summary>
         /// 绘制动画下拉菜单
         /// </summary>
-        private void DrawAnim(List<string> list)
+        private void DrawAnim(List<string> list, List<string> group)
         {
-            int count = AnimGroup.Count;
+            int count = group.Count;
             string[] names = list.ToArray();
             List<int> reduce = new List<int>();
 
             for (int i = 0; i < count; i++)
             {
                 GUILayout.BeginHorizontal();
-                int index = EditorGUILayout.Popup(string.Empty, StrTool.IndexOfToStr(names, AnimGroup[i]), names, GUILayout.Width(220));
-                if (index != -1) AnimGroup[i] = names[index];
+                int index = EditorGUILayout.Popup(string.Empty, StrTool.IndexOfToStr(names, group[i]), names, GUILayout.Width(220));
+                if (index != -1) group[i] = names[index];
                 if (GUILayout.Button("-", GUILayout.Width(24)))
                 {
                     reduce.Add(i);
@@ -217,12 +232,12 @@ namespace Divak.Script.Game
             {
                 for (int i = 0; i < reduce.Count; i++)
                 {
-                    AnimGroup.RemoveAt(reduce[i]);
+                    group.RemoveAt(reduce[i]);
                 }
             }
             if (GUILayout.Button("+", GUILayout.Width(250)))
             {
-                AnimGroup.Add(list[0]);
+                group.Add(list[0]);
             }
         }
         #endregion
@@ -255,8 +270,9 @@ namespace Divak.Script.Game
 
         }
 
-        protected override void Reset()
+        public override void Reset()
         {
+            base.Reset();
             Target = null;
             IndexID = 0;
             IsSelect = false;

@@ -52,20 +52,19 @@ namespace Divak.Script.Game
         {
             if(mCurInfo != null)
             {
-                if (mCurInfo.Name.Equals(name))
+                if(!mCurInfo.Name.Equals(name))
                 {
-                    if(mCurInfo.mIsPlay == true)
-                        return false;
-                }
-                else
-                {
-                    if(mCurInfo.IsBreak)
+                    if(mCurInfo.mIsPlay || mCurInfo.mIsExecute)
                     {
-                        if(mCurInfo.IsCheckBreak(name) == true)
+                        if (mCurInfo.IsBreak)
                         {
-                            return false;
+                            if (mCurInfo.IsCheckBreak(name) == true)
+                            {
+                                return false;
+                            }
                         }
                     }
+                    mCurInfo.Reset();
                 }
             }
             return true;

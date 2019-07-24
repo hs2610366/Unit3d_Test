@@ -150,16 +150,16 @@ namespace Divak.Script.Game
             if (Undo(info.Name)) mIsMove = false;
         }
 
-        public void Fight()
+        public void Fight(UnitState state)
         {
-            AnimInfo info = mUnitState[UnitState.Fight];
+            AnimInfo info = mUnitState[state];
             if (info == null) return;
-            Execute(info.Name);
+            if(Execute(info.Name)) mIsMove = false;
         }
 
-        public void UndoFight()
+        public void UndoFight(UnitState state)
         {
-            AnimInfo info = mUnitState[UnitState.Fight];
+            AnimInfo info = mUnitState[state];
             if (info == null) return;
             Execute(info.Name);
         }

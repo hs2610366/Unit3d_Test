@@ -21,16 +21,16 @@ namespace Divak.Script.Game
             mUnit = unit;
         }
 
-        public void Execute()
+        public void Execute(UnitState state)
         {
             if (mUnit == null) return;
-            mUnit.Fight();
+            mUnit.Fight(state);
         }
 
-        public void UndoExecute()
+        public void UndoExecute(UnitState state)
         {
             if (mUnit == null) return;
-            mUnit.UndoFight();
+            mUnit.UndoFight(state);
         }
         public void Dispose()
         {

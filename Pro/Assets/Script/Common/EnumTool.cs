@@ -72,6 +72,7 @@ namespace Divak.Script.Game
     [SerializeField]
     public enum UnitState
     {
+        None,
         Idea,
         Walk,
         Run,

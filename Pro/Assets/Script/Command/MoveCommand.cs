@@ -22,13 +22,13 @@ namespace Divak.Script.Game
             mUnit = unit;
         }
 
-        public void Execute()
+        public void Execute(UnitState state)
         {
             if (mUnit == null) return;
             mUnit.Move();
         }
 
-        public void UndoExecute()
+        public void UndoExecute(UnitState state)
         {
             if (mUnit == null) return;
             mUnit.UndoMove();
@@ -36,7 +36,6 @@ namespace Divak.Script.Game
 
         public void Dispose()
         {
-            UndoExecute();
             mUnit = null;
         }
     }

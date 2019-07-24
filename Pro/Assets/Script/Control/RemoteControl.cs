@@ -25,14 +25,14 @@ namespace Divak.Script.Game
             if(!AttackDic.ContainsKey(id)) AttackDic.Add(id, attack);
         }
         #region 私有函数
-        private void Execute(ICommand command)
+        private void Execute(ICommand command, UnitState state)
         {
-            command.Execute();
+            command.Execute(state);
         }
 
-        private void Undo(ICommand command)
+        private void Undo(ICommand command, UnitState state)
         {
-            command.UndoExecute();
+            command.UndoExecute(state);
         }
         #endregion
 
@@ -55,22 +55,22 @@ namespace Divak.Script.Game
         }
         public void ExecuteMove(uint id)
         {
-            if (MoveDic.ContainsKey(id)) Execute(MoveDic[id]);
+            if (MoveDic.ContainsKey(id)) Execute(MoveDic[id], UnitState.Run);
         }
 
         public void UndoMove(uint id)
         {
-            if (MoveDic.ContainsKey(id)) Undo(MoveDic[id]);
+            if (MoveDic.ContainsKey(id)) Undo(MoveDic[id], UnitState.Run);
         }
 
-        public void ExecuteAttack(uint id)
+        public void ExecuteAttack(uint id, UnitState state = UnitState.None)
         {
-            if (AttackDic.ContainsKey(id)) Execute(AttackDic[id]);
+            if (AttackDic.ContainsKey(id)) Execute(AttackDic[id], state);
         }
 
-        public void UndoAttack(uint id)
+        public void UndoAttack(uint id, UnitState state = UnitState.None)
         {
-            if (AttackDic.ContainsKey(id)) Undo(AttackDic[id]);
+            if (AttackDic.ContainsKey(id)) Undo(AttackDic[id], state);
         }
     }
 }

@@ -59,6 +59,15 @@ namespace Divak.Script.Editor
             EditorGUILayout.EndHorizontal();
             return value;
         }
+        public static int DrawIntField(int value, string lb = "", float labSize = 60, float texSize = 150)
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label(lb, UIStyles.Label_13_White, GUILayout.Width(labSize));
+            int v = EditorGUILayout.IntField(string.Empty, value, UIStyles.LTF_14_White, GUILayout.Width(texSize));
+            if (v != value) value = v;
+            EditorGUILayout.EndHorizontal();
+            return value;
+        }
         public static float DrawFloatField(float value, string lb = "", float labSize = 60, float texSize = 150)
         {
             EditorGUILayout.BeginHorizontal();

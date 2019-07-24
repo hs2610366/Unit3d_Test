@@ -181,7 +181,7 @@ namespace Divak.Script.Editor
             GUILayout.BeginArea(AnimGroupRect, UIStyles.SelectionRect);
             GUILayout.Label("动作组", UIStyles.DO_18_White_UpperCenter, GUILayout.Height(20));
             GUILayout.Space(4);
-            SelectAnimInfo.DrawAnimGroup(this);
+            SelectAnimInfo.DrawAnimGroup(this, AnimList, SelectAnimInfo.AnimGroup);
             GUILayout.EndArea();
         }
         private float preTime = 0;
@@ -203,7 +203,7 @@ namespace Divak.Script.Editor
             GUILayout.BeginArea(BreakGroupRect, UIStyles.SelectionRect);
             GUILayout.Label("可中断当前动作的动作", UIStyles.DO_18_White_UpperCenter, GUILayout.Height(20));
             GUILayout.Space(4);
-            //SelectAnimInfo.DrawAnimGroup(this);
+            SelectAnimInfo.DrawAnimGroup(this, AnimList, SelectAnimInfo.BreakGroup);
             GUILayout.EndArea();
         }
         #endregion

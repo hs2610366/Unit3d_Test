@@ -15,9 +15,9 @@ namespace Divak.Script.Game
 	public interface ICommand
     {
 
-        void Execute();
+        void Execute(UnitState state);
 
-        void UndoExecute();
+        void UndoExecute(UnitState state);
 
         void Dispose();
 	}

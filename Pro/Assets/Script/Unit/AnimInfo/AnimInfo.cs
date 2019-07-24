@@ -22,6 +22,18 @@ namespace Divak.Script.Game
         [SerializeField]
         private string mName = string.Empty;
         /// <summary>
+        /// 混合时间
+        /// </summary>
+        public int BlendTime { get { return mBlendTime; } set { mBlendTime = value; } }
+        [SerializeField]
+        private int mBlendTime = 20;
+        /// <summary>
+        /// 结束动画混合时间
+        /// </summary>
+        public int EndBlendTime { get { return mEndBlendTime; } set { mEndBlendTime = value; } }
+        [SerializeField]
+        private int mEndBlendTime = 20;
+        /// <summary>
         /// 攻击距离
         /// </summary>
         public float Distance { get { return mDistance; } set { mDistance = value; } }
@@ -66,8 +78,16 @@ namespace Divak.Script.Game
         public int mIndex = 0;
         [NonSerialized]
         public bool mIsPlay = false;
+        /// <summary>
+        /// 控制重复执行
+        /// </summary>
+        [NonSerialized]
+        public bool mIsExecute = false;
+        [NonSerialized]
+        private int mOffsetTime = 0;
         [NonSerialized]
         private Dictionary<string, AnimationClip> mClipDic = new Dictionary<string, AnimationClip>();
+        
 
         public AnimInfo()
         {
@@ -87,21 +107,44 @@ namespace Divak.Script.Game
             }
         }
 
-        public void Execute()
+        public void Execute(bool loop = false)
         {
+            mIsExecute = true;
             if (mIsPlay == true) return;
+            mIsExecute = false;
             mIsPlay = true;
+            mIndex = 0;
             string name = mAnimGroup[mIndex];
-            mAnim.CrossFadeInFixedTime(name, 0.1f);
+            if (loop == false)
+            {
+                mBlendTime = 20;
+                mOffsetTime = mBlendTime;
+            }
+            PlayAnim(name, mOffsetTime, mOffsetTime);
         }
 
         public void Undo()
         {
+            mIsExecute = false;
             mIsPlay = false;
             mIndex = 0;
             string name = mEndAnim;
             if (string.IsNullOrEmpty(name)) name = "Idea2";
-            mAnim.CrossFadeInFixedTime(name, 0.1f);
+            mOffsetTime = mEndBlendTime;
+            PlayAnim(name, mOffsetTime);
+        }
+
+        private void PlayAnim(string name, int blendTime, float offsetTime = 0)
+        {
+            if(blendTime == 0)
+            {
+                mAnim.Play(name,0, offsetTime);
+            }
+            else
+            {
+                float time = blendTime * 0.01f;
+                mAnim.CrossFadeInFixedTime(name, time);
+            }
         }
 
         public void Update()
@@ -113,6 +156,7 @@ namespace Divak.Script.Game
                     AnimatorStateInfo info = mAnim.GetCurrentAnimatorStateInfo(0);
                     if (info.normalizedTime > 1.0f && info.IsName(mAnimGroup[mIndex]))
                     {
+                        mOffsetTime = 0;
                         mIsPlay = false;
                         if (mAnimGroup.Count > mIndex + 1)
                         {
@@ -121,7 +165,10 @@ namespace Divak.Script.Game
                         }
                         else
                         {
-                            Undo();
+                            if (!mIsExecute)
+                                Undo();
+                            else
+                                Execute(true);
                         }
                     }
                 }
@@ -143,15 +190,18 @@ namespace Divak.Script.Game
             }
             return false;
         }
+        public virtual void Reset()
+        {
+            mIndex = 0;
+            mIsPlay = false;
+            mIsExecute = false;
+            mOffsetTime = 0;
+            mAnim.Update(0);
+        }
 
         public void Dispose()
         {
-#if UNITY_EDITOR
             Reset();
-#endif
         }
-#if UNITY_EDITOR
-        protected virtual void Reset(){ }
-#endif
     }
 }

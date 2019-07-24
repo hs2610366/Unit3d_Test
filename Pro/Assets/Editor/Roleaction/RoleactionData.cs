@@ -94,6 +94,7 @@ namespace Divak.Script.Editor
         {
             AnimInfoEditor info = Player.Anims[index] as AnimInfoEditor;
             if (info == null) return;
+            info.SetName(index);
             if(info.Target == null)
             {
                 info.Target = Player;
