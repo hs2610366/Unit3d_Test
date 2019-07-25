@@ -48,7 +48,7 @@ namespace Divak.Script.Game
             return mAnimInfos.Find(s => { return s.Name.Equals(name); });
         }
 
-        private bool CheckAnim(string name)
+        private bool CheckAnim(string name, bool isUndo = false)
         {
             if (mCurInfo != null)
             {
@@ -60,7 +60,11 @@ namespace Divak.Script.Game
                         {
                             if (mCurInfo.IsCheckBreak(name) == true)
                             {
-                                mCurInfo.NextAnim = name;
+                                if(isUndo == false)
+                                {
+                                    //這個設置可以避免undo執行endAnim動作使不同動作的切換更加平滑
+                                    mCurInfo.NextAnim = name;
+                                }
                                 return false;
                             }
                         }
@@ -69,6 +73,18 @@ namespace Divak.Script.Game
                 }
             }
             return true;
+        }
+        private void ClearNextAnim(string actionName)
+        {
+            foreach(AnimInfo info in mAnimInfos)
+            {
+                if (info != null && 
+                    !string.IsNullOrEmpty(info.NextAnim) && 
+                    info.NextAnim.Equals(actionName))
+                {
+                    info.NextAnim = string.Empty;
+                }
+            }
         }
         #endregion
 
@@ -86,8 +102,8 @@ namespace Divak.Script.Game
 
         public bool Undo(string actionName)
         {
-            //if (CheckAnim(actionName) == false) return false;
-            if (mCurInfo != null && mCurInfo.NextAnim.Equals(actionName)) mCurInfo.NextAnim = string.Empty;
+            ClearNextAnim(actionName);
+            if (CheckAnim(actionName, true) == false) return false;
             mCurInfo = GetAnimForName(actionName);
             if (mCurInfo != null)
             {
@@ -98,6 +114,7 @@ namespace Divak.Script.Game
         #endregion
 
         #region 重构函数
+
         protected override void Update()
         {
             base.Update();

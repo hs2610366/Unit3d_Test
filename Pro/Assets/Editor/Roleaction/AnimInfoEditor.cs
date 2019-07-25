@@ -63,6 +63,7 @@ namespace Divak.Script.Game
             GUILayout.Label("基础属性", UIStyles.CSAMS, GUILayout.Width(220));
             DrawName();
             DrawAnimPlayType();
+            DrawAnimTimer();
             GUILayout.Label("动作属性", UIStyles.CSAMS, GUILayout.Width(220));
             DrawAnimLoop();
             DrawAnimBlendTime();
@@ -170,9 +171,22 @@ namespace Divak.Script.Game
         private void DrawAnimPlayType()
         {
             EditorUI.SetLabelWidth(65);
-            AnimPlayType apt = (AnimPlayType)EditorGUILayout.EnumPopup("组播放类型：", APT, GUILayout.Width(215));
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("播放类型：", UIStyles.Label_13_White, GUILayout.Width(60));
+            AnimPlayType apt = (AnimPlayType)EditorGUILayout.EnumPopup(APT, GUILayout.Width(150));
             if (apt != APT) APT = apt;
+            EditorGUILayout.EndHorizontal();
             EditorUI.SetLabelWidth(80);
+        }
+
+        /// <summary>
+        /// 动画组播放时间
+        /// </summary>
+        private void DrawAnimTimer()
+        {
+            EditorGUI.BeginDisabledGroup(true);
+            EditorUI.DrawFloatField(Timer, "动作时间：");
+            EditorGUI.EndDisabledGroup();
         }
 
         /// <summary>
@@ -202,7 +216,7 @@ namespace Divak.Script.Game
         {
             string[] names = list.ToArray();
             EditorUI.SetLabelWidth(200);
-            bool ib = EditorGUILayout.Toggle("是否有其他动作中断：", IsBreak);
+            bool ib = EditorUI.DrawBool(IsBreak,"是否有其他动作中断：");
             if (ib != IsBreak)
             {
                 IsBreak = ib;
@@ -211,8 +225,8 @@ namespace Divak.Script.Game
             int index = 0;
             EditorGUILayout.BeginHorizontal();
             if (!string.IsNullOrEmpty(EndAnim)) index = StrTool.IndexOfToStr(names, EndAnim);
-            GUILayout.Label("停止动作：");
-            int select = EditorGUILayout.Popup(string.Empty, index, names, GUILayout.Width(220));
+            GUILayout.Label("停止动作：", UIStyles.Label_13_White, GUILayout.Width(60));
+            int select = EditorGUILayout.Popup(string.Empty, index, names, GUILayout.Width(150));
             if (select != -1 && !names[select].Equals(EndAnim)) EndAnim = names[select];
             EditorGUILayout.EndHorizontal();
             EditorUI.SetLabelWidth(80);
@@ -231,7 +245,11 @@ namespace Divak.Script.Game
             {
                 GUILayout.BeginHorizontal();
                 int index = EditorGUILayout.Popup(string.Empty, StrTool.IndexOfToStr(names, group[i]), names, GUILayout.Width(220));
-                if (index != -1) group[i] = names[index];
+                if (index != -1)
+                {
+                    group[i] = names[index];
+                    UpdateTimer();
+                }
                 if (GUILayout.Button("-", GUILayout.Width(24)))
                 {
                     reduce.Add(i);
@@ -248,6 +266,7 @@ namespace Divak.Script.Game
             if (GUILayout.Button("+", GUILayout.Width(250)))
             {
                 group.Add(list[0]);
+                UpdateTimer();
             }
         }
         #endregion

@@ -40,6 +40,12 @@ namespace Divak.Script.Game
         [SerializeField]
         private string mName = string.Empty;
         /// <summary>
+        /// 动作时间
+        /// </summary>
+        public float Timer { get { return mTimer; } set { mTimer = value; } }
+        [SerializeField]
+        private float mTimer = 0.0f;
+        /// <summary>
         /// 持续播放
         /// </summary>
         public bool IsLoop { get { return mIsLoop; } set { mIsLoop = value; } }
@@ -109,8 +115,6 @@ namespace Divak.Script.Game
         private UnitAnimState mState = UnitAnimState.None;
         [NonSerialized]
         private int mOffsetTime = 0;
-        [NonSerialized]
-        private Dictionary<string, AnimationClip> mClipDic = null;
         
 
         public AnimInfo()
@@ -121,15 +125,26 @@ namespace Divak.Script.Game
         public void SetAnim(Animator anim)
         {
             mAnim = anim;
-            if(mClipDic == null) mClipDic = new Dictionary<string, AnimationClip>();
-            AnimationClip[] clips = anim.runtimeAnimatorController.animationClips;
-            foreach (AnimationClip clip in clips)
-            { 
-                if (mAnimGroup.Find( s=> { return s.Equals(clip.name); }) != null)
+            UpdateTimer();
+        }
+
+        public void UpdateTimer()
+        {
+            if (mAnim == null) return;
+            AnimationClip[] clips = mAnim.runtimeAnimatorController.animationClips;
+            float timer = 0;
+            foreach(string name in mAnimGroup)
+            {
+                foreach (AnimationClip clip in clips)
                 {
-                    mClipDic.Add(clip.name, clip);
+                    if (clip.name.Equals(name))
+                    {
+                        timer += clip.length;
+                        break;
+                    }
                 }
             }
+            mTimer = timer;
         }
 
         public void Execute(bool isLoop = false)
@@ -165,11 +180,9 @@ namespace Divak.Script.Game
             {
                 mState = UnitAnimState.Play;
                 mAnim.Play(name,0, offsetTime);
-                Debug.LogError("----------------------->>>> Play: " + name);
             }
             else
             {
-                Debug.LogError("----------------------->>>> CossFade: " + name);
                 mState = UnitAnimState.CossFade;
                 float time = blendTime * 0.01f;
                 mAnim.CrossFadeInFixedTime(name, time);
