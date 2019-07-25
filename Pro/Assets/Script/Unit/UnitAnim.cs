@@ -50,16 +50,17 @@ namespace Divak.Script.Game
 
         private bool CheckAnim(string name)
         {
-            if(mCurInfo != null)
+            if (mCurInfo != null)
             {
-                if(!mCurInfo.Name.Equals(name))
+                if (!mCurInfo.Name.Equals(name))
                 {
-                    if(mCurInfo.mIsPlay || mCurInfo.mIsExecute)
+                    if (mCurInfo.IsPlay())
                     {
                         if (mCurInfo.IsBreak)
                         {
                             if (mCurInfo.IsCheckBreak(name) == true)
                             {
+                                mCurInfo.NextAnim = name;
                                 return false;
                             }
                         }
@@ -86,6 +87,7 @@ namespace Divak.Script.Game
         public bool Undo(string actionName)
         {
             //if (CheckAnim(actionName) == false) return false;
+            if (mCurInfo != null && mCurInfo.NextAnim.Equals(actionName)) mCurInfo.NextAnim = string.Empty;
             mCurInfo = GetAnimForName(actionName);
             if (mCurInfo != null)
             {

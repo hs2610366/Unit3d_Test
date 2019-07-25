@@ -95,22 +95,22 @@ namespace Divak.Script.Game
         private string mEndAnim = string.Empty;
 
 
-
         [NonSerialized]
         private Animator mAnim = null;
         [NonSerialized]
-        public int mIndex = 0;
+        private int mIndex = 0;
+        public string NextAnim { get { return mNextAnim; } set { mNextAnim = value; } }
         [NonSerialized]
-        public bool mIsPlay = false;
+        private string mNextAnim = string.Empty;
         /// <summary>
-        /// 控制重复执行
+        ///播放状态
         /// </summary>
         [NonSerialized]
-        public bool mIsExecute = false;
+        private UnitAnimState mState = UnitAnimState.None;
         [NonSerialized]
         private int mOffsetTime = 0;
         [NonSerialized]
-        private Dictionary<string, AnimationClip> mClipDic = new Dictionary<string, AnimationClip>();
+        private Dictionary<string, AnimationClip> mClipDic = null;
         
 
         public AnimInfo()
@@ -121,8 +121,7 @@ namespace Divak.Script.Game
         public void SetAnim(Animator anim)
         {
             mAnim = anim;
-            if(mClipDic == null)
-                mClipDic = new Dictionary<string, AnimationClip>();
+            if(mClipDic == null) mClipDic = new Dictionary<string, AnimationClip>();
             AnimationClip[] clips = anim.runtimeAnimatorController.animationClips;
             foreach (AnimationClip clip in clips)
             { 
@@ -133,15 +132,12 @@ namespace Divak.Script.Game
             }
         }
 
-        public void Execute(bool loop = false)
+        public void Execute(bool isLoop = false)
         {
-            mIsExecute = true;
-            if (mIsPlay == true) return;
-            mIsExecute = false;
-            mIsPlay = true;
+            if (mState != UnitAnimState.None) return;
             mIndex = 0;
             string name = mAnimGroup[mIndex];
-            if (loop == false)
+            if (isLoop == false)
             {
                 mBlendTime = 20;
                 mOffsetTime = mBlendTime;
@@ -151,23 +147,30 @@ namespace Divak.Script.Game
 
         public void Undo()
         {
-            mIsExecute = false;
-            mIsPlay = false;
-            mIndex = 0;
             string name = mEndAnim;
             if (string.IsNullOrEmpty(name)) name = "Idea2";
             mOffsetTime = mEndBlendTime;
             PlayAnim(name, mOffsetTime);
         }
 
+        /// <summary>
+        /// 播放动画
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="blendTime"></param>
+        /// <param name="offsetTime"></param>
         private void PlayAnim(string name, int blendTime, float offsetTime = 0)
         {
             if(blendTime == 0)
             {
+                mState = UnitAnimState.Play;
                 mAnim.Play(name,0, offsetTime);
+                Debug.LogError("----------------------->>>> Play: " + name);
             }
             else
             {
+                Debug.LogError("----------------------->>>> CossFade: " + name);
+                mState = UnitAnimState.CossFade;
                 float time = blendTime * 0.01f;
                 mAnim.CrossFadeInFixedTime(name, time);
             }
@@ -175,33 +178,70 @@ namespace Divak.Script.Game
 
         public void Update()
         {
-            if(mIsPlay)
+            if(mState != UnitAnimState.None)
             {
                 if (mAnim != null && mAnim != null)
                 {
-                    AnimatorStateInfo info = mAnim.GetCurrentAnimatorStateInfo(0);
-                    //if (info.normalizedTime > 1.0f && info.IsName(mAnimGroup[mIndex]))
-                    if (info.normalizedTime > 1.0f)
+                    if(mState == UnitAnimState.Play)
                     {
-                        mOffsetTime = 0;
-                        mIsPlay = false;
-                        if (mAnimGroup.Count > mIndex + 1)
+                        AnimEndFun();
+                    }
+                    else if(mState == UnitAnimState.CossFade)
+                    {
+                        if (mAnim.IsInTransition(0) == true)
                         {
-                            mIndex++;
-                            Execute();
+                            return;
+                        }
+                        AnimEndFun();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 动画播放完成
+        /// </summary>
+        private void AnimEndFun()
+        {
+            AnimatorStateInfo info = mAnim.GetCurrentAnimatorStateInfo(0);
+            if (info.IsName(mEndAnim))
+            {
+                Reset();
+                return;
+            }
+            if (info.normalizedTime > 1.0f)
+            {
+                mOffsetTime = 0;
+                if (info.IsName(mAnimGroup[mIndex]))
+                {
+                    if (mAnimGroup.Count > mIndex + 1)
+                    {
+                        mIndex++;
+                        Execute();
+                    }
+                    else
+                    {
+                        if (!mIsLoop)
+                        {
+                            mState = UnitAnimState.None;
+                            if (!string.IsNullOrEmpty(mNextAnim)) return;
+                            Undo();
                         }
                         else
                         {
-                            if (!mIsExecute)
-                                Undo();
-                            else
-                                Execute(true);
+                            Reset();
+                            Execute(mIsLoop);
                         }
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// 检查当前动画能否中断
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public bool IsCheckBreak(string name)
         {
             if(mBreakGroup.Count > 0)
@@ -217,11 +257,24 @@ namespace Divak.Script.Game
             }
             return false;
         }
-        public virtual void Reset()
+        
+        /// <summary>
+        /// 当前动画是否在播放
+        /// </summary>
+        /// <returns></returns>
+        public bool IsPlay()
         {
+            return mState != UnitAnimState.None;
+        }
+
+        /// <summary>
+        /// 重置
+        /// </summary>
+        public virtual void Reset()
+        { 
+            mState = UnitAnimState.None;
+            mNextAnim = string.Empty;
             mIndex = 0;
-            mIsPlay = false;
-            mIsExecute = false;
             mOffsetTime = 0;
             mAnim.Update(0);
         }
