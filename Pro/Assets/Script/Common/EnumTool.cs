@@ -82,6 +82,7 @@ namespace Divak.Script.Game
     public enum UnitState
     {
         None,
+        Birth,
         Idea,
         Walk,
         Run,
