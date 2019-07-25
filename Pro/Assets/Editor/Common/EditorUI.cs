@@ -77,6 +77,15 @@ namespace Divak.Script.Editor
             EditorGUILayout.EndHorizontal();
             return value;
         }
+        public static bool DrawBool(bool value, string lb = "", float labSize = 60, float texSize = 150)
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label(lb, UIStyles.Label_13_White, GUILayout.Width(labSize));
+            bool v = EditorGUILayout.Toggle(string.Empty, value, GUILayout.Width(texSize));
+            if (v != value) value = v;
+            EditorGUILayout.EndHorizontal();
+            return value;
+        }
 
         /// <summary>
         /// EditorPrefs输入文本

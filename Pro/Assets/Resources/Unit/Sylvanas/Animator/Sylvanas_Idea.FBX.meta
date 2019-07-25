@@ -311,7 +311,7 @@ ModelImporter:
     400302: Sylvanas_Ranger_ShoulderPad_L
     400304: Sylvanas_Ranger_ShoulderPad_R
     400306: Vol_Target
-    7400000: Take 001
+    7400000: Sylvanas_Idea
     9500000: //RootNode
   externalObjects: {}
   materials:
@@ -342,7 +342,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Take 001
+      name: Sylvanas_Idea
       takeName: Take 001
       firstFrame: 50
       lastFrame: 129

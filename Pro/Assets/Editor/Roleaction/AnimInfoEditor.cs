@@ -64,6 +64,7 @@ namespace Divak.Script.Game
             DrawName();
             DrawAnimPlayType();
             GUILayout.Label("动作属性", UIStyles.CSAMS, GUILayout.Width(220));
+            DrawAnimLoop();
             DrawAnimBlendTime();
             DrawBreak(editor.AnimList);
             GUILayout.Label("特效属性", UIStyles.CSAMS, GUILayout.Width(220));
@@ -172,6 +173,15 @@ namespace Divak.Script.Game
             AnimPlayType apt = (AnimPlayType)EditorGUILayout.EnumPopup("组播放类型：", APT, GUILayout.Width(215));
             if (apt != APT) APT = apt;
             EditorUI.SetLabelWidth(80);
+        }
+
+        /// <summary>
+        /// 循环播放
+        /// </summary>
+        private void DrawAnimLoop()
+        {
+            bool v = EditorUI.DrawBool(IsLoop, "循环播放：");
+            if (v != IsLoop) IsLoop = v;
         }
 
         /// <summary>
