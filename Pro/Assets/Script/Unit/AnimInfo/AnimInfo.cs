@@ -3,7 +3,25 @@
 * 描    述：    
 * 创建时间：   2019年05月20日 02:29 
 * 作    者：   by. T.Y.Divak 
-* 详    细：    
+* 详    细：   
+*               Animator中可以获取三种不同的状态：
+*                   GetCurrentAnimatorStateInfo 获取正确的状态机状态
+*                   GetNextAnimatorStateInfo 获取下一个状态机的状态
+*                   GetAnimatorTransitionInfo 获取状态机的过渡状态
+*               动画同步是在帧最前，而协程是在帧的最后调用。所以切换状态后在协程获取状态机状态要yield return null在获取。
+*               ---------------------------------------------------------------------------------------------------------
+*               如果状态机有过渡的状态的话（A—》B），切换后
+*                   GetCurrentAnimatorStateInfo 仍会获取切换前的状态 (A)
+*                   GetNextAnimatorStateInfo 会获取切换后的状态（B）
+*                   并且此时GetAnimatorTransitionInfo 可以获得过渡状态
+*                   切换完毕后GetAnimatorTransitionInfo 会返回一个null
+*                   通过normalizedTime计算动画播放时间时候，处于过渡状态下，仍会进行下一个状态的动画，
+*                   所以过渡状态后获取的正确的GetCurrentAnimatorStateInfo （B状态）的normalizedTime不是从0开始而是根据过渡状态下经过的时间开始的
+*               如果状态机没过渡状态的话（A—》B），切换后
+*                   GetCurrentAnimatorStateInfo 会获得切换后的状态（B）
+*                   GetAnimatorTransitionInfo 会返回一个null
+*                   这是通过GetCurrentAnimatorStateInfo（B状态）获取的normalizedTime则是从0开始
+*               如果动画是可以循环的话，貌似下一次该状态的normalizedTime不会归0
 */
 using System;
 using System.Collections;
@@ -21,6 +39,12 @@ namespace Divak.Script.Game
         public string Name { get { return mName; } set { mName = value; } }
         [SerializeField]
         private string mName = string.Empty;
+        /// <summary>
+        /// 持续播放
+        /// </summary>
+        public bool IsLoop { get { return mIsLoop; } set { mIsLoop = value; } }
+        [SerializeField]
+        private bool mIsLoop = false;
         /// <summary>
         /// 混合时间
         /// </summary>
@@ -97,6 +121,8 @@ namespace Divak.Script.Game
         public void SetAnim(Animator anim)
         {
             mAnim = anim;
+            if(mClipDic == null)
+                mClipDic = new Dictionary<string, AnimationClip>();
             AnimationClip[] clips = anim.runtimeAnimatorController.animationClips;
             foreach (AnimationClip clip in clips)
             { 
@@ -111,7 +137,6 @@ namespace Divak.Script.Game
         {
             mIsExecute = true;
             if (mIsPlay == true) return;
-            Debug.LogError("---------------------->>> " + Name + " " + mIsPlay.ToString() + " " + mIsExecute.ToString());
             mIsExecute = false;
             mIsPlay = true;
             mIndex = 0;

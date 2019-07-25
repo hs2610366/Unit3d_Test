@@ -68,6 +68,18 @@ namespace Divak.Script.Game
     }
     #endregion
 
+    #region 动作类型
+    public enum UnitAnimState
+    {
+        //连续的 顺序 一次触发一个动作
+        None,
+        //随机的 随机 一次触发一个动作
+        Execute,
+        //一组的 顺序 一次触发所有动作
+        End,
+    }
+    #endregion
+
     #region 角色状态
     [SerializeField]
     public enum UnitState
