@@ -14,7 +14,8 @@ namespace Divak.Script.Game
 {
 	public class SkillMgr
     {
-        private static List<SkillBase> Temps = new List<SkillBase>();
+        public static readonly SkillMgr Instance = new SkillMgr();
+        private  List<SkillBase> Temps = new List<SkillBase>();
 
     }
 }

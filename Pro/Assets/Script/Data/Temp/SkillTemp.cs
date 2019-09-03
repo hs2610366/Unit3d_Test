@@ -54,5 +54,11 @@ namespace Divak.Script.Game
         public string name { get; set; }
         [SerializeField]
         public string model { get; set; }
+        [SerializeField]
+        public int type { get; set; } 
+        [SerializeField]
+        public int effType { get; set; }
+        [SerializeField]
+        public int duration { get; set; }
     }
 }
