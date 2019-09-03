@@ -1,0 +1,10 @@
+H:\Github\Tool\SVNTool\SVNTool\bin\Debug\SVNTool.exe.config
+H:\Github\Tool\SVNTool\SVNTool\bin\Debug\SVNTool.exe
+H:\Github\Tool\SVNTool\SVNTool\bin\Debug\SVNTool.pdb
+H:\Github\Tool\SVNTool\SVNTool\bin\Debug\SharpSvn.dll
+H:\Github\Tool\SVNTool\SVNTool\bin\Debug\SharpSvn.pdb
+H:\Github\Tool\SVNTool\SVNTool\bin\Debug\SharpSvn.xml
+H:\Github\Tool\SVNTool\SVNTool\bin\Debug\SharpPlink-x64.svnExe
+H:\Github\Tool\SVNTool\SVNTool\obj\Debug\SVNTool.csprojResolveAssemblyReference.cache
+H:\Github\Tool\SVNTool\SVNTool\obj\Debug\SVNTool.exe
+H:\Github\Tool\SVNTool\SVNTool\obj\Debug\SVNTool.pdb
