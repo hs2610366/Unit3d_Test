@@ -130,7 +130,7 @@ namespace Divak.Script.Editor
         {
             Player = Divak.Script.Game.UnitMgr.Instance.CreatePlayer(101, string.Empty, Vector3.zero);
             if (Player == null) return;
-            Selection.activeGameObject = Player.Model;
+            Selection.activeGameObject = Player.Oneself;
             SceneView view = SceneView.lastActiveSceneView;
             view.pivot = Vector3.zero;
             view.size = 20f;

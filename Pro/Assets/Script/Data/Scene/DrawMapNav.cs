@@ -36,10 +36,10 @@ namespace Divak.Script.Game
         {
             if (mMap == null) return;
             Gizmos.color = Color.white;
-            Gizmos.DrawLine(Vector3.zero, Vector3.right * mMap.MapH);
-            Gizmos.DrawLine(Vector3.zero, Vector3.forward * mMap.MapV);
-            Gizmos.DrawLine(Vector3.right * mMap.MapH, new Vector3(mMap.MapH, 0, mMap.MapV));
-            Gizmos.DrawLine(Vector3.forward * mMap.MapV, new Vector3(mMap.MapH, 0, mMap.MapV));
+            Gizmos.DrawLine(Vector3.zero, Vector3.right * mMap.MapHSize);
+            Gizmos.DrawLine(Vector3.zero, Vector3.forward * mMap.MapVSize);
+            Gizmos.DrawLine(Vector3.right * mMap.MapHSize, new Vector3(mMap.MapHSize, 0, mMap.MapVSize));
+            Gizmos.DrawLine(Vector3.forward * mMap.MapVSize, new Vector3(mMap.MapHSize, 0, mMap.MapVSize));
             for (int i = 0; i < mMap.MapH; i++)
             {
                 for (int j = 0; j < mMap.MapV; j++)
@@ -47,8 +47,8 @@ namespace Divak.Script.Game
                     float offset = mMap.Size / 2.0f;
                     MapPos pos = mMap.MapNav[i, j];
                     if (pos == null) continue;
-                    float posH = pos.H + offset;
-                    float posV = pos.V + offset;
+                    float posH = pos.H * mMap.Size + offset;
+                    float posV = pos.V * mMap.Size + offset;
                     Gizmos.color = pos.GetColor();
                     Vector3 origin = new Vector3(posH, 0, posV);
                     Vector3 pos1 = new Vector3(posH - offset, 0, posV - offset);

@@ -29,7 +29,7 @@ namespace Divak.Script.Game
             MapNavRoot.AddComponent<DrawMapNav>();
         }
 
-        public void Reset()
+        public override void Reset()
         {
             Info.MapNav = new MapPos[MapH, MapV];
             UnityEditor.SceneView.RepaintAll();
@@ -38,9 +38,10 @@ namespace Divak.Script.Game
         public void Add(Vector3 pos)
         {
             if (Info.MapNav == null) return;
-            int H = Mathf.FloorToInt(pos.x / Size) * Size;
-            int V = Mathf.FloorToInt(pos.z / Size) * Size;
+            int H = Mathf.FloorToInt(pos.x / Size) ;
+            int V = Mathf.FloorToInt(pos.z / Size) ;
             if (H < 0 || H > MapH || V < 0 || V > MapV) return;
+            Debug.LogError("------------ " + H.ToString() + "/" + V.ToString());
             MapPos mPos = new MapPos();
             mPos.UpdatePos(pos, H , V, MapInfo.ColorType);
             Info.MapNav[H, V] = mPos;
@@ -50,8 +51,8 @@ namespace Divak.Script.Game
         {
             if (Info.MapNav == null) return;
             float offset = Size / 2.0f;
-            int H = Mathf.FloorToInt(pos.x / Size) * Size;
-            int V = Mathf.FloorToInt(pos.z / Size) * Size;
+            int H = Mathf.FloorToInt(pos.x / Size) ;
+            int V = Mathf.FloorToInt(pos.z / Size) ;
             if (H < 0 || H > MapH || V < 0 || V > MapV) return;
             Info.MapNav[H, V] = null;
         }

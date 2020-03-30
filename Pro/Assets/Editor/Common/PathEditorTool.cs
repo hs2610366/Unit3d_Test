@@ -21,7 +21,7 @@ public class PathEditorTool
     public static string AssetsFolderName = "Assets/Scene/";
     public static string AssetsPrefabName = "Scene/Prefab/";
     public static string AssetsEditorResource = "/Editor Default Resources/";
-    public static string SceneModPath = "Assets/Resource/Scene/";
+    public static string SceneModPath = "Assets/Resources/Scene/";
 
     #region 当前选中路径为NULL
     /// <summary>

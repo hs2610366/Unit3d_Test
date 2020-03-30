@@ -21,7 +21,27 @@ namespace Divak.Script.Game
 
 		// Use this for initialization
 		void Start () {
-				
+
+            System.Net.ServicePointManager.Expect100Continue = false;
+            HttpDownLoad.Instance.AddDownLoadPath("/assets/dizuo_Battle.png");
+            HttpDownLoad.Instance.AddDownLoadPath("/assets/gongjitisheng_battle.png");
+            HttpDownLoad.Instance.AddDownLoadPath("/assets/hp1_battle.png");
+            HttpDownLoad.Instance.AddDownLoadPath("/assets/hp2_battle.png");
+            HttpDownLoad.Instance.AddDownLoadPath("/assets/hp3_battle.png");
+            HttpDownLoad.Instance.AddDownLoadPath("/assets/hp4_battle.png");
+            HttpDownLoad.Instance.AddDownLoadPath("/assets/jianbian_battle.png");
+            HttpDownLoad.Instance.AddDownLoadPath("/assets/jiesuan1_battle.png");
+            HttpDownLoad.Instance.AddDownLoadPath("/assets/jiesuan2_battle.png");
+            HttpDownLoad.Instance.AddDownLoadPath("/assets/jiesuanhei_battle.png");
+            HttpDownLoad.Instance.AddDownLoadPath("/assets/pause_battle.png");
+            HttpDownLoad.Instance.AddDownLoadPath("/assets/shibingicon_battle.png");
+            HttpDownLoad.Instance.AddDownLoadPath("/assets/shijiao_battle.png");
+            HttpDownLoad.Instance.AddDownLoadPath("/assets/shiqi1_battle.png");
+            HttpDownLoad.Instance.AddDownLoadPath("/assets/shiqi1bg_battle.png");
+            HttpDownLoad.Instance.AddDownLoadPath("/assets/shiqi2_battle.png");
+            HttpDownLoad.Instance.AddDownLoadPath("/assets/shiqi2bg_battle.png");
+            HttpDownLoad.Instance.AddDownLoadPath("/assets/template.tps");
+            HttpDownLoad.Instance.Run();
 		}
 		
 		// Update is called once per frame

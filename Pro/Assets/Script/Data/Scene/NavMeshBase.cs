@@ -23,11 +23,14 @@ namespace Divak.Script.Game
 
         public int MapV { get { return Info.MapV; } }
 
+        public int MapHSize { get { return Info.MapH * Info.Size; } }
+
+        public int MapVSize { get { return Info.MapV * Info.Size; } }
+
         public MapPos[,] MapNav { get { return Info.MapNav; } }
 
-        public virtual void Init()
-        {
+        public virtual void Init() { }
 
-        }
+        public virtual void Reset() { }
     }
 }

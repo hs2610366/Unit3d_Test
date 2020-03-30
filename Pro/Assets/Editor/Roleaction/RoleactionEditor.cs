@@ -230,7 +230,7 @@ namespace Divak.Script.Editor
         {
             Player = Divak.Script.Game.UnitMgr.Instance.CreatePlayer(101, string.Empty, Vector3.zero);
             if (Player == null) return false;
-            Selection.activeGameObject = Player.Model;
+            Selection.activeGameObject = Player.Oneself;
             SceneView view = SceneView.lastActiveSceneView;
             if(view != null)
             {

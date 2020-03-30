@@ -13,25 +13,25 @@ using UnityEngine;
 
 namespace Divak.Script.Game 
 {
-	public class SkillTempMgr : BaseTempMgr<SkillTemp>
+	public class SkillGroupTempMgr : BaseTempMgr<SkillGroupTemp>
     {
-        public static readonly ModelTempMgr Instance = new ModelTempMgr();
-        public List<SkillTemp> Temps = new List<SkillTemp>();
-        public Dictionary<UInt32, SkillTemp> Dic = new Dictionary<uint, SkillTemp>();
+        public static readonly SkillGroupTempMgr Instance = new SkillGroupTempMgr();
+        public List<SkillGroupTemp> Temps = new List<SkillGroupTemp>();
+        public Dictionary<UInt32, SkillGroupTemp> Dic = new Dictionary<uint, SkillGroupTemp>();
 
         protected override void CustomAnalysis(List<object> list)
         {
             for (int i = 0; i < list.Count; i++)
             {
-                SkillTemp temp = list[i] as SkillTemp;
+                SkillGroupTemp temp = list[i] as SkillGroupTemp;
                 if (temp == null) continue;
                 Temps.Add(temp);
                 Dic.Add(temp.id, temp);
             }
-            Temps.Sort((SkillTemp a, SkillTemp b) => { return a.id < b.id ? 1 : -1; });
+            Temps.Sort((SkillGroupTemp a, SkillGroupTemp b) => { return a.id < b.id ? 1 : -1; });
         }
 
-        public override SkillTemp Find(UInt32 id)
+        public override SkillGroupTemp Find(UInt32 id)
         {
             if (Dic.ContainsKey(id)) return Dic[id];
             MessageBox.Error(string.Format("SkillTempMgr没有找到ID为[{0}]的数据", id));
@@ -46,7 +46,7 @@ namespace Divak.Script.Game
     }
 
     [Serializable]
-    public class SkillTemp : Temp
+    public class SkillGroupTemp : Temp
     {
         [SerializeField]
         public UInt32 id { get; set; }
@@ -55,10 +55,12 @@ namespace Divak.Script.Game
         [SerializeField]
         public string model { get; set; }
         [SerializeField]
-        public int type { get; set; } 
+        public int tiggerType { get; set; } 
         [SerializeField]
         public int effType { get; set; }
         [SerializeField]
-        public int duration { get; set; }
+        public int limitLv { get; set; }
+        [SerializeField]
+        public int publicCD { get; set; }
     }
 }

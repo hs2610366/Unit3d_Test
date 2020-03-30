@@ -78,7 +78,7 @@ namespace Divak.Script.Game
             go.transform.localEulerAngles = Vector3.zero;
             go.transform.localScale = Vector3.one;
             Unit unit = CreateClass(type);
-            unit.UpdateModel(go);
+            //unit.UpdateOneself(go);
             unit.UpdateModelTemp(temp);
             unit.UpdateState(temp);
             unit.UpdateAnims(temp);

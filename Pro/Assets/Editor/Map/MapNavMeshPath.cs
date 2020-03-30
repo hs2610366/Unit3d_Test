@@ -130,7 +130,7 @@ namespace Divak.Script.Editor
                 Map.Info.MapH = h;
                 Map.Info.MapV = v;
                 Map.Info.Size = s;
-                Map.Reset();
+                //Map.Reset();
             }
             if(GUILayout.Button("重置"))
             {

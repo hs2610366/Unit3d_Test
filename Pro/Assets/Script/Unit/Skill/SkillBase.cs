@@ -27,7 +27,7 @@ namespace Divak.Script.Game
         /// <summary>
         /// 技能配置
         /// </summary>
-        private SkillTemp Temp = null;
+        private SkillLevelTemp Temp = null;
 
         #region 私有的
 
@@ -49,7 +49,7 @@ namespace Divak.Script.Game
 
 
         #region 公开的
-        public virtual void UpdateData(SkillTemp temp)
+        public virtual void UpdateData(SkillLevelTemp temp)
         {
             Temp = temp;
         }

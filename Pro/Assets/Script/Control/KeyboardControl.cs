@@ -59,11 +59,13 @@ namespace Divak.Script.Game
                 RemoteControl.Instance.ExecuteAttack(UnitMgr.Instance.Player.CTemp.id, UnitState.Fight);
                 Debug.Log("平a");
             }
+            /**
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 RemoteControl.Instance.ExecuteAttack(UnitMgr.Instance.Player.CTemp.id, UnitState.Skill_1);
                 Debug.Log("技能1");
             }
+            */
             if (Input.GetKeyDown(KeyCode.Alpha2)) { Debug.Log("技能2"); }
             if (Input.GetKeyDown(KeyCode.Alpha3)) { Debug.Log("技能3"); }
             if (Input.GetKeyDown(KeyCode.Alpha4)) { Debug.Log("技能4"); }

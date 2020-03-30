@@ -68,9 +68,9 @@ namespace Divak.Script.Game
         }
 
         #region 私有函数
-        protected override void Update()
+        protected override void CustomUpdate()
         {
-            base.Update();
+            base.CustomUpdate();
             if (!Controller) return;
             if (!Trans) return;
             if (!Controller) return;

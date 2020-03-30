@@ -12,11 +12,14 @@ using UnityEngine;
 
 namespace Divak.Script.Game
 {
-    public class UnitAnim : UnitBase
+    public class UnitAnim : UnitObj
     {
+
+        #region 动画管理器
         [NonSerialized]
         private Animator mAnim = null;
         public Animator Anim { get { return mAnim; } }
+        #endregion
         [NonSerialized]
         private AnimInfo mCurInfo = null;
 
@@ -89,6 +92,12 @@ namespace Divak.Script.Game
         #endregion
 
         #region 保护函数
+        protected override void UpdateOneself(GameObject go)
+        {
+            base.UpdateOneself(go);
+            mAnim = ConTool.Find<Animator>(go, "Root");
+        }
+
         public bool Execute(string actionName)
         {
             if (CheckAnim(actionName) == false) return false;
@@ -115,22 +124,18 @@ namespace Divak.Script.Game
 
         #region 重构函数
 
-        protected override void Update()
+        protected override void CustomUpdate()
         {
-            base.Update();
+            base.CustomUpdate();
             if(mCurInfo != null)
             {
                 mCurInfo.Update();
             }
         }
 
-        protected override void CustomUpdateAnim(Animator anim)
-        {
-            mAnim = anim;
-        }
-
         public override void Dispose()
         {
+
             mAnim = null;
             mCurInfo = null;
             mAnimInfos.Clear();
@@ -172,7 +177,7 @@ namespace Divak.Script.Game
             {
                 for (int i = 0; i < mAnimInfos.Count; i++)
                 {
-                    mAnimInfos[i].SetAnim(mAnim);
+                    mAnimInfos[i].SetAnim(Anim);
                 }
             }
         }

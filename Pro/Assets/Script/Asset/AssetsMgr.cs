@@ -49,6 +49,11 @@ namespace Divak.Script.Game
             return tex ;
         }
 
+        public UnityEngine.Object Load(string path)
+        {
+            return LoadAB(path);
+        }
+
         public UnityEngine.Object Load(string name, string suffix)
         {
             return LoadAB(name + suffix);

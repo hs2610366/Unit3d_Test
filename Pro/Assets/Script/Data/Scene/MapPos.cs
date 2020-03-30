@@ -70,14 +70,16 @@ namespace Divak.Script.Game
 
 
 
-        public void UpdatePath()
+        public int UpdatePath()
         {
+            int hd = Hd;
             if (ParentNode != null)
             {
                 ParentNode.ColorType = 2;
-                ParentNode.UpdatePath();
+                hd += ParentNode.UpdatePath();
                 MessageBox.Error("更新路径");
             }
+            return hd;
         }
     }
 }

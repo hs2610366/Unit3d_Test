@@ -23,16 +23,22 @@ namespace Divak.Script.Game
         public override void Init()
         {
             base.Init();
+            base.Reset();
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
             mOpenNode = new MapPos[MapH, MapV];
             mCloseNode = new MapPos[MapH, MapV];
         }
 
         public void StartNavMesh(Vector3 targetPos)
         {
-            int sH = Mathf.FloorToInt(mStartPos.x / Size) * Size;
-            int sV = Mathf.FloorToInt(mStartPos.z / Size) * Size;
-            int tH = Mathf.FloorToInt(targetPos.x / Size) * Size;
-            int tV = Mathf.FloorToInt(targetPos.z / Size) * Size;
+            int sH = Mathf.FloorToInt(mStartPos.x / Size) ;
+            int sV = Mathf.FloorToInt(mStartPos.z / Size) ;
+            int tH = Mathf.FloorToInt(targetPos.x / Size) ;
+            int tV = Mathf.FloorToInt(targetPos.z / Size) ;
             RecursionOpenNodeList(sH, sV, tH, tV);
         }
 
@@ -120,7 +126,8 @@ namespace Divak.Script.Game
         private void NavMeshComplete(int tH, int tV)
         {
             Info.MapNav[tH, tV].ColorType = 2;
-            Info.MapNav[tH, tV].UpdatePath();
+            int hd = Info.MapNav[tH, tV].UpdatePath();
+            Debug.LogError("NavMesh hd: " + hd.ToString());
         }
 
         private void NavMeshFail()

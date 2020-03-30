@@ -136,7 +136,7 @@ namespace Divak.Script.Editor
                     MessageBox.Error("没有加载成功");
                     return;
                 }
-                Selection.activeGameObject = player.Model;
+                Selection.activeGameObject = player.Oneself;
                 SceneView view = SceneView.lastActiveSceneView;
                 view.pivot = Vector3.zero;
                 view.size = 20f;

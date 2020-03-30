@@ -87,9 +87,16 @@ namespace Divak.Script.Game
         Walk,
         Run,
         Fight,
-        Skill_1,
-        Skill_2,
-        Skill_3,
+        Die,
+    }
+    #endregion
+
+    #region 技能类型
+    public enum SkillTiggerType
+    {
+        Proactive,      //主动
+        Passivity       //被动
+
     }
     #endregion
 

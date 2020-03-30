@@ -169,6 +169,7 @@ public class EnumEditorTool
     {
         switch (type)
         {
+            case AssetType.FBX:
             case AssetType.Scene:
             case AssetType.Prefab:
             case AssetType.Material:

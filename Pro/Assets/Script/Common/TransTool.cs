@@ -39,5 +39,22 @@ namespace Divak.Script.Game
             if (trans.Equals(null)) return true;
             return false;
         }
+
+        public static Vector3 Raycast(GameObject go, string layerName, out bool isHit)
+        {
+            return Raycast(go.transform, layerName, out isHit);
+        }
+
+        public static Vector3 Raycast(Transform trans, string layerName, out bool isHit)
+        {
+            Ray ray = new Ray(Vector3.down, trans.position);
+            RaycastHit hit;
+            isHit = Physics.Raycast(ray, out hit, 10000, 1 << LayerName.GetIndexOfLayerName(layerName));
+            if(isHit)
+            {
+                return hit.point;
+            }
+            return trans.position;
+        }
     }
 }

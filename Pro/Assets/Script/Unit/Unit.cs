@@ -55,9 +55,9 @@ namespace Divak.Script.Game
 
         #region 公有函数
 
-        public override void UpdateModel(GameObject go)
+        protected override void UpdateOneself(GameObject go)
         {
-            base.UpdateModel(go);
+            base.UpdateOneself(go);
             if (mIdent != null) mIdent.Add(Controller);
         }
 
