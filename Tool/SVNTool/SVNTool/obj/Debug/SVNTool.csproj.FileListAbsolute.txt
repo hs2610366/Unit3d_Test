@@ -8,3 +8,6 @@ H:\Github\Tool\SVNTool\SVNTool\bin\Debug\SharpPlink-x64.svnExe
 H:\Github\Tool\SVNTool\SVNTool\obj\Debug\SVNTool.csprojResolveAssemblyReference.cache
 H:\Github\Tool\SVNTool\SVNTool\obj\Debug\SVNTool.exe
 H:\Github\Tool\SVNTool\SVNTool\obj\Debug\SVNTool.pdb
+H:\Github\trunk\Tool\SVNTool\SVNTool\bin\Debug\SVNTool.exe.config
+H:\Github\trunk\Tool\SVNTool\SVNTool\obj\Debug\SVNTool.exe
+H:\Github\trunk\Tool\SVNTool\SVNTool\obj\Debug\SVNTool.pdb
