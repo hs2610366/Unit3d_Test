@@ -18,7 +18,7 @@ public class EditorWinBase<T> : EditorWindow
     /// 是否初始化
     /// </summary>        
     protected bool IsInit = false;
-    protected string Title = "EditorWinBase";
+    protected string Title = "编辑器";
     protected Rect ContextRect = new Rect(0, 0, 10, 10);
 
     public static void ShowWin(string title = null)

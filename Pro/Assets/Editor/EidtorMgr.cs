@@ -16,10 +16,10 @@ namespace Divak.Script.Editor
     public class EidtorMgr
     {
         #region 数据配置
-        [MenuItem("DivakTool/设置/数据配置", false)]
+        [MenuItem("DivakTool/设置/路径引用", false)]
         public static void InfoEditorWin()
         {
-            InfoEditorWindow.ShowWin();
+            PathReferencesWin.ShowWin();
         }
         #endregion
 
@@ -94,7 +94,7 @@ namespace Divak.Script.Editor
         [MenuItem("DivakTool/场景/寻路路径", false)]
         public static void NavMeshPath()
         {
-            MapNavMeshPath.ShowWindow();
+            //MapNavMeshPath.ShowWindow();
         }
         #endregion
 

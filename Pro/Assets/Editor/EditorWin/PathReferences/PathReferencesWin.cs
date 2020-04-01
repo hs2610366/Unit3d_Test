@@ -15,7 +15,7 @@ using Divak.Script.Game;
 
 namespace Divak.Script.Editor
 {
-	public class InfoEditorWindow : EditorWinBase<InfoEditorWindow>
+	public class PathReferencesWin : EditorWinBase<PathReferencesWin>
     {
         #region 变量
         #endregion
@@ -23,8 +23,9 @@ namespace Divak.Script.Editor
         #region 初始化
         protected override void Init()
         {
+            Title = "编辑器引用路径";
+            ContextRect = new Rect(100,100,500,300);
             base.Init();
-            ContextRect = position;
         }
         protected override void CustomInit()
         {
