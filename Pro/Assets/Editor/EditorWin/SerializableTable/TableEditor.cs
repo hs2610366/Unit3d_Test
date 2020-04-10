@@ -101,9 +101,9 @@ namespace Divak.Script.Editor
 
         protected override void Init()
         {
-
-            base.Init();
+            Title = "配置表数据关联生成";
             ContextRect = new Rect(SVWidth, 0, CSVWidth, SVHeight);
+            base.Init();
             if (!Config.IsInt)
             {
                 if (Config.Init())
@@ -148,7 +148,7 @@ namespace Divak.Script.Editor
         {
             GenericMenu menu = new GenericMenu();
             menu.AddItem(new GUIContent("导出EditorInfo"), false, RightMenuCallback, Output);
-            menu.AddItem(new GUIContent("导出导出EditorInfo并生成数据文件"), false, RightMenuCallback, OutputAndSave);
+            menu.AddItem(new GUIContent("导出EditorInfo并生成数据文件"), false, RightMenuCallback, OutputAndSave);
             menu.ShowAsContext();
         }
         #endregion

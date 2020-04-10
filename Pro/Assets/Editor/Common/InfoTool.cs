@@ -108,7 +108,7 @@ namespace Divak.Script.Editor
                 Debug.LogError("Get Assets Path Fail!!, InfoTool.PathConfig[EditorPrefsKey.AssetsPath] is null");
                 return;
             }
-            Config.OutputConfig<object>(outputPath, ti.OutputName, outputList,SuffixTool.TableInfo);
+            Config.OutputConfig<object>(outputPath, ti.OutputName, outputList,SuffixTool.TableInfo.ToLower());
         }
         #endregion
 

@@ -59,7 +59,7 @@ namespace Divak.Script.Editor
             EditorGUILayout.EndHorizontal();
             return value;
         }
-        public static int DrawIntField(int value, string lb = "", float labSize = 60, float texSize = 150)
+        public static int DrawIntField(int value, string lb = "", float labSize = 60, float texSize = 150, bool noStyles = true)
         {
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label(lb, UIStyles.Label_13_White, GUILayout.Width(labSize));
@@ -87,6 +87,9 @@ namespace Divak.Script.Editor
             return value;
         }
 
+
+        #region 无样式 /// <summary>
+
         /// <summary>
         /// EditorPrefs输入文本
         /// </summary>
@@ -100,15 +103,29 @@ namespace Divak.Script.Editor
             return value;
         }
 
-        /// <summary>
         /// EditorPrefs输入数字
         /// </summary>
-        public static int DrawPrefabsNumberField(int value, string lb = "", float labW = 0, params GUILayoutOption[] options)
+        public static int DrawIntField(int value, string lb = "", float labW = 0, float indentation = 0.0f, params GUILayoutOption[] options)
         {
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(indentation);
             if (labW == 0) labW = LabelSize;
             GUILayout.Label(lb, GUILayout.Width(labW));
             int v = EditorGUILayout.IntField(string.Empty, value, options);
+            if (v != value) value = v;
+            EditorGUILayout.EndHorizontal();
+            return value;
+        }
+
+        /// EditorPrefs输入浮点数
+        /// </summary>
+        public static float DrawFloatField(float value, string lb = "", float labW = 0, float indentation = 0.0f, params GUILayoutOption[] options)
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(indentation);
+            if (labW == 0) labW = LabelSize;
+            GUILayout.Label(lb, GUILayout.Width(labW));
+            float v = EditorGUILayout.FloatField(string.Empty, value, options);
             if (v != value) value = v;
             EditorGUILayout.EndHorizontal();
             return value;
@@ -157,6 +174,8 @@ namespace Divak.Script.Editor
         }
         #endregion
 
+        #endregion
+
         #region Enum
         public static Enum DrawEnum(Enum value, string lb = "", float labSize = 60, float uiSize = 150)
         {
@@ -175,6 +194,18 @@ namespace Divak.Script.Editor
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label(lb, UIStyles.Label_13_White, GUILayout.Width(labSize));
             bool v = EditorGUILayout.Toggle(string.Empty, value, UIStyles.BoldToggle_White, GUILayout.Width(uiSize));
+            if (v != value) value = v;
+            EditorGUILayout.EndHorizontal();
+            return value;
+        }
+
+        public static bool DrawToggle(bool value, string lb = "", float labW = 0, float indentation = 0.0f, params GUILayoutOption[] options)
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(indentation);
+            if (labW == 0) labW = LabelSize;
+            GUILayout.Label(lb, GUILayout.Width(labW));
+            bool v = EditorGUILayout.Toggle(string.Empty, value, options);
             if (v != value) value = v;
             EditorGUILayout.EndHorizontal();
             return value;

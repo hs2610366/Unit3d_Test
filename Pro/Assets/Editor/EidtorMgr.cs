@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using Divak.Script.Editor;
 
 namespace Divak.Script.Editor
 {
@@ -94,6 +95,7 @@ namespace Divak.Script.Editor
         [MenuItem("DivakTool/场景/寻路路径", false)]
         public static void NavMeshPath()
         {
+            NavmeshWin.ShowWin();
             //MapNavMeshPath.ShowWindow();
         }
         #endregion

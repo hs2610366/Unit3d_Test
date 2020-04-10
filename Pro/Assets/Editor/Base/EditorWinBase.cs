@@ -130,6 +130,7 @@ public class EditorWinBase<T> : EditorWindow
     {
         this.titleContent = new GUIContent(Title);
         this.position = ContextRect;
+        this.minSize = this.maxSize = ContextRect.size;
         UIStyles.Init();
         CustomInit();
     }
