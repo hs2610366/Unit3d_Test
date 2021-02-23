@@ -59,7 +59,11 @@ namespace Divak.Script.Game
         /// </summary>
         public Renderer RendererTool{get { return mRendererTool; }}
         #endregion
+        public UnitObj() : base() { }
 
+        public UnitObj(string tag) : base(tag)
+        {
+        }
 
         #region 私有函数
         private void UpdateOnselfData()
@@ -86,7 +90,7 @@ namespace Divak.Script.Game
             //string path = UnityEditor.AssetDatabase.GetAssetPath(prefab);
             //ModPath = System.IO.Path.GetDirectoryName(path);
 #else
-            GameObject go = AssetsMgr.Instance.LoadPrefab(mod);
+            GameObject go = AssetsMgr.Instance.LoadPrefab(path);
 #endif
             UpdateOneself(go);
         }

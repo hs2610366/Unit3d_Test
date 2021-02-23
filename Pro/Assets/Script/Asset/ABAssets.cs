@@ -195,8 +195,7 @@ namespace Divak.Script.Game
                 info.Reduce();
                 if (info.Count <= 0)
                     info.Clear(isDerstoy);
-                else
-                    info = null;
+                info = null;
             }
         }
 

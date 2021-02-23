@@ -24,14 +24,14 @@ namespace Divak.Script.Game
             Temps.Sort((CameraTemp a, CameraTemp b) => { return a.id < b.id ? 1 : -1; });
         }
 
-        public CameraTemp Find(UInt32 id)
+        public override CameraTemp Find(UInt32 id)
         {
             if (Dic.ContainsKey(id)) return Dic[id];
             MessageBox.Error(string.Format("ModelTempMgr没有找到ID为[{0}]的数据", id));
             return null;
         }
 
-        public void Clear()
+        public override void Clear()
         {
             if (Temps != null) Temps.Clear();
             if (Dic != null) Dic.Clear();

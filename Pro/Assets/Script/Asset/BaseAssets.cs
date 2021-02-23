@@ -10,6 +10,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Divak.Script.Game 
 {
@@ -37,15 +38,24 @@ namespace Divak.Script.Game
 
         protected IEnumerator LoadWWW(string path, Action<string, AssetBundleManifest> callback)
         {
-            WWW www = new WWW(path);
-            yield return www;
-            AssetBundle ab = www.assetBundle;
-            AssetBundleManifest manifest = (AssetBundleManifest)ab.LoadAsset("AssetBundleManifest");
-            if (manifest != null && callback != null) callback(path, manifest);
-            ab.Unload(false);
-            ab = null;
-            www.Dispose();
-            www = null;
+            using (UnityWebRequest request = UnityWebRequest.Get(path))
+            {
+                yield return request.SendWebRequest();
+                if(request.isNetworkError)
+                {
+                    Debug.LogError("加载AB失败：" + path);
+                }
+                else
+                {
+                    AssetBundle ab = DownloadHandlerAssetBundle.GetContent(request);
+                    AssetBundleManifest manifest = (AssetBundleManifest)ab.LoadAsset("AssetBundleManifest");
+                    if (manifest != null && callback != null) callback(path, manifest);
+                    ab.Unload(false);
+                    ab = null;
+                }
+                request.Abort();
+                request.Dispose();
+            }
         }
 
         /// <summary>

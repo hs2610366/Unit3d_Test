@@ -16,8 +16,8 @@ namespace Divak.Script.Game
     {
         public static readonly UnitMgr Instance = new UnitMgr();
 
-        public Dictionary<UInt32, UnitBase> UnitDic = new Dictionary<UInt32, UnitBase>();
-
+        private Dictionary<UInt32, UnitBase> mUnitDic = new Dictionary<UInt32, UnitBase>();
+        public Dictionary<UInt32, UnitBase> UnitDic { get { return mUnitDic; } }
         private UnitPlayer mPlayer;
         public UnitPlayer Player { get { return mPlayer; } }
 

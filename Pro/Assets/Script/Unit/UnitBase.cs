@@ -22,7 +22,7 @@ namespace Divak.Script.Game
         /// <summary>
         /// 标识
         /// </summary>
-        public string Tag { get; set; }
+        public string Tag { get { return mTag; } }
         #endregion
 
         #region 坐标
@@ -246,7 +246,17 @@ namespace Divak.Script.Game
 
         public UnitBase()
         {
+#if UNITY_ANDROID || UNITY_IPHONE
             Global.Instance.OnUpdate += Update;
+#endif
+        }
+
+        public UnitBase(string tag)
+        {
+            mTag = tag;
+#if UNITY_ANDROID || UNITY_IPHONE
+            Global.Instance.OnUpdate += Update;
+#endif
         }
 
         #region 私有函数

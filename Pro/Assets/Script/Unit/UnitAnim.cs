@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 namespace Divak.Script.Game
 {
@@ -44,6 +45,9 @@ namespace Divak.Script.Game
             }
         }
 #endif
+        public UnitAnim(string tag) : base(tag)
+        {
+        }
 
         #region 私有函数
         private AnimInfo GetAnimForName(string name)

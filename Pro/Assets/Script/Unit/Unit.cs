@@ -45,6 +45,11 @@ namespace Divak.Script.Game
             mIdent = new Projection2();
         }
 
+        public Unit(string tag):base(tag)
+        {
+
+        }
+
         #region MyRegion
         protected virtual void UpdateIdent(int ident)
         {

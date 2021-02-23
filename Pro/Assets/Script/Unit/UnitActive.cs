@@ -67,6 +67,10 @@ namespace Divak.Script.Game
         {
         }
 
+        public UnitActive(string tag) : base(tag)
+        {
+        }
+
         #region 私有函数
         protected override void CustomUpdate()
         {
