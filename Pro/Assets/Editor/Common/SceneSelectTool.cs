@@ -16,35 +16,35 @@ namespace Divak.Script.Editor
 {
     public class SceneSelectTool
     {
-        public static bool IsRestrict = true;
-        public static NavmashType NavmeshDrawType;
-        public static string[] NavmeshDrawNames = {"无","可行走"};
-        public static Color32[] NavmeshDrawColors = { Color.gray, Color.green };
-        public static float NavmeshSize { get; set; }
-        public static int NavmeshH { get; set; }
-        public static int NavmeshV { get; set; }
+//        public static bool isrestrict = true;
+//        public static navmashtype navmeshdrawtype;
+//        public static string[] navmeshdrawnames = { "无", "可行走" };
+//        public static color32[] navmeshdrawcolors = { color.gray, color.green };
+//        public static float navmeshsize { get; set; }
+//        public static int navmeshh { get; set; }
+//        public static int navmeshv { get; set; }
 
-        [InitializeOnLoadMethod]
-        static void Start()
-        {
-            SceneView.duringSceneGui += OnSceneGUI;
-        }
+//        [initializeonloadmethod]
+//        static void start()
+//        {
+//            sceneview.duringscenegui += onscenegui;
+//        }
 
-        static void OnSceneGUI(SceneView sceneview)
-        {
-            Event e = Event.current;
+//        static void onscenegui(sceneview sceneview)
+//        {
+//            event e = event.current;
 
-            int controlID = GUIUtility.GetControlID(FocusType.Passive);
+//            int controlid = guiutility.getcontrolid(focustype.passive);
 
-            if (IsRestrict && e.type == EventType.Layout)
-            {
-                HandleUtility.AddDefaultControl(controlID);
-            }
-        }
+//            if (isrestrict && e.type == eventtype.layout)
+//            {
+//                handleutility.adddefaultcontrol(controlid);
+//            }
+//}
 
-        public static void Clear()
-        {
-            SceneNavmeshMgr.Instance.Clear();
-        }
+//public static void clear()
+//{
+//    scenenavmeshmgr.instance.clear();
+//}
     }
 }

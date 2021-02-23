@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.UIElements;
+using UnityEditor.UIElements;
 
 namespace Divak.Script.Editor
 {
@@ -48,6 +50,33 @@ namespace Divak.Script.Editor
         }
         #endregion
 
+        #region UIElements
+        /// <summary>
+        /// 获取ui样式
+        /// </summary>
+        /// <param name="path">路径</param>
+        /// <param name="uss">样式</param>
+        /// <returns>获取状态</returns>
+        public static bool GetStyleSheet(string path, out StyleSheet uss)
+        {
+            path = string.Format("UIElements/USS/{0}.uss", path);
+            uss = EditorGUIUtility.Load(path) as StyleSheet;
+            return uss != null;
+        }
+
+        /// <summary>
+        /// 获取编辑器描述文件
+        /// </summary>
+        /// <param name="path">路径</param>
+        /// <param name="vta">描述文件</param>
+        /// <returns>获取状态</returns>
+        public static bool GetVisualTreeAsset(string path, out VisualTreeAsset vta)
+        {
+            path = string.Format("UIElements/UXML/{0}.uxml", path);
+            vta = EditorGUIUtility.Load(path) as VisualTreeAsset;
+            return vta != null;
+        }
+        #endregion
 
         #region EditorPrefs
         public static string DrawTextField(string value, string lb = "",float labSize = 60, float texSize = 150)
@@ -302,6 +331,7 @@ namespace Divak.Script.Editor
             GUILayout.Box(new GUIContent(title), style, new[] { GUILayout.Width(w), GUILayout.Height(h) });
         }
         #endregion
+
         #region C#
         #endregion
 

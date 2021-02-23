@@ -127,7 +127,7 @@ namespace Divak.Script.Editor
         #endregion
 
         #region 类型转换
-        private static object TypeConversion(string value, Type type)
+        public static object TypeConversion(string value, Type type)
         {
             if(type == typeof(System.Byte))
             {

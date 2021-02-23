@@ -20,6 +20,11 @@ namespace Divak.Script.Editor
         #endregion
 
         #region 私有函数
+        protected static void CreateUIElements(string path, string names)
+        {
+
+        }
+
         /// <summary>
         /// 创建新脚本
         /// </summary>
@@ -68,10 +73,25 @@ namespace Divak.Script.Editor
                     icon = (EditorGUIUtility.IconContent("Shader Icon").image as Texture2D);
                     goto IL_16F;
                 }
+                if (extension == ".uxml")
+                {
+                    icon = (EditorGUIUtility.IconContent("TextAsset Icon").image as Texture2D);
+                    goto IL_17F;
+                }
             }
             icon = (EditorGUIUtility.IconContent("TextAsset Icon").image as Texture2D);
-        IL_16F:
-            ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0, ScriptableObject.CreateInstance<MyProjectWindowUtil>(), string.Format("{0}/{1}", path, fileName), icon, tempPath);
+            IL_16F:
+            ProjectWindowUtil.StartNameEditingIfProjectWindowExists(
+                0,
+                ScriptableObject.CreateInstance<CSharpProjectWindowUtil>(),
+                string.Format("{0}/{1}", path, fileName), icon, tempPath);
+            return;
+            IL_17F:
+            ProjectWindowUtil.StartNameEditingIfProjectWindowExists(
+                0,
+                ScriptableObject.CreateInstance<UxmlProjectWindowUtil>(),
+                string.Format("{0}/{1}", path, fileName), icon, tempPath);
+            return;
         }
         #endregion
     }

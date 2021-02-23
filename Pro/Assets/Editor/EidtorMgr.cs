@@ -25,10 +25,16 @@ namespace Divak.Script.Editor
         #endregion
 
         #region 配置表脚本关联
-        [MenuItem("DivakTool/配置表/配置表脚本关联")]
+        [MenuItem("DivakTool/配置表/配置表脚本关联", false)]
         static void TabelEditorTool()
         {
             TableEditor.ShowWin();
+        }
+        [MenuItem("DivakTool/配置表/生成配置文件", false)]
+        [MenuItem("Assets/DivakTool/生成配置文件", false, 98)]
+        public static void ExcelEncodeTool()
+        {
+            ExcelEncode.ShowWin();
         }
         #endregion
 
@@ -63,6 +69,15 @@ namespace Divak.Script.Editor
         public static void OutputAssetsBundle()
         {
             PackedFile.SetPackedFile();
+        }
+        #endregion
+
+        #region 角色
+        [MenuItem("DivakTool/角色/角色编辑", false)]
+        [MenuItem("Assets/角色/角色编辑", false, 98)]
+        public static void UnitEditorTool()
+        {
+            UnitEditor.ShowWin();
         }
         #endregion
 
@@ -108,6 +123,13 @@ namespace Divak.Script.Editor
         public static void BehaviorTree()
         {
             BehaviorTreeWin.ShowWin();
+        }
+
+        [MenuItem("DivakTool/树/流程树", false)]
+        [MenuItem("Assets/DivakTool/流程树", false, 100)]
+        public static void ProcessTreeWin()
+        {
+            ProcessTree.ShowWin();
         }
         #endregion
 

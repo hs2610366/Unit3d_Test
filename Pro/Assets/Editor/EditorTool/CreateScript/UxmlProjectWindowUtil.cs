@@ -13,16 +13,8 @@ using Divak.Script.Game;
 
 namespace Divak.Script.Editor
 {
-    class MyProjectWindowUtil : EndNameEditAction
+    class UxmlProjectWindowUtil : EndNameEditAction
     {
-        private const string mContent = "/**  \r\n" +
-                                        "* 标    题：   #SCRIPTNAME#.cs \r\n" +
-                                        "* 描    述：   #DESCRIBE# \r\n" +
-                                        "* 创建时间：   #TIME# \r\n" +
-                                        "* 作    者：   #CREATOR# \r\n" +
-                                        "* 详    细：   #DETAILED# \r\n" +
-                                        "*/\r\n" +
-                                        "\r\n";
 
         public override void Action(int instanceId, string pathName, string resourceFile)
         {
@@ -39,17 +31,7 @@ namespace Divak.Script.Editor
         {
             string fullPath = Path.GetFullPath(pathName);
             string text = File.ReadAllText(resourceFile);
-            text = mContent + text;
-            text = SetImportPackage(pathName, text);
-            text = text.Replace("#DESCRIBE#", EditorPrefs.GetString("#DESCRIBE#"));
-            text = text.Replace("#TIME#", TimerTool.Instance.GetTimeOfUIF8);
-            text = text.Replace("#CREATOR#", "by. " + Config.PathConfig[ConfigKey.CreateName]);
-            text = text.Replace("#DETAILED#", EditorPrefs.GetString("#DETAILED#"));
-            text = text.Replace("#NOTRIM#", "");
-            text = text.Replace("#USING#", "");
-            text = SetNamespace(pathName, text);
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(pathName);
-            text = text.Replace("#NAME#", fileNameWithoutExtension);
             string text2 = fileNameWithoutExtension.Replace(" ", "");
             text = text.Replace("#SCRIPTNAME#", text2);
             if (char.IsUpper(text2, 0))
@@ -65,7 +47,7 @@ namespace Divak.Script.Editor
             UTF8Encoding encoding = new UTF8Encoding(true);
             File.WriteAllText(fullPath, text, encoding);
             AssetDatabase.ImportAsset(pathName);
-            CreateScriptEditor.CreateScriptType = ScriptType.None;
+            CreateScript.CreateScriptType = ScriptType.None;
             return AssetDatabase.LoadAssetAtPath(pathName, typeof(UnityEngine.Object));
         }
 
@@ -77,7 +59,7 @@ namespace Divak.Script.Editor
         /// <returns></returns>
         private static string SetImportPackage(string pathName, string text)
         {
-            switch (CreateScriptEditor.CreateScriptType)
+            switch (CreateScript.CreateScriptType)
             {
                 case ScriptType.C_Sharp:
                     if (pathName.Contains("/Editor/") && !text.Contains("using UnityEditor;"))
@@ -100,7 +82,7 @@ namespace Divak.Script.Editor
         /// <returns></returns>
         private static string SetNamespace(string pathName, string text)
         {
-            switch (CreateScriptEditor.CreateScriptType)
+            switch (CreateScript.CreateScriptType)
             {
                 case ScriptType.C_Sharp:
                     string key = "Game";
