@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:VisualElement class="excel_item">
+        <Style src="/Assets/Editor Default Resources/UIElements/USS/excel.uss" />
+        <ui:Box class="box_row excel_box">
+            <ui:Image name="icon" class="excel_icon" />
+            <ui:Label name="name" text="name" class="excel_name" />
+            <uie:ProgressBar title="                                                              " focusable="false" usage-hints="None" high-value="1" name="ProgressBar" class="excel_progress_bar" style="height: 18px; position: absolute; top: 1px; right: 15%; min-height: 18px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+            <ui:Label text="提示" name="tip" class="excel_tip" />
+        </ui:Box>
+    </ui:VisualElement>
+</ui:UXML>

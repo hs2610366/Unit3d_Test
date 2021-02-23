@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:VisualElement class="unit-sv-item unity-button">
+        <Style src="/Assets/Editor Default Resources/UIElements/USS/unit.uss" />
+        <ui:VisualElement class="unit-sv-item-icon" />
+        <ui:Label text="Label" name="name" class="unit-sv-item-name" />
+    </ui:VisualElement>
+</ui:UXML>

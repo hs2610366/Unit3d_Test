@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <uie:ToolbarMenu text="菜单" name="menu" view-data-key="menuClickList" class="unit-toolbar-menu">
+        <Style src="/Assets/Editor Default Resources/UIElements/USS/unit.uss" />
+    </uie:ToolbarMenu>
+    <ui:IMGUIContainer name="view" class="unit-view" style="display: flex;">
+        <Style src="/Assets/Editor Default Resources/UIElements/USS/unit.uss" />
+        <ui:ScrollView name="unit_sv" show-vertical-scroller="true" class="unit-sv" style="display: none;" />
+        <ui:IMGUIContainer name="property_view" class="unit-property-view" style="width: 100%; background-image: none;" />
+    </ui:IMGUIContainer>
+</ui:UXML>

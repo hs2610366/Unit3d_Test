@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:VisualElement name="tool_root" style="height: 24px; background-color: rgb(24, 22, 22);">
+        <uie:ToolbarMenu text="菜单" name="menu" style="height: 24px; width: 80px;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="main_root" style="bottom: 0; top: 0; right: 0; left: 0; height: 100%; flex-direction: row;">
+        <ui:VisualElement name="left_root" style="height: 100%; width: 20%; flex-direction: row; background-color: rgb(31, 31, 31);">
+            <ui:ListView focusable="True" name="root_node_list" tooltip="启动节点" style="width: 100%; height: 20%;">
+                <ui:Button text="Process Node" name="process_node" tooltip="流程启动节点" style="height: 60px;" />
+            </ui:ListView>
+        </ui:VisualElement>
+        <ui:ScrollView name="scroll_view" mode="VerticalAndHorizontal" show-horizontal-scroller="true" show-vertical-scroller="true" style="height: 100%; width: 100%; background-color: rgb(55, 55, 55);">
+            <ui:VisualElement name="drag_rect" style="width: 5000px; height: 5000px;" />
+        </ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>

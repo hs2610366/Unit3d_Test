@@ -1,0 +1,61 @@
+.excel_item {
+    height: 22px;
+}
+
+.excel_box {
+    align-items: stretch;
+    flex-direction: row;
+    height: 22px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.excel_icon {
+    height: 20px;
+    max-height: none;
+    min-height: auto;
+    max-width: none;
+    min-width: auto;
+    background-image: resource('Tex/icon/excel_icon.jpg');
+    width: 20px;
+    justify-content: center;
+    margin-left: 0;
+    margin-top: 0;
+}
+
+.excel_name {
+    right: auto;
+    opacity: 1;
+    width: 33%;
+    color: rgb(217, 217, 217);
+    align-items: center;
+    min-width: auto;
+    max-width: none;
+    justify-content: center;
+    -unity-text-align: middle-left;
+    padding-left: 0;
+    position: absolute;
+    left: 7%;
+    height: 18px;
+    -unity-background-scale-mode: stretch-to-fill;
+    -unity-font-style: normal;
+}
+
+.excel_tip {
+    position: absolute;
+    right: 5px;
+    font-size: 10px;
+    -unity-text-align: middle-center;
+    min-height: 20px;
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    min-width: 50px;
+}
+
+.excel_sv {
+    width: 100%;
+    height: 100%;
+}

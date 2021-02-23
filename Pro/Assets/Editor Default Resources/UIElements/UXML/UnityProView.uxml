@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:VisualElement name="unitBasePro" style="height: 300px; width: 610px; left: auto; -unity-text-align: upper-right; flex-direction: column; flex-shrink: 0; flex-grow: 0; justify-content: flex-start; flex-basis: auto; align-items: flex-start;">
+        <Style src="/Assets/Editor Default Resources/UIElements/USS/unit.uss" />
+        <ui:Label text="属性" class="unit-basePro-title" style="height: 20px; width: 300px; -unity-text-align: middle-center;" />
+        <ui:TextField picking-mode="Ignore" label="标识" value="filler text" text="Empty" name="tag_pro" class="unit-basePro-field" />
+        <ui:Label text="模型属性" class="unit-basePro-title" />
+        <uie:ObjectField label="预制件" name="model" class="unit-basePro-field" />
+        <ui:VisualElement name="model_file_item" class="unit-basePro-modeFile-item">
+            <ui:Label text="路径://" class="unit-basePro-modeFile-lab" />
+            <ui:Label name="model_file" class="unit-basePro-modeFile" />
+        </ui:VisualElement>
+        <uie:FloatField label="缩放" value="1" name="model_scale" class="unit-basePro-field" />
+        <ui:Label text="基础属性" class="unit-basePro-title" />
+        <uie:FloatField label="移动速度" value="1" name="speed" class="unit-basePro-field" />
+        <uie:FloatField label="转身速率" value="0" name="rotate" class="unit-basePro-field" />
+    </ui:VisualElement>
+</ui:UXML>
