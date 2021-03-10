@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System;
 using System.IO;
 using System.Collections;
@@ -65,32 +66,31 @@ namespace Divak.Script.Game
                 Directory.CreateDirectory(PathTool.DataPath);
 
             //开始下载被指定的路径
-            //WWW www  =  WWW.LoadFromCacheOrDownload((PathTool.AssetsVersionOfServerPath, 0);
-            WWW www = WWW.LoadFromCacheOrDownload("http://www.duowan.com/public/s/i/navbar/navbar.js", 0);
-            //定义www为WWW类型并且等于被下载的内容。
-            // Wait for download to complete
-            //等待www全部下载完毕
-            yield return www;
-            if (www.isDone)
+            using (var request = UnityWebRequest.Get(PathTool.AssetsVersionOfServerPath))
             {
-                if (www.error != null)
+                var handle = new DownloadHandlerBuffer();
+                request.downloadHandler = handle;
+                yield return request.SendWebRequest();
+                if(request.isHttpError)
                 {
-                    MessageBox.Error(string.Format("版本文件{0}更新失败!>", PathTool.AssetsVersionOfServerPath));
-                    yield break;
-                }
-                Util.AnalysisAssetsVersion(ref mAssetsVersionOfServerFiles, www.text);
-                if(mAssetsVersionOfServerFiles != null && mAssetsVersionOfServerFiles.Count > 0)
-                {
-                    File.WriteAllBytes(PathTool.AssetsVersionPath, www.bytes);
+                    MessageBox.Error("CDN版本文件获取失败:" + PathTool.AssetsVersionOfServerPath);
                 }
                 else
                 {
-                    MessageBox.Error("服务未获取到资源版本信息！！");
-                    www.Dispose();
-                    yield break;
+                    Util.AnalysisAssetsVersion(ref mAssetsVersionOfServerFiles, handle.text);
+                    if (mAssetsVersionOfServerFiles != null && mAssetsVersionOfServerFiles.Count > 0)
+                    {
+                        File.WriteAllBytes(PathTool.AssetsVersionPath, handle.data);
+                    }
+                    else
+                    {
+                        MessageBox.Error("服务未获取到资源版本信息！！");
+                    }
                 }
+                handle.Dispose();
+                request.Abort();
+                request.Dispose();
             }
-            www.Dispose();
             yield return new WaitForEndOfFrame();
             Global.Instance.StartCoroutine(CheckUpdateAssets());
         }
@@ -104,39 +104,40 @@ namespace Divak.Script.Game
         IEnumerator CheckUpdateAssets()
         {
             if (mWaitDownLoad == null) mWaitDownLoad = new List<string>();
-            WWW www = WWW.LoadFromCacheOrDownload(PathTool.AssetsVersionPath, 0);
-            yield return www;
-            if (www.isDone)
+            using (var request = UnityWebRequest.Get(PathTool.AssetsVersionPath))
             {
-                if (www.error != null)
+                var handler = new DownloadHandlerBuffer();
+                request.downloadHandler = handler;
+                yield return request.SendWebRequest();
+                if (request.isDone || request.isHttpError)
                 {
                     MessageBox.Error(string.Format("版本文件{0}获取失败!>", PathTool.AssetsVersionPath));
-                    yield break;
-                }
-                Util.AnalysisAssetsVersion(ref mAssetsVersionFiles, www.text);
-
-                if(mAssetsVersionFiles != null && mAssetsVersionFiles.Count > 0)
-                {
-
-                    foreach(string key in mAssetsVersionOfServerFiles.Keys)
-                    {
-                        if(mAssetsVersionFiles.ContainsKey(key) && mAssetsVersionFiles[key] == mAssetsVersionOfServerFiles[key])
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            mWaitDownLoad.Add(key);
-                        }
-                    }
-                    Global.Instance.StartCoroutine(OnDownLoadAssets());
-                    yield break;
                 }
                 else
                 {
-                    MessageBox.Error("本地未获取到资源版本信息！！");
+                    Util.AnalysisAssetsVersion(ref mAssetsVersionFiles, handler.text);
+
+                    if (mAssetsVersionFiles != null && mAssetsVersionFiles.Count > 0)
+                    {
+
+                        foreach (string key in mAssetsVersionOfServerFiles.Keys)
+                        {
+                            if (mAssetsVersionFiles.ContainsKey(key) && mAssetsVersionFiles[key] == mAssetsVersionOfServerFiles[key])
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                mWaitDownLoad.Add(key);
+                            }
+                        }
+                        Global.Instance.StartCoroutine(OnDownLoadAssets());
+                    }
                 }
                 OnUpdateAssetsComplete();
+                handler.Dispose();
+                request.Abort();
+                request.Dispose();
             }
             yield return new WaitForEndOfFrame();
         }
@@ -154,15 +155,24 @@ namespace Divak.Script.Game
                 inFile = mWaitDownLoad[0];
                 name = Path.GetDirectoryName(inFile);
                 outFile = PathTool.DataPath + name;
-                WWW www = WWW.LoadFromCacheOrDownload(inFile, 0);
-                yield return www;
-
-                if (www.isDone)
+                using (var request = UnityWebRequest.Get(inFile))
                 {
-                    File.WriteAllBytes(outFile, www.bytes);
+                    var handler = new DownloadHandlerBuffer();
+                    request.downloadHandler = handler;
+                    yield return request.SendWebRequest();
+                    if(request.isDone || request.isHttpError)
+                    {
+                        MessageBox.Error("cdn下周资源失败：" + inFile);
+                    }
+                    else
+                    {
+                        File.WriteAllBytes(outFile, handler.data);
+                    }
+                    mWaitDownLoad.RemoveAt(0);
+                    handler.Dispose();
+                    request.Abort();
+                    request.Dispose();
                 }
-                mWaitDownLoad.RemoveAt(0);
-                yield return new WaitForEndOfFrame();
             }
             OnUpdateAssetsComplete();
             yield return new WaitForSeconds(0.1f);

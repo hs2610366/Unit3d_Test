@@ -10,10 +10,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Divak.Script.Game 
 {
-	public class AssetsMgr : ABAssets
+	public class AssetsMgr : AssetBase
     {
         public static readonly AssetsMgr Instance = new AssetsMgr();
 
@@ -28,49 +29,62 @@ namespace Divak.Script.Game
 
 		#region 公开函数
 
-        public void Init()
+        public override void Init(Action callback)
         {
-            LoadMainAssetBundleManifest();
+            base.Init(callback);
         }
 
-        public GameObject LoadPrefab(string name)
+        #region 异步加载
+        public void LoadPrefab(string name, string suffix, Action<GameObject, string> callback)
         {
-            name = name + SuffixTool.Prefab;
-            GameObject go = LoadAB<GameObject>(name);
-            go.name = go.name.Replace("(Clone)", string.Empty);
-            return go;
+            var finish = new ObjLoadFinish();
+            finish.AddName(name);
+            finish.AddCallbak<GameObject, string>(callback);
+            LoadAsync(name, suffix, finish);
         }
 
-        public Texture LoadTex(string name)
+        public void LoadPrefab(string bundleName, Action<GameObject, string> callback)
         {
-            name = name + SuffixTool.PNG;
-            Texture tex = LoadAB<Texture>(name);
-            tex.name = tex.name.Replace("(Clone)", string.Empty);
-            return tex ;
+            var finish = new ObjLoadFinish();
+            finish.AddName(bundleName);
+            finish.AddCallbak<GameObject, string>(callback);
+            LoadAsync(bundleName, finish);
+        }
+        public void LoadScene(string name, Action<string, bool> callback)
+        {
+            var path = name + SuffixTool.Scene;
+            var finish = new SceneLoadFinish();
+            finish.SetInstantiate(false);
+            finish.AddName(name);
+            finish.AddCallbak<string, bool>(callback);
+            LoadAsync(path, finish);
         }
 
-        public UnityEngine.Object Load(string path)
+        public void LoadAsync(string name, string suffix, BaseLoadFinish callback)
         {
-            return LoadAB(path);
+            LoadReady(name + suffix, callback);
         }
 
-        public UnityEngine.Object Load(string name, string suffix)
+        public void LoadAsync(string bundleName, BaseLoadFinish callback)
         {
-            return LoadAB(name + suffix);
+            LoadReady(bundleName, callback);
+        }
+        #endregion
+
+        #region 卸载
+        public void UnloadPrefab(string name, GameObject obj)
+        {
+            Unload(name, obj);
         }
 
-        public void DestoryPrefab(string name, bool isDerstoy = true)
+        public void UnloadPrefab(string name, string suffix, GameObject obj)
         {
-            name = name + SuffixTool.Prefab;
-            Destory(name, isDerstoy);
+            Unload(name + suffix, obj);
         }
+        #endregion
 
-        public void LoadScene(string name)
-        {
-            name = name + SuffixTool.Scene;
-           LoadSAB(name);
-        }
 
+        #region 配置
         /// <summary>
         /// 加载配置表
         /// </summary>
@@ -83,7 +97,7 @@ namespace Divak.Script.Game
 #if UNITY_EDITOR
             path = Config.PathConfig[ConfigKey.AssetsPath];
             path = string.Format("{0}/{1}/{2}", path, UnityEditor.EditorUserBuildSettings.activeBuildTarget, name);
-            LoadFileBytes(path, LoadBytesCallback);
+          //  LoadFileBytes(path, LoadBytesCallback);
 #else
             path = Application.streamingAssetsPath + "/" + name;
             Global.Instance.StartCoroutine(LoadBytes(path, LoadBytesCallback));
@@ -91,5 +105,6 @@ namespace Divak.Script.Game
         }
         #endregion
 
+        #endregion
     }
 }
