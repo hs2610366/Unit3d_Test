@@ -13,8 +13,16 @@ using UnityEngine;
 
 namespace Divak.Script.Game 
 {
-	public class UnitObj : UnitBase
+	public class UnitObj : UnitAttr
     {
+        #region 属性
+        #region bundle名
+        private string mAssetName;
+        #endregion
+        #endregion
+
+        #region 引用对象
+
         #region 预制体
         private GameObject mOneself;
         /// <summary>
@@ -53,17 +61,17 @@ namespace Divak.Script.Game
         #endregion
 
         #region 渲染器
-        private Renderer mRendererTool;
-        /// <summary>
-        /// 渲染器
-        /// </summary>
-        public Renderer RendererTool{get { return mRendererTool; }}
         #endregion
+
+        #endregion
+
+        #region 构造函数
         public UnitObj() : base() { }
 
         public UnitObj(string tag) : base(tag)
         {
         }
+        #endregion
 
         #region 私有函数
         private void UpdateOnselfData()
@@ -74,44 +82,23 @@ namespace Divak.Script.Game
             mTrans.localScale = Vector3.one * Scale;
         }
 
-        #endregion
-
-        #region 保护函数
-        protected void CreateObj(string path)
+        private void OnLoadFinish(GameObject go, string name)
         {
-#if UNITY_EDITOR
-            UnityEngine.Object prefab = Resources.Load(path);
-            if (prefab == null)
-            {
-                MessageBox.Error(string.Format("error:{0} 未读取到", path));
-                return;
-            }
-            GameObject go = GameObject.Instantiate(prefab as GameObject);
-            //string path = UnityEditor.AssetDatabase.GetAssetPath(prefab);
-            //ModPath = System.IO.Path.GetDirectoryName(path);
-#else
-            GameObject go = AssetsMgr.Instance.LoadPrefab(path);
-#endif
             UpdateOneself(go);
         }
 
+        #endregion
 
-        protected virtual void UpdateOneself(GameObject go)
+        #region 保护函数
+        protected override void Instantiate()
         {
-            mOneself = go;
-            mTrans = Oneself.transform;
-            mRoot = TransTool.Find(mTrans, "Root");
-            mHPRoot = TransTool.Find(mTrans, "Node/hp_root");
-            mController = mTrans.GetComponent<CharacterController>();
-            //mRendererTool = ConTool.Find<Renderer>(go,"");
-            if (mController)
-            {
-                mController.center = mController.center * Scale;
-                mController.height = mController.height * Scale;
-                mController.radius = mController.radius * Scale;
-            }
-            UpdateOnselfData();
-            CustomUpdateModel();
+            mAssetName = mModelTemp.model;
+            CreateObj(mAssetName);
+        }
+
+        protected void CreateObj(string path)
+        {
+            AssetsMgr.Instance.LoadPrefab(path, OnLoadFinish);
         }
 
         protected override void CustomUpdate()
@@ -125,7 +112,7 @@ namespace Divak.Script.Game
             if (TransTool.IsNull(mTrans) == false)
             {
                 bool isHit = false;
-                Vector3 hitPos = TransTool.Raycast(mTrans, LayerName.Gound, out isHit);
+                Vector3 hitPos = RaycastTool.Raycast(mTrans, Vector3.down, LayerName.Gound, out isHit);
                 if(!isHit)
                 {
                     if (Vector3.Distance(Pos, new Vector3(Pos.x, 0, Pos.z)) > 0)
@@ -149,22 +136,38 @@ namespace Divak.Script.Game
                 }
             }
         }
+
+        protected virtual void CustomUpdateModel()
+        {
+
+        }
         #endregion
 
-        #region 公有函数
+        #region 公开函数
+
+        public virtual void UpdateOneself(GameObject go)
+        {
+            mOneself = go;
+            mTrans = Oneself.transform;
+            mRoot = TransTool.Find(mTrans, "Root");
+            mHPRoot = TransTool.Find(mTrans, "Node/hp_root");
+            mController = mTrans.GetComponent<CharacterController>();
+            //mRendererTool = ConTool.Find<Renderer>(go,"");
+            if (mController)
+            {
+                mController.center = mController.center * Scale;
+                mController.height = mController.height * Scale;
+                mController.radius = mController.radius * Scale;
+            }
+            UpdateOnselfData();
+            CustomUpdateModel();
+        }
 
         public Vector3 GetHPRootPos()
         {
             if (TransTool.IsNull(mTrans) == false)
                 return HPRoot.transform.position;
             return Pos;
-        }
-
-        #endregion
-
-        protected virtual void CustomUpdateModel()
-        {
-
         }
 
         public override void Reset()
@@ -181,16 +184,23 @@ namespace Divak.Script.Game
 
         public override void Dispose()
         {
-#if UNITY_EDITOR
-            GameObject.DestroyImmediate(mOneself);
-#else
-            AssetsMgr.Instance.DestoryPrefab(mTrans.name);
-#endif
+            if (string.IsNullOrEmpty(mAssetName))
+            {
+                MessageBox.Error("UnitObj.Dispose : 资源名为空");
+            }
+            else
+            {
+                AssetsMgr.Instance.UnloadPrefab(mAssetName, mOneself);
+            }
+            mAssetName = null;
             mController = null;
             mRoot = null;
             mTrans = null;
             mOneself = null;
             base.Dispose();
         }
+
+        #endregion
+
     }
 }

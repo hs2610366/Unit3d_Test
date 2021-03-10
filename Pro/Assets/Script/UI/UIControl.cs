@@ -83,11 +83,9 @@ namespace Divak.Script.Game
                 if (!mLArea.gameObject.activeSelf) mLArea.gameObject.SetActive(true);
                 UpdateAreaBgPos(inputPos);
                 UpdateCirclePos(inputPos);
-                UnitMgr.Instance.SetPlayerMove(true);
             }
             else
             {
-                UnitMgr.Instance.SetPlayerMove(false);
                 mIsFixedPos = false;
                 mIsClickArea = false;
                 if (mLArea.gameObject.activeSelf) mLArea.gameObject.SetActive(false);
@@ -134,7 +132,6 @@ namespace Divak.Script.Game
             {
                 mCircle.localPosition = GetPos(offsetPos, angle, ACTION_DISTANCE) + originPos;
             }
-            UnitMgr.Instance.UpdatePlayerAngle(angle + 180);
         }
 
         private float GetAngle(Vector3 pos)

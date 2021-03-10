@@ -26,10 +26,10 @@ namespace Divak.Script.Game
         public UILogin(GameObject go) : base(go)
         {
             mName = UIName.UILogin;
-            mAccounts = ConTool.Find<InputField>(mGo, "Accounts", mName);
-            mPassword = ConTool.Find<InputField>(mGo, "Password", mName);
-            mEnter = ConTool.Find<Button>(mGo, "Enter", mName);
-            mQuit = ConTool.Find<Button>(mGo, "Quit", mName);
+            mAccounts = ComTool.Find<InputField>(mGo, "Accounts", mName);
+            mPassword = ComTool.Find<InputField>(mGo, "Password", mName);
+            mEnter = ComTool.Find<Button>(mGo, "Enter", mName);
+            mQuit = ComTool.Find<Button>(mGo, "Quit", mName);
             MessageBox.Warning("UILogin初始化");
         }
 

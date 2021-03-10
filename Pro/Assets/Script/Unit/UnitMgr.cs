@@ -16,84 +16,99 @@ namespace Divak.Script.Game
     {
         public static readonly UnitMgr Instance = new UnitMgr();
 
-        private Dictionary<UInt32, UnitBase> mUnitDic = new Dictionary<UInt32, UnitBase>();
-        public Dictionary<UInt32, UnitBase> UnitDic { get { return mUnitDic; } }
-        private UnitPlayer mPlayer;
-        public UnitPlayer Player { get { return mPlayer; } }
+        private List<UnitBase> mArray = new List<UnitBase>();
 
 #if UNITY_EDITOR
         public UInt32 TempID;
         public string ModPath;
 #endif
 
-        public UnitPlayer CreatePlayer(UInt32 careerId, String Name, Vector3 Pos)
+        public void CreateUnit(UInt32 careerId, Action<Unit> callback = null)
         {
             CareerTemp temp = CareerTempMgr.Instance.Find(careerId);
             if (temp == null)
             {
                 MessageBox.Error(string.Format("职业配置表ID[{0}]为空！！", careerId));
-                return null;
+                return;
             }
-
-            mPlayer = (UnitPlayer)CreateUnit(temp.modId, UnitType.Player);
-            if (mPlayer == null) return null;
-            mPlayer.UpdatTemp(temp);
-            mPlayer.UpdatePos(Pos);
-            RemoteControl.Instance.AddCommand(temp.id, new MoveCommand(mPlayer), new AttackCommand(mPlayer));
-            if (CameraMgr.Main != null) CameraMgr.UpdatePlay(mPlayer.Trans);
-            EventMgr.Instance.Trigger(EventKey.CreateUnit, mPlayer);
-            return mPlayer;
+            CreateUnit(temp, temp.modId, callback);
         }
 
-        public Unit CreateUnit(UInt32 modId, UnitType type)
+        public void CreateUnit(CareerTemp temp, UInt32 modId, Action<Unit> callback = null)
         {
-            ModelTemp temp = ModelTempMgr.Instance.Find(modId);
-            if (temp == null)
+            ModelTemp modTemp = ModelTempMgr.Instance.Find(modId);
+            if (modTemp == null)
             {
                 MessageBox.Error(string.Format("模型配置表ID[{0}]为空！！", modId));
-                return null;
+                return;
             }
-            string mod = temp.model;
-            if (string.IsNullOrEmpty(mod))
+            Unit unit = new Unit();
+            unit.UpdateCfgs(temp, modTemp);
+            callback(unit);
+        }
+        private void OnLoadFinish(object obj)
+        {
+            if (obj == null)
             {
-                MessageBox.Error(string.Format("模型配置表ID[{0}]中模型字段为空！！", modId));
-                return null;
+                MessageBox.Error(string.Format("error:{0} 未读取到", obj.ToString()));
+                return;
             }
-#if UNITY_EDITOR
-            string rPath = "Unit/" + temp.model;
-            UnityEngine.Object prefab = Resources.Load(rPath);
-            if(prefab == null)
-            {
-                MessageBox.Error(string.Format("error:{0} 未读取到", rPath));
-                return null;
-            }
-            GameObject go = GameObject.Instantiate(prefab as GameObject);
-            string path = UnityEditor.AssetDatabase.GetAssetPath(prefab);
+            GameObject go = obj as GameObject;
+            string path = UnityEditor.AssetDatabase.GetAssetPath(go);
             ModPath = System.IO.Path.GetDirectoryName(path);
-#else
-            GameObject go = AssetsMgr.Instance.LoadPrefab(mod);
-#endif
 
-            if (go == null) return null;
+            if (go == null) return;
             go.transform.localEulerAngles = Vector3.zero;
             go.transform.localScale = Vector3.one;
-            Unit unit = CreateClass(type);
-            //unit.UpdateOneself(go);
-            unit.UpdateModelTemp(temp);
-            unit.UpdateState(temp);
-            unit.UpdateAnims(temp);
-            return unit;
         }
 
-        public Unit CreateClass(UnitType type)
-        {
-            switch (type)
-            {
-                case UnitType.Player:
-                    return new UnitPlayer();
-                    break;
-            }
-            return new Unit();
-        }
+        //         public UnitPlayer CreatePlayer(UInt32 careerId, String Name, Vector3 Pos)
+        //         {
+        //             CareerTemp temp = CareerTempMgr.Instance.Find(careerId);
+        //             if (temp == null)
+        //             {
+        //                 MessageBox.Error(string.Format("职业配置表ID[{0}]为空！！", careerId));
+        //                 return null;
+        //             }
+        // 
+        //             mPlayer = (UnitPlayer)CreateUnit(temp.modId, UnitType.Player);
+        //             if (mPlayer == null) return null;
+        //             mPlayer.UpdatTemp(temp);
+        //             mPlayer.UpdatePos(Pos);
+        //             RemoteControl.Instance.AddCommand(temp.id, new MoveCommand(mPlayer), new AttackCommand(mPlayer));
+        //             if (CameraMgr.Main != null) CameraMgr.UpdatePlay(mPlayer.Trans);
+        //             EventMgr.Instance.Trigger(EventKey.CreateUnit, mPlayer);
+        //             return mPlayer;
+        //         }
+        // 
+        //         public void CreateUnit(UInt32 modId, UnitType type)
+        //         {
+        //             
+        //
+        //         }
+        // 
+        //         
+        // 
+        //         public Unit CreateClass(UnitType type)
+        //         {
+        //             switch (type)
+        //             {
+        //                 case UnitType.Player:
+        //                     return new UnitPlayer();
+        //                     break;
+        //             }
+        //             return new Unit();
+        //         }
+        // 
+        // #if UNITY_EDITOR
+        //         public Unit FindToTag(string tag)
+        //         {
+        //             foreach(Unit unit in mUnitDic.Values)
+        //             {
+        //                 if (unit.Tag.Contains(tag)) return unit;
+        //             }
+        //             return null;
+        //         }
+        // #endif
     }
 }

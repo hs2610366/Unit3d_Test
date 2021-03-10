@@ -62,8 +62,8 @@ namespace Divak.Script.Game
             }
             else
             {
-                UICamera = ConTool.Find<Camera>(go, "UICamera");
-                UIFXCamera = ConTool.Find<Camera>(go, "UIFXCamera");
+                UICamera = ComTool.Find<Camera>(go, "UICamera");
+                UIFXCamera = ComTool.Find<Camera>(go, "UIFXCamera");
                 UITrans = TransTool.Find(go.transform, "UI");
                 FXTrans = TransTool.Find(go.transform, "FX");
             }
@@ -118,31 +118,35 @@ namespace Divak.Script.Game
         public static void Open(string uiName, Action<UIBase> callback = null)
         {
             UIBase ui = null;
-            UnityEngine.Object go = null;
             if (UIDic.ContainsKey(uiName)) ui = UIDic[uiName];
             if(ui == null)
             {
-                go = AssetsMgr.Instance.Load(uiName, SuffixTool.Prefab);
-                if(go == null)
-                {
-                    MessageBox.Error(string.Format("加载资源{0}失败", uiName));
-                    return;
-                }
-                ui = Instantiation(uiName, go as GameObject);
-                if (ui == null)
-                {
-                    AssetsMgr.Instance.Destory(uiName, true);
-                    return;
-                }
-                go.name = go.name.Replace("(Clone)", string.Empty);
-                UITool.SetParentOfCanvas((go as GameObject).transform, UITrans);
-                UIDic.Add(uiName, ui);
+                AssetsMgr.Instance.LoadPrefab(uiName, SuffixTool.Prefab, OnLoadFinish);
             }
+        }
+
+        private static void OnLoadFinish(GameObject go, string name)
+        {
+            if (go == null)
+            {
+                MessageBox.Error(string.Format("加载资源{0}失败", name));
+                return;
+            }
+            var ui = Instantiation(name, go);
+            if (ui == null)
+            {
+                AssetsMgr.Instance.UnloadPrefab(name, go);
+                return;
+            }
+            go.name = go.name.Replace("(Clone)", string.Empty);
+            UITool.SetParentOfCanvas((go as GameObject).transform, UITrans);
+            UIDic.Add(name, ui);
+
             if (ui == null) return;
             ui.Open();
-            OpenUIDic.Add(uiName, ui);
-            if (callback == null) return;
-            callback(ui);
+            OpenUIDic.Add(name, ui);
+            //if (callback == null) return;
+            //callback(ui);
         }
 
         public static void Open<T>(Action<UIBase> callback = null)
@@ -182,7 +186,7 @@ namespace Divak.Script.Game
         {
             if (OpenUIDic.ContainsKey(uiName)) OpenUIDic.Remove(uiName);
             if (UIDic.ContainsKey(uiName)) UIDic.Remove(uiName);
-            AssetsMgr.Instance.DestoryPrefab(uiName, isDestory);
+           // AssetsMgr.Instance.DestoryPrefab(uiName, isDestory);
         }
 
         /// <summary>
@@ -196,7 +200,7 @@ namespace Divak.Script.Game
             {
                 if (OpenUIDic.ContainsKey(data.Key)) OpenUIDic.Remove(data.Key);
                 data.Value.Dispose();
-                AssetsMgr.Instance.DestoryPrefab(data.Key,isDestory);
+            //    AssetsMgr.Instance.DestoryPrefab(data.Key,isDestory);
             }
             OpenUIDic.Clear();
             UIDic.Clear();

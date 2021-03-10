@@ -6,14 +6,16 @@
 * 详    细：    
 */
 
+using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Divak.Script.Game 
 {
-	public class Unit : UnitActive
+	public class Unit : UnitObj
     {
+        #region 引用对象
         #region 模型配置表
         private ModelTemp mTemp;
         /// <summary>
@@ -22,67 +24,40 @@ namespace Divak.Script.Game
         public ModelTemp MTemp { get { return mTemp; } }
         #endregion
 
-        #region 速度
-        private int mSpeed = 5;
-        public int Speed
-        {
-            get
-            {
-                return mSpeed;
-            }
-        }
-        #endregion
-
         #region 控件
-        /// <summary>
-        /// 识别投影
-        /// </summary>
-        private Projection2 mIdent;
+        #endregion
         #endregion
 
-        public Unit():base()
-        {
-            mIdent = new Projection2();
-        }
-
-        public Unit(string tag):base(tag)
+        #region 构造函数
+        public Unit() : base()
         {
 
         }
 
-        #region MyRegion
-        protected virtual void UpdateIdent(int ident)
+        public Unit(string tag) : base(tag)
         {
-            if (mIdent == null) return;
-            mIdent.SetIdent(ident);
-        }
-        #endregion
-
-        #region 公有函数
-
-        protected override void UpdateOneself(GameObject go)
-        {
-            base.UpdateOneself(go);
-            if (mIdent != null) mIdent.Add(Controller);
-        }
-
-        public void UpdateModelTemp(ModelTemp temp)
-        {
-            mTemp = temp;
-            UpdateIdent(1);
-        }
-       
-        public override void Dispose()
-        {
-            mTemp = null;
-            if (mIdent != null) mIdent.Dispose();
-            mIdent = null;
-            base.Dispose();
+            // mIdent = new Projection2();
         }
         #endregion
 
         #region 私有函数
 
+        #endregion
+
+        #region 保护函数
+        #endregion
+
+        #region 公开函数
+        public override void UpdateOneself(GameObject go)
+        {
+            base.UpdateOneself(go);
+        }
+       
+        public override void Dispose()
+        {
+            mTemp = null;
+            base.Dispose();
+        }
         #endregion
     }
 }

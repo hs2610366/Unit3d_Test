@@ -1,6 +1,6 @@
 ﻿/**  
 * 标    题：   UnitBase.cs 
-* 描    述：    
+* 描    述：   Unit 基础参数 和 函数
 * 创建时间：   2018年03月06日 01:32 
 * 作    者：   by. by. T.Y.Divak 
 * 详    细：    
@@ -14,6 +14,8 @@ namespace Divak.Script.Game
 {
     public class UnitBase
     {
+        #region 属性
+        /**                                     基础属性                                     */
         #region 标识
         /// <summary>
         /// 标识
@@ -22,8 +24,83 @@ namespace Divak.Script.Game
         /// <summary>
         /// 标识
         /// </summary>
-        public string Tag { get { return mTag; } }
+        public string Tag { get { return mTag; } set { mTag = value; } }
         #endregion
+
+        #region 模型路径
+        /// <summary>
+        /// 模型路径
+        /// </summary>
+        private string mModPath = string.Empty;
+        /// <summary>
+        /// 模型路径
+        /// </summary>
+        public string ModPath { get { return mModPath; } set { mModPath = value; } }
+        #endregion
+
+        #region 缩放大小
+        /// <summary>
+        /// 缩放大小
+        /// </summary>
+        private float mScale = 1.0f;
+        /// <summary>
+        /// 缩放大小
+        /// </summary>
+        public float Scale
+        {
+            get { return mScale; }
+            set { mScale = value; }
+        }
+        #endregion
+
+        #region 移动速度
+        /// <summary>
+        /// 移动速度
+        /// </summary>
+        private float mMovingSpeed = 0;
+        /// <summary>
+        /// 移动速度
+        /// </summary>
+        public float MovingSpeed
+        {
+            get
+            {
+                return mMovingSpeed;
+            }
+            set
+            {
+                mMovingSpeed = value;
+            }
+        }
+        #endregion
+
+        #region 转身速率
+        /// <summary>
+        /// 转身速率
+        /// </summary>
+        private float mRotateRate = 0;
+        /// <summary>
+        /// 转身速率
+        /// </summary>
+        public float RotateRate
+        {
+            get
+            {
+                return mRotateRate;
+            }
+            set
+            {
+                mRotateRate = value;
+            }
+        }
+        #endregion
+
+        #region 重力
+        private float mGravity = 0.098f;
+        public float Gravity { get { return mGravity; } set { mGravity = value; } }
+        #endregion
+
+        /**                                     基础属性                                     */
 
         #region 坐标
         /// <summary>
@@ -72,7 +149,8 @@ namespace Divak.Script.Game
         /// <summary>
         /// 当前旋转欧拉角角度
         ///// </summary>
-        public Vector3 Angles {
+        public Vector3 Angles
+        {
             get
             {
                 return mAngles;
@@ -85,21 +163,6 @@ namespace Divak.Script.Game
         {
             get { return mTarAngles; }
             set { mTarAngles = value; }
-        }
-        #endregion
-
-        #region 缩放大小
-        /// <summary>
-        /// 缩放大小
-        /// </summary>
-        private float mScale = 1.0f;
-        /// <summary>
-        /// 缩放大小
-        /// </summary>
-        public float Scale
-        {
-            get { return mScale; }
-            set { mScale = value; }
         }
         #endregion
 
@@ -119,51 +182,6 @@ namespace Divak.Script.Game
         /// 总移动距离
         /// </summary>
         private float mLimitMovingDis;
-        #endregion
-
-        #region 移动速度
-        /// <summary>
-        /// 移动速度
-        /// </summary>
-        private float mMovingSpeed = 0;
-        /// <summary>
-        /// 移动速度
-        /// </summary>
-        public float MovingSpeed
-        {
-            get
-            {
-                return mMovingSpeed;
-            }
-            set
-            {
-                mMovingSpeed = value;
-            }
-        }
-        #endregion
-
-        #region 转身速率
-        /// <summary>
-        /// 转身速率
-        /// </summary>
-        private float mRotateRate = 0;
-        /// <summary>
-        /// 转身速率
-        /// </summary>
-        public float RotateRate
-        {
-            get
-            {
-                return mRotateRate;
-            }
-            set
-            {
-                mRotateRate = value;
-            }
-        }
-        #endregion
-
-        #region 重力
         #endregion
 
         #region 等待时间
@@ -216,13 +234,6 @@ namespace Divak.Script.Game
         private float mWaitTabTime = 0;
         #endregion
 
-        #region 播放执行
-        /// <summary>
-        /// 是否执行刷新
-        /// </summary>
-        private bool mIsPlay = false;
-        #endregion
-
         #region 攻击范围
         /// <summary>
         /// 事件响应范围
@@ -244,6 +255,15 @@ namespace Divak.Script.Game
         }
         #endregion
 
+        #region 播放执行
+        /// <summary>
+        /// 是否执行刷新
+        /// </summary>
+        private bool mIsPlay = false;
+        #endregion
+        #endregion
+
+        #region 构造函数
         public UnitBase()
         {
 #if UNITY_ANDROID || UNITY_IPHONE
@@ -258,6 +278,7 @@ namespace Divak.Script.Game
             Global.Instance.OnUpdate += Update;
 #endif
         }
+        #endregion
 
         #region 私有函数
         /// <summary>
@@ -278,6 +299,21 @@ namespace Divak.Script.Game
         /// </summary>
         protected virtual void CustomRefreshGravity()
         {
+            bool isHit = false;
+            Vector3 hitPos = RaycastTool.Raycast(mPos, Vector3.down, LayerName.Gound, out isHit);
+            if(isHit)
+            {
+                var dis = Vector3.Distance(mPos, hitPos);
+                if (dis > 0)
+                {
+                    mGravityTabTime = Time.realtimeSinceStartup;
+                }
+                else if(dis < 0)
+                {
+                    mGravityTabTime = 0;
+                    mPos = hitPos;
+                }
+            }
         }
 
         /// <summary>
@@ -359,7 +395,7 @@ namespace Divak.Script.Game
 
         protected float GravityDistance()
         {
-            return 0.5f * 9.8f * Mathf.Pow(Time.realtimeSinceStartup - mGravityTabTime, 2.0f);
+            return mGravityTabTime * mGravity;
         }
 
         /// <summary>

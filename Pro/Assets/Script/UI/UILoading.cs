@@ -28,20 +28,28 @@ namespace Divak.Script.Game
             }
             if(mGO == null)
             {
-                GameObject obj = (GameObject)AssetsMgr.Instance.Load(UIName.UILoading, SuffixTool.Prefab);
+                AssetsMgr.Instance.LoadPrefab(UIName.UILoading, SuffixTool.Prefab, OnLoadFinish);
             }
-            if(mGO == null)
+        }
+
+        public void OnLoadFinish(GameObject obj, string name)
+        {
+            if (obj == null)
             {
                 MessageBox.Error(string.Format("获取{0}失败！！", UIName.UILoading));
                 return;
             }
+            var go = obj as GameObject;
+            mGO = go;
             GetUI();
+
         }
+
         public static void GetUI()
         {
             if (mGO == null) return;
-            mSlider = ConTool.Find<Slider>(mGO, "Slider", UIName.UILoading);
-            mText = ConTool.Find<Text>(mGO, "Text", UIName.UILoading);
+            mSlider = ComTool.Find<Slider>(mGO, "Slider", UIName.UILoading);
+            mText = ComTool.Find<Text>(mGO, "Text", UIName.UILoading);
         }
 
         #region 保护函数
