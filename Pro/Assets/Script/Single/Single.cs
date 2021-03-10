@@ -16,13 +16,14 @@ namespace Divak.Script.Game
 	public class Single
     {
         public static readonly Single Instance = new Single();
-        UnitPlayer player;
         public void Init()
         {
             //UIMgr.Open("UIControl");
-            player =  UnitMgr.Instance.CreatePlayer(101,"希尔瓦纳斯", Vector3.zero);
+            //  player =  UnitMgr.Instance.CreatePlayer(101,"希尔瓦纳斯", Vector3.zero);
             //return;
             //SceneMgr.Instance.EnterScene(10001);
+
+           // ObjectPool.Instance.GetPrefab();
         }
 
 
@@ -32,6 +33,7 @@ namespace Divak.Script.Game
 
         public void OnGUI()
         {
+            /**
             if(GUI.Button(new Rect(0,0, 200,200),"1"))
             {
                 player.Execute("Idea1");
@@ -44,6 +46,7 @@ namespace Divak.Script.Game
             {
                 player.Execute("Run");
             }
+    */
         }
     }
 }

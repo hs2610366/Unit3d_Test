@@ -29,12 +29,11 @@ public class SceneBase
             MessageBox.Error(string.Format("场景{0}资源为空", temp.id));
             return;
         }
-        AssetsMgr.Instance.LoadSceneComplete += LoadSceneComplete;
-        AssetsMgr.Instance.LoadScene(name);
+        AssetsMgr.Instance.LoadScene(name, LoadSceneComplete);
     }
 
 
-    private void LoadSceneComplete(string name)
+    private void LoadSceneComplete(string name, bool finish)
     {
         SceneManager.LoadScene(name, LoadSceneMode.Single);
         EnterSceneComplete();
