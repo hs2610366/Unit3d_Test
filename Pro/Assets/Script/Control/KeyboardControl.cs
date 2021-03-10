@@ -56,7 +56,7 @@ namespace Divak.Script.Game
             */
             if (Input.GetKeyDown(KeyCode.Alpha0))
             {
-                RemoteControl.Instance.ExecuteAttack(UnitMgr.Instance.Player.CTemp.id, UnitState.Fight);
+                //RemoteControl.Instance.ExecuteAttack(UnitMgr.Instance.Player.CTemp.id, UnitState.Fight);
                 Debug.Log("平a");
             }
             /**

@@ -44,6 +44,11 @@ namespace Divak.Script.Game
             return mUnits.FindIndex((o) => { return o.Tag == tag; });
         }
 
+        public Unit FindUnit(string tag)
+        {
+            return mUnits.Find((o) => { return o.Tag == tag; });
+        }
+
         #endregion
 
         #region 清除数据

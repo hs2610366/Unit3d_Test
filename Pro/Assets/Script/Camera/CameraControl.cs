@@ -80,8 +80,6 @@ namespace Divak.Script.Game
         /// 消长因素
         /// </summary>
         private float decreaseFactor = 1.0f;
-
-        private float value = 100.0f;
         #endregion
 
 

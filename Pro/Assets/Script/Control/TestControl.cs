@@ -22,8 +22,6 @@ namespace Divak.Script.Game
         public Transform mCircle;
 
         public Transform mRArea;
-
-        private UnitPlayer mPlayer;
         /// <summary>
         /// 定点
         /// </summary>
@@ -80,12 +78,6 @@ namespace Divak.Script.Game
 
         private void OnCreateUnit(params object[] objs) 
         {
-            if (UnitMgr.Instance.Player != null)
-            {
-                mPlayer = UnitMgr.Instance.Player;
-                //uint id = mPlayer.CTemp.id;
-                //RemoteControl.Instance.AddCommand(id, new MoveCommand(mPlayer), new AttackCommand(mPlayer));
-            }
         }
 
 
@@ -111,13 +103,13 @@ namespace Divak.Script.Game
                 UpdateAreaBgPos(inputPos);
                 UpdateCirclePos(inputPos);
                 //UnitMgr.Instance.SetPlayerMove(true);
-                if (mPlayer != null)
-                    RemoteControl.Instance.ExecuteMove(mPlayer.CTemp.id);
+                //if (mPlayer != null)
+                //    RemoteControl.Instance.ExecuteMove(mPlayer.CTemp.id);
             }
             else if(TouchConst.TouchEnd())
             {
-                if(mPlayer != null)
-                    RemoteControl.Instance.UndoMove(mPlayer.CTemp.id);
+                //if(mPlayer != null)
+                //    RemoteControl.Instance.UndoMove(mPlayer.CTemp.id);
                 //UnitMgr.Instance.SetPlayerMove(false);
                 mIsFixedPos = false;
                 mIsClickArea = false;
@@ -166,7 +158,6 @@ namespace Divak.Script.Game
             {
                 mCircle.localPosition = GetPos(offsetPos, angle, ACTION_DISTANCE) + originPos;
             }
-            UnitMgr.Instance.UpdatePlayerAngle(angle + 180);
         }
 
         private float GetAngle(Vector3 pos)
