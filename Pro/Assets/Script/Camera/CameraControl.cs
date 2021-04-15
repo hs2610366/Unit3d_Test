@@ -152,6 +152,10 @@ namespace Divak.Script.Game
         /// </summary>
         private void UpdateVerticalAngle()
         {
+            if (GameSceneManager.instance.CanCtrlCam() == false)
+            {
+                return;
+            }
             if (TouchConst.TouchIng()) return;
             float axis = 0f;
 #if UNITY_EDITOR
@@ -170,6 +174,10 @@ namespace Divak.Script.Game
 
         private void UpdateDistance()
         {
+            if (GameSceneManager.instance.CanCtrlCam() == false)
+            {
+                return;
+            }
             float axis = 0f;
 #if UNITY_EDITOR
             axis = Input.GetAxis("Mouse ScrollWheel");
